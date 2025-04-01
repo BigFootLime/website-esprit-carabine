@@ -359,7 +359,7 @@ export default function Layout({}: { children: React.ReactNode }) {
                               typeFilters.length === 0 ||
                               typeFilters
                                 .map((filter) => filter.split('-')[1])
-                                .includes(product.type)
+                                .includes(product.type || '')
 
                             return anodisationMatch && handednessMatch && typeMatch
                           })
