@@ -82,13 +82,6 @@ const UniversalConcept = async () => {
     },
   ]
 
-  // A récupérer de payload
-  interface Information {
-    title: string
-    description: string[]
-    annexes?: { title: string; list: string[] }[]
-    images?: string[]
-  }
   const informations = [
     {
       title: 'Crosse - Fixation - Conventionnelle',

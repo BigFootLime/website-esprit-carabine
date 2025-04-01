@@ -189,7 +189,7 @@ const Training = () => {
                 </li>
                 <li className="flex items-center text-primary">
                   <span className="mr-3 w-2 h-2 bg-accent-principle rounded-full"></span>
-                  Des méthodes d'entraînement éprouvées au plus haut niveau
+                  Des méthodes d&apos;entraînement éprouvées au plus haut niveau
                 </li>
                 <li className="flex items-center text-primary">
                   <span className="mr-3 w-2 h-2 bg-accent-principle rounded-full"></span>

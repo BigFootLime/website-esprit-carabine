@@ -14,7 +14,6 @@ import { FunnelIcon, MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Loader2 } from 'lucide-react'
-import { cp } from 'fs'
 
 const filters = [
   {
@@ -44,19 +43,46 @@ const filters = [
   },
 ]
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+interface Image {
+  id: number
+  alt: string
+  updatedAt: string
+  createdAt: string
+  url: string
+  thumbnailURL: string | null
+  filename: string
+  mimeType: string
+  filesize: number
+  width: number
+  height: number
+  focalX: number
+  focalY: number
+}
+
+interface Product {
+  id: number
+  title: string
+  description: string
+  price: number
+  handedness: 'left' | 'right'
+  anodizing: string
+  type: string | null
+  image: Image
+  updatedAt: string
+  createdAt: string
+}
+
+export default function Layout({}: { children: React.ReactNode }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-  const [products, setProducts] = useState<any>(null)
+  const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
-  const [filtersActive, setFilters] = useState<any>([])
+  const [filtersActive, setFilters] = useState<string[]>([])
 
   useEffect(() => {
     getProducts()
   }, [])
 
-  useEffect(() => {
-    console.log(filtersActive)
-  }, [filtersActive])
+  console.log(products)
 
   async function getProducts() {
     try {
@@ -139,7 +165,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                     console.log(section)
                                     console.log(option)
                                     const value = section.id + '-' + option.value
-                                    setFilters((prev: any) => {
+                                    setFilters((prev: string[]) => {
                                       const newFilters = [...prev]
                                       if (isChecked) {
                                         newFilters.push(value)
@@ -246,7 +272,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                     console.log(e.target.checked)
                                     const isChecked = e.target.checked
                                     const value = section.id + '-' + option.value
-                                    setFilters((prev: any) => {
+                                    setFilters((prev: string[]) => {
                                       const newFilters = [...prev]
                                       if (isChecked) {
                                         newFilters.push(value)

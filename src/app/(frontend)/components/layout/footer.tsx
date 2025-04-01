@@ -22,7 +22,7 @@ const navigation = {
     {
       name: 'WhatsApp',
       href: 'https://wa.me/15552345678',
-      icon: (props = {}) => (
+      icon: (_ = {}) => (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           x="0px"

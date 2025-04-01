@@ -9,7 +9,7 @@ export async function GET() {
     })
 
     return Response.json(products)
-  } catch (error) {
+  } catch (_) {
     return Response.json({ error: 'Erreur lors du chargement des produits' }, { status: 500 })
   }
 }
