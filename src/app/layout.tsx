@@ -8,7 +8,10 @@ import Footer from './(frontend)/components/layout/footer'
 
 export const metadata = {
   description: 'Vendeur de carabines',
-  title: 'Payload Blank Template',
+  title: 'Esprit-Carabine',
+  icons: {
+    icon: '/favicon.ico',
+  },
 }
 
 const geistSans = Geist({
