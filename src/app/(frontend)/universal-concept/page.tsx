@@ -274,7 +274,11 @@ const UniversalConcept = async () => {
                 {info.images.map((image, imageIndex) => (
                   <Image
                     key={imageIndex}
-                    src={image.url}
+                    src={
+                      typeof image === 'object' && image !== null && 'url' in image && image.url
+                        ? image.url
+                        : '/default-image.jpg'
+                    } // Provide a default image
                     alt={info.title}
                     className="rounded-lg shadow-md w-full !h-full object-cover"
                     width={500} // Adjust width as needed
