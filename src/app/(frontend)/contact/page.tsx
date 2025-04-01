@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 
 type Product = {
+  id: string
   title: string
   description: string
   price: number

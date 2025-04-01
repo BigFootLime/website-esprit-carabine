@@ -333,7 +333,7 @@ export default function Layout({}: { children: React.ReactNode }) {
                     ) : (
                       <div className="mt-6 grid gap-x-6 gap-y-10 xl:gap-x-8">
                         {products
-                          ?.filter((product: any) => {
+                          ?.filter((product: Product) => {
                             const anodisationFilters = filtersActive.filter((filter: string) =>
                               filter.startsWith('anodizing-'),
                             )
