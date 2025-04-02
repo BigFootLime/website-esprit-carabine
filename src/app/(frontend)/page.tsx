@@ -3,20 +3,43 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Link from 'next/link'
+import image1 from '../(frontend)/images/ImageUniversalConcept.png'
+import image2 from '../(frontend)/images/ImageTraining.jpg'
+import image3 from '../(frontend)/images/NosValeurs.jpg'
+import { motion } from 'framer-motion'
 
 export default function HomePage() {
   return (
-    <main className="relative">
+    <main className="relative isolate bg-gray-900 overflow-hidden ">
       {/* Featured Sections */}
-      <section className="py-24 bg-gradient-to-b bg-gray-500 from-gray-900 to-gray-800">
+      <div
+        className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-120"
+        aria-hidden="true"
+      >
+        <div
+        className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
+          style={{
+            clipPath:
+              'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+          }}
+        />
+      </div>
+
+      <section className="py-24 ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <motion.div
+              initial={{ opacity: 0, y: -30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}                    
+            >
+            <h2 className="text-5xl font-semibold tracking-tight text-white sm:text-7xl">
               Excellence française du tir sportif
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-300 mt-8 max-w-3xl mx-auto">
               Découvrez notre expertise et nos solutions innovantes pour les tireurs de tous niveaux
             </p>
+            </motion.div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -24,7 +47,7 @@ export default function HomePage() {
             <div className="bg-gray-800 rounded-3xl overflow-hidden shadow-xl transition-all duration-300 hover:shadow-2xl hover:translate-y-[-8px] group">
               <div className="relative h-72 w-full overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&q=80&w=2574"
+                  src={image1}
                   alt="Universal Concept"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -51,7 +74,7 @@ export default function HomePage() {
             <div className="bg-gray-800 rounded-3xl overflow-hidden shadow-xl transition-all duration-300 hover:shadow-2xl hover:translate-y-[-8px] group">
               <div className="relative h-72 w-full overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1550318496-399db15aa7e6?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  src={image2}
                   alt="Entraînement & Coaching"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -78,7 +101,7 @@ export default function HomePage() {
             <div className="bg-gray-800 rounded-3xl overflow-hidden shadow-xl transition-all duration-300 hover:shadow-2xl hover:translate-y-[-8px] group">
               <div className="relative h-72 w-full overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1564993719576-7b00be6317cd?q=80&w=2669&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  src={image3}
                   alt="Nos valeurs"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -105,7 +128,7 @@ export default function HomePage() {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-blue-600">
+      <section className="py-20 bg-sky-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Prêt à améliorer vos performances ?
@@ -132,6 +155,18 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <div
+        className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+        aria-hidden="true"
+      >
+        <div
+          className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
+          style={{
+            clipPath:
+              'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+          }}
+        />
+      </div>
     </main>
   )
 }

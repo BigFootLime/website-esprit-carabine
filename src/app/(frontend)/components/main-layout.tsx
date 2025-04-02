@@ -11,7 +11,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   return (
     <div className="relative isolate bg-white">
       {heroContent && <HeroComponent {...heroContent} />}
-      <div className="mt-20">{children}</div>
+      <div className="">{children}</div>
     </div>
   )
 }

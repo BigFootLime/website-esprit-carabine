@@ -6,4 +6,24 @@
   --color-accent-secondary: #d32f2f;
   --color-link-primary: #a5a5a5;
   --color-link-hover: #cccccc;
+ 
+
+}
+
+@layer base {
+
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Noto Sans', sans-serif;
+    background-color: var(--color-primary);
+    color: var(--color-link-primary);
+  }
+
+  a {
+    color: var(--color-link-primary);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--color-link-hover);
+  }
 }
