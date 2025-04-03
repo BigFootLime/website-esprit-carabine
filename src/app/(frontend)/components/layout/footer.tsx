@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
+import Image from 'next/image'
+import LogoEspritCarabine from '../../images/Logo.svg'
 
 const navigation = {
   solutions: [
@@ -61,20 +63,27 @@ const navigation = {
 
 export default function Footer() {
   return (
-    <footer className="bg-white">
+    <footer className="bg-gray-900">
       <div className="mx-auto max-w-7xl px-6 pt-16 pb-8 sm:pt-24 lg:px-8 lg:pt-32">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-          <h3 className="font-semibold text-gray-900">Esprit Carabine</h3>
+          <div>
+            <Image
+              src={LogoEspritCarabine}
+              alt="Logo Esprit Carabine"
+              width={150}
+              height={40}
+            />
+          </div>
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm/6 font-semibold text-gray-900">Solutions</h3>
+                <h3 className="text-sm/6 font-semibold text-white">Solutions</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.solutions.map((item) => (
                     <li key={item.name}>
                       <Link
                         href={item.href}
-                        className="text-sm/6 text-link-primary hover:text-link-hover transition-colors"
+                        className="text-sm/6 text-gray-300 hover:text-white transition-colors"
                       >
                         {item.name}
                       </Link>
@@ -83,13 +92,13 @@ export default function Footer() {
                 </ul>
               </div>
               <div className="mt-10 md:mt-0">
-                <h3 className="text-sm/6 font-semibold text-gray-900">Additional</h3>
+                <h3 className="text-sm/6 font-semibold text-white">Additional</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.additional.map((item) => (
                     <li key={item.name}>
                       <Link
                         href={item.href}
-                        className="text-sm/6 text-link-primary hover:text-link-hover transition-colors"
+                        className="text-sm/6 text-gray-300 hover:text-white transition-colors"
                       >
                         {item.name}
                       </Link>
@@ -100,13 +109,13 @@ export default function Footer() {
             </div>
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm/6 font-semibold text-gray-900">Support</h3>
+                <h3 className="text-sm/6 font-semibold text-white">Support</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.support.map((item) => (
                     <li key={item.name}>
                       <Link
                         href={item.href}
-                        className="text-sm/6 text-link-primary hover:text-link-hover transition-colors"
+                        className="text-sm/6 text-gray-300 hover:text-white transition-colors"
                       >
                         {item.name}
                       </Link>
@@ -115,13 +124,13 @@ export default function Footer() {
                 </ul>
               </div>
               <div className="mt-10 md:mt-0">
-                <h3 className="text-sm/6 font-semibold text-gray-900">Legal</h3>
+                <h3 className="text-sm/6 font-semibold text-white">Legal</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.legal.map((item) => (
                     <li key={item.name}>
                       <Link
                         href={item.href}
-                        className="text-sm/6 text-link-primary hover:text-link-hover transition-colors"
+                        className="text-sm/6 text-gray-300 hover:text-white transition-colors"
                       >
                         {item.name}
                       </Link>
@@ -132,21 +141,21 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-8 border-t border-gray-900/10 pt-8 md:flex md:items-center md:justify-between">
+        <div className="mt-8 border-t border-white/10 pt-8 md:flex md:items-center md:justify-between">
           <div className="flex gap-x-6 md:order-2">
             {navigation.social.map((item) => (
               <Link
                 key={item.name}
                 target="_blank"
                 href={item.href}
-                className="text-link-primary hover:text-link-hover transition-colors"
+                className="text-white hover:text-gray-300 transition-colors"
               >
                 <span className="sr-only">{item.name}</span>
                 <item.icon aria-hidden="true" />
               </Link>
             ))}
           </div>
-          <p className="mt-8 text-sm/6 text-gray-600 md:order-1 md:mt-0">
+          <p className="mt-8 text-sm/6 text-gray-400 md:order-1 md:mt-0">
             &copy; 2025 Esprit Carabine, Tous droits réservés.
           </p>
         </div>

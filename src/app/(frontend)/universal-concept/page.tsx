@@ -196,26 +196,25 @@ const UniversalConcept = async () => {
   ]
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-900 text-white min-h-screen">
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-accent-principle to-accent-secondary text-white">
         <div className="container mx-auto px-4 py-20 text-center">
           <h1 className="text-5xl font-bold mb-6 tracking-tight">Principe</h1>
           <p className="text-xl max-w-2xl mx-auto text-white/90 mb-10">
-            « L&apos;Universal Concept permet de choisir entre deux procédés d&apos;assemblage de la
-            carabine. »
+            « L&apos;Universal Concept permet de choisir entre deux procédés d&apos;assemblage de la carabine. »
           </p>
           <div className="flex justify-center space-x-4">
             <Link
               href="/shop"
               className="inline-flex items-center px-6 py-3 bg-white text-link-primary font-semibold rounded-lg hover:bg-link-hover transition"
             >
-              En savoir plus <ArrowRight className="ml-2" />
+              Acheter une crosse <ArrowRight className="ml-2" />
             </Link>
           </div>
         </div>
       </div>
-
+  
       {/* Features Section */}
       <div id="features" className="container mx-auto px-4 py-16 flex flex-col items-center gap-8">
         <div className="grid md:grid-cols-3 gap-8">
@@ -224,7 +223,7 @@ const UniversalConcept = async () => {
             return (
               <div
                 key={index}
-                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl  hover:scale-105 transition-all duration-300"
+                className="bg-white text-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl hover:scale-105 transition-all duration-300"
               >
                 <div className="flex items-center mb-4">
                   <FeatureIcon className="mr-4 text-accent-principle" />
@@ -243,33 +242,32 @@ const UniversalConcept = async () => {
             )
           })}
         </div>
-        <div className="grid md:grid-cols-3 gap-8">
-          {paragraphs.map((paragraph, index) => {
-            return (
-              <div key={index} className=" p-6 hover:scale-105 transition-all duration-300">
-                <div className="flex items-center mb-4">
-                  <h3 className="text-2xl font-bold text-primary">{paragraph.title}</h3>
-                </div>
-                {/* <p className="text-gray-600 mb-6">{paragraph.description}</p> */}
-                <ul className="space-y-3">
-                  {paragraph.description.map((desc, descIndex) => (
-                    <li key={descIndex} className="text-gray-600 mb-6">
-                      {desc}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )
-          })}
+  
+        {/* Paragraphs Section */}
+        <div className="w-full mt-16 space-y-12">
+          {paragraphs.map((paragraph, index) => (
+            <div key={index} className="bg-gray-800 rounded-lg p-6 shadow-md">
+            <h3 className="text-2xl font-semibold text-white mb-4">{paragraph.title}</h3>
+            <div className="border-t-2 border-sky-600 w-20 mb-6"></div> {/* 👈 ligne ajoutée */}
+            <div className="space-y-4 text-gray-300 text-justify leading-relaxed">
+              {paragraph.description.map((desc, idx) => (
+                <p key={idx}>{desc}</p>
+              ))}
+            </div>
+          </div>
+          
+          ))}
         </div>
       </div>
-
-      {/* Inforamtion Session */}
-      <div className="container mx-auto px-4 py-16">
+  
+      {/* Informations Section */}
+      <div className="container mx-auto px-4 py-16 space-y-16">
         {informations.map((info, index) => (
-          <div key={index} className="mb-12">
-            <h2 className="text-3xl font-bold text-primary mb-4">{info.title}</h2>
-            {info.images && (
+          <div key={index} className="bg-gray-800 rounded-lg p-8 shadow-lg">
+            <h2 className="text-3xl font-bold text-white mb-4">{info.title}</h2>
+            <div className="border-t-2 border-sky-600 w-20 mb-6"></div> 
+  
+            {info.images && info.images.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
                 {info.images.map((image, imageIndex) => (
                   <Image
@@ -278,31 +276,32 @@ const UniversalConcept = async () => {
                       typeof image === 'object' && image !== null && 'url' in image && image.url
                         ? image.url
                         : '/default-image.jpg'
-                    } // Provide a default image
+                    }
                     alt={info.title}
-                    className="rounded-lg shadow-md w-full !h-full object-cover"
-                    width={500} // Adjust width as needed
-                    height={300} // Adjust height as needed
+                    className="rounded-lg shadow-md w-full object-cover"
+                    width={500}
+                    height={300}
                     layout="responsive"
                   />
                 ))}
               </div>
             )}
-            <p className="text-gray-600 mb-6 text-justify">
+  
+            <div className="space-y-4 text-gray-300 text-justify">
               {info.description.map((desc, descIndex) => (
-                <span key={descIndex}>{desc}</span>
+                <p key={descIndex}>{desc}</p>
               ))}
-            </p>
+            </div>
+  
             {info.annexes && (
-              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {info.annexes.map((annex, annexIndex) => (
-                  <div key={annexIndex} className="mb-4">
-                    <h3 className="text-xl font-semibold text-primary">{annex.title}</h3>
-                    <ul className="list-disc list-inside">
+                  <div key={annexIndex}>
+                    <h3 className="text-xl font-semibold text-white mb-2">{annex.title}</h3>
+                    <div className="border-t border-sky-600 w-16 mb-2"></div>
+                    <ul className="list-disc list-inside text-gray-300 space-y-1">
                       {annex.list.map((item, itemIndex) => (
-                        <li key={itemIndex} className="text-gray-600 mb-2">
-                          {item}
-                        </li>
+                        <li key={itemIndex}>{item}</li>
                       ))}
                     </ul>
                   </div>
@@ -312,13 +311,13 @@ const UniversalConcept = async () => {
           </div>
         ))}
       </div>
+  
       {/* Call to Action */}
       <div className="bg-gradient-to-br from-accent-principle to-accent-secondary text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-6">Prêt à améliorer vos performances ?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-            Contactez-nous pour découvrir l&apos;Universal Concept et trouver la configuration
-            parfaite pour vous.
+            Contactez-nous pour découvrir l&apos;Universal Concept et trouver la configuration parfaite pour vous.
           </p>
           <Link
             href="/contact"
@@ -330,6 +329,6 @@ const UniversalConcept = async () => {
       </div>
     </div>
   )
-}
+}  
 
 export default UniversalConcept

@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronRightIcon } from '@heroicons/react/24/outline'
+import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import Image from 'next/image'
 import Link from 'next/link'
 import image1 from '../(frontend)/images/ImageUniversalConcept.png'
@@ -129,32 +129,32 @@ export default function HomePage() {
 
       {/* Call to Action */}
       <section className="py-20 bg-sky-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Prêt à améliorer vos performances ?
-          </h2>
-          <p className="text-xl text-blue-100 mb-10 max-w-3xl mx-auto">
-            Découvrez l&apos;Universal Concept ou réservez un stage d&apos;entraînement personnalisé
-            avec Pascal Bessy
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/universal-concept"
-              className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-link-primary bg-white hover:bg-link-hover transition-colors duration-300 rounded-lg shadow-lg hover:shadow-xl"
-            >
-              Explorer l&apos;Universal Concept
-              <ChevronRightIcon className="ml-2 h-5 w-5" />
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-link-primary bg-transparent border-2 border-white hover:bg-white/10 transition-colors duration-300 rounded-lg shadow-lg hover:shadow-xl"
-            >
-              Nous contacter
-              <ChevronRightIcon className="ml-2 h-5 w-5" />
-            </Link>
-          </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+          Prêt à améliorer vos performances ?
+        </h2>
+        <p className="text-xl text-blue-100 mb-10 max-w-3xl mx-auto">
+          Découvrez l&apos;Universal Concept ou réservez un stage d&apos;entraînement personnalisé
+          avec Pascal Bessy
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            href="/universal-concept"
+            className="group inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-sky-700 bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:shadow-2xl"
+          >
+            Explorer l&apos;Universal Concept
+            <ChevronRightIcon className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
+          <Link
+            href="/contact"
+            className="group inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white border-2 border-white bg-transparent rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-white/10 hover:shadow-2xl"
+          >
+            Nous contacter
+            <ChevronRightIcon className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
         </div>
-      </section>
+      </div>
+    </section>
       <div
         className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
         aria-hidden="true"

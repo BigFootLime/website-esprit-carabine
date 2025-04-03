@@ -134,7 +134,7 @@ export default function HeroComponent({
   transition={{ duration: 0.8, ease: 'easeOut' }}
   className="mx-auto max-w-2xl text-center"
 >
-  <h1 className="text-5xl font-semibold tracking-tight text-white sm:text-7xl">
+  <h1 className="text-5xl text-sky-600 font-semibold tracking-tight text-white sm:text-7xl">
     {title}
   </h1>
   <p className="mt-8 text-lg font-medium text-gray-400 sm:text-xl">
