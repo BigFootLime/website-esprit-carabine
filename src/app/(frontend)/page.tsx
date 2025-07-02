@@ -17,7 +17,7 @@ export default function HomePage() {
         aria-hidden="true"
       >
         <div
-        className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
+          className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
           style={{
             clipPath:
               'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
@@ -31,14 +31,14 @@ export default function HomePage() {
             <motion.div
               initial={{ opacity: 0, y: -30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}                    
+              transition={{ duration: 0.8, ease: 'easeOut' }}
             >
-            <h2 className="text-5xl font-semibold tracking-tight text-white sm:text-7xl">
-              Excellence française du tir sportif
-            </h2>
-            <p className="text-xl text-gray-300 mt-8 max-w-3xl mx-auto">
-              Découvrez notre expertise et nos solutions innovantes pour les tireurs de tous niveaux
-            </p>
+              <h2 className="text-5xl font-semibold tracking-tight text-white sm:text-7xl">
+                Excellence française en tir sportif
+              </h2>
+              <p className="text-xl text-gray-300 mt-8 max-w-3xl mx-auto">
+                Découvrez notre expertise, au service des tireurs de tous niveaux
+              </p>
             </motion.div>
           </div>
 
@@ -57,8 +57,7 @@ export default function HomePage() {
               <div className="p-8">
                 <h3 className="text-2xl font-bold mb-3 text-white">Universal Concept</h3>
                 <p className="text-gray-300 mb-6">
-                  Une innovation unique alliant ergonomie et modularité pour une précision maximale.
-                  Découvrez notre système de crosses ajustables et personnalisables.
+                  Une innovation unique alliant modularité, ergonomie et précision maximale
                 </p>
                 <Link
                   href="/universal-concept"
@@ -129,32 +128,32 @@ export default function HomePage() {
 
       {/* Call to Action */}
       <section className="py-20 bg-sky-600">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-          Prêt à améliorer vos performances ?
-        </h2>
-        <p className="text-xl text-blue-100 mb-10 max-w-3xl mx-auto">
-          Découvrez l&apos;Universal Concept ou réservez un stage d&apos;entraînement personnalisé
-          avec Pascal Bessy
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            href="/universal-concept"
-            className="group inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-sky-700 bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:shadow-2xl"
-          >
-            Explorer l&apos;Universal Concept
-            <ChevronRightIcon className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
-          <Link
-            href="/contact"
-            className="group inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white border-2 border-white bg-transparent rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-white/10 hover:shadow-2xl"
-          >
-            Nous contacter
-            <ChevronRightIcon className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            Prêt à améliorer vos performances ?
+          </h2>
+          <p className="text-xl text-blue-100 mb-10 max-w-3xl mx-auto">
+            Découvrez l&apos;Universal Concept ou réservez un stage d&apos;entraînement personnalisé
+            avec Pascal Bessy
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/universal-concept"
+              className="group inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-sky-700 bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:shadow-2xl"
+            >
+              Explorer l&apos;Universal Concept
+              <ChevronRightIcon className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+            <Link
+              href="/contact"
+              className="group inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white border-2 border-white bg-transparent rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-white/10 hover:shadow-2xl"
+            >
+              Nous contacter
+              <ChevronRightIcon className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
       <div
         className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
         aria-hidden="true"

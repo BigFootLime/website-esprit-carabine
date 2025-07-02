@@ -1,58 +1,45 @@
 import ImageHero from '../images/ImageHero.svg'
 export const hero = [
   {
-    title: "L'Universal Concept",
+    title: '',
     href: '/',
-    description:
-      'La crosse Universal Concept a été développée avant tout pour être efficace et améliorer les performances des carabines de compétition destinées aux disciplines se tirant à 50 mètres ou à 300 mètres.',
-      image: ImageHero,
+    description: '',
+    image: ImageHero,
   },
   {
-    title: "L'Universal Concept",
+    title: '',
     href: '/about',
-    description:
-      'La crosse Universal Concept a été développée avant tout pour être efficace et améliorer les performances des carabines de compétition destinées aux disciplines se tirant à 50 mètres ou à 300 mètres.',
-    image:
-      ImageHero,
+    description: '',
+    image: ImageHero,
   },
   {
-    title: "L'Universal Concept",
+    title: '',
     href: '/universal-concept',
-    description:
-      'La crosse Universal Concept a été développée avant tout pour être efficace et améliorer les performances des carabines de compétition destinées aux disciplines se tirant à 50 mètres ou à 300 mètres.',
-    image:
-      ImageHero,
+    description: '',
+    image: ImageHero,
   },
   {
-    title: "L'Universal Concept",
+    title: '',
     href: '/shop',
-    description:
-      'La crosse Universal Concept a été développée avant tout pour être efficace et améliorer les performances des carabines de compétition destinées aux disciplines se tirant à 50 mètres ou à 300 mètres.',
-    image:
-      ImageHero,
+    description: '',
+    image: ImageHero,
   },
   {
-    title: "L'Universal Concept",
+    title: '',
     href: '/training',
-    description:
-      'La crosse Universal Concept a été développée avant tout pour être efficace et améliorer les performances des carabines de compétition destinées aux disciplines se tirant à 50 mètres ou à 300 mètres.',
-    image:
-      ImageHero,
+    description: '',
+    image: ImageHero,
   },
   {
-    title: "L'Universal Concept",
+    title: '',
     href: '/testimonials',
-    description:
-      'La crosse Universal Concept a été développée avant tout pour être efficace et améliorer les performances des carabines de compétition destinées aux disciplines se tirant à 50 mètres ou à 300 mètres.',
-    image:
-      ImageHero,
+    description: '',
+    image: ImageHero,
   },
   {
-    title: "L'Universal Concept",
+    title: '',
     href: '/contact',
-    description:
-      'La crosse Universal Concept a été développée avant tout pour être efficace et améliorer les performances des carabines de compétition destinées aux disciplines se tirant à 50 mètres ou à 300 mètres.',
-    image:
-      ImageHero,
+    description: '',
+    image: ImageHero,
   },
 ]

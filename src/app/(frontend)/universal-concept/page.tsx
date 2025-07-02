@@ -16,31 +16,29 @@ const UniversalConcept = async () => {
     {
       title: 'Fixation conventionnelle',
       description:
-        'Notre système de fixation conventionnel offre une compatibilité maximale avec de nombreux modèles tout en garantissant une stabilité optimale.',
+        'Notre crosse permet l’utilisation de ce mode d’assemblage soit directement, soit par l’intermédiaire d’inserts d’adaptation.',
       icon: Target,
       points: [
-        'Compatible avec la majorité des actions du marché',
-        'Système de fixation par vis haute résistance',
-        'Ajustement précis pour un alignement parfait',
+        'Compatibilité avec la majorité des actions utilisées en compétition.',
         'Installation simple et rapide',
+        'Légèreté de la carabine',
       ],
     },
     {
       title: 'Fixation par le canon',
       description:
-        'Innovation exclusive Esprit Carabine, notre système de fixation par le canon révolutionne la précision et la stabilité.',
+        'Innovation exclusive d’Esprit Carabine, notre système de fixation par le canon révolutionne la conception d’une carabine de compétition en offrant une modularité et une précision exceptionnelles.',
       icon: Grip,
       points: [
-        'Serrage par cônes pour une rigidité maximale',
+        'Serrage du canon par cônes pour une rigidité maximale',
         'Réduction significative des vibrations',
-        'Amélioration de la précision',
-        'Système breveté unique sur le marché',
+        'Plus grande facilité dans le choix des lots de munition',
       ],
     },
     {
       title: 'Ergonomie et modularité',
       description:
-        "Chaque tireur est unique, c'est pourquoi nous avons développé un système entièrement modulable pour une personnalisation totale.",
+        'Chaque tireur est unique. C’est pourquoi nous avons développé un système de crosse entièrement modulable pour des réglages faciles, rapides et fiables.',
       icon: Rocket,
       points: [
         'Poignée rotative multi-axes',
@@ -198,11 +196,15 @@ const UniversalConcept = async () => {
   return (
     <div className="bg-gray-900 text-white min-h-screen">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-accent-principle to-accent-secondary text-white">
+      <div className="bg-gray-900 text-white">
         <div className="container mx-auto px-4 py-20 text-center">
           <h1 className="text-5xl font-bold mb-6 tracking-tight">Principe</h1>
           <p className="text-xl max-w-2xl mx-auto text-white/90 mb-10">
-            « L&apos;Universal Concept permet de choisir entre deux procédés d&apos;assemblage de la carabine. »
+            « La crosse Universal Concept a été développée pour offrir au tireur la plus grande
+            polyvalence. Adaptable sur la plupart des actions utilisées en compétition, en tir à 50m
+            ou à 300m, elle permet également de choisir le mode d&apos;assemblage de l&apos;action
+            canonnée sur la crosse. Fixation conventionnelle par le boîtier de culasse ou fixation
+            par le canon. »
           </p>
           <div className="flex justify-center space-x-4">
             <Link
@@ -214,7 +216,7 @@ const UniversalConcept = async () => {
           </div>
         </div>
       </div>
-  
+
       {/* Features Section */}
       <div id="features" className="container mx-auto px-4 py-16 flex flex-col items-center gap-8">
         <div className="grid md:grid-cols-3 gap-8">
@@ -242,31 +244,30 @@ const UniversalConcept = async () => {
             )
           })}
         </div>
-  
+
         {/* Paragraphs Section */}
         <div className="w-full mt-16 space-y-12">
           {paragraphs.map((paragraph, index) => (
             <div key={index} className="bg-gray-800 rounded-lg p-6 shadow-md">
-            <h3 className="text-2xl font-semibold text-white mb-4">{paragraph.title}</h3>
-            <div className="border-t-2 border-sky-600 w-20 mb-6"></div> {/* 👈 ligne ajoutée */}
-            <div className="space-y-4 text-gray-300 text-justify leading-relaxed">
-              {paragraph.description.map((desc, idx) => (
-                <p key={idx}>{desc}</p>
-              ))}
+              <h3 className="text-2xl font-semibold text-white mb-4">{paragraph.title}</h3>
+              <div className="border-t-2 border-sky-600 w-20 mb-6"></div> {/* 👈 ligne ajoutée */}
+              <div className="space-y-4 text-gray-300 text-justify leading-relaxed">
+                {paragraph.description.map((desc, idx) => (
+                  <p key={idx}>{desc}</p>
+                ))}
+              </div>
             </div>
-          </div>
-          
           ))}
         </div>
       </div>
-  
+
       {/* Informations Section */}
       <div className="container mx-auto px-4 py-16 space-y-16">
         {informations.map((info, index) => (
           <div key={index} className="bg-gray-800 rounded-lg p-8 shadow-lg">
             <h2 className="text-3xl font-bold text-white mb-4">{info.title}</h2>
-            <div className="border-t-2 border-sky-600 w-20 mb-6"></div> 
-  
+            <div className="border-t-2 border-sky-600 w-20 mb-6"></div>
+
             {info.images && info.images.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
                 {info.images.map((image, imageIndex) => (
@@ -286,13 +287,13 @@ const UniversalConcept = async () => {
                 ))}
               </div>
             )}
-  
+
             <div className="space-y-4 text-gray-300 text-justify">
               {info.description.map((desc, descIndex) => (
                 <p key={descIndex}>{desc}</p>
               ))}
             </div>
-  
+
             {info.annexes && (
               <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {info.annexes.map((annex, annexIndex) => (
@@ -311,13 +312,14 @@ const UniversalConcept = async () => {
           </div>
         ))}
       </div>
-  
+
       {/* Call to Action */}
       <div className="bg-gradient-to-br from-accent-principle to-accent-secondary text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-6">Prêt à améliorer vos performances ?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-            Contactez-nous pour découvrir l&apos;Universal Concept et trouver la configuration parfaite pour vous.
+            Contactez-nous pour découvrir l&apos;Universal Concept et trouver la configuration
+            parfaite pour vous.
           </p>
           <Link
             href="/contact"
@@ -329,6 +331,6 @@ const UniversalConcept = async () => {
       </div>
     </div>
   )
-}  
+}
 
 export default UniversalConcept
