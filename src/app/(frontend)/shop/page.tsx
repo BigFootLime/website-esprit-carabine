@@ -12,7 +12,7 @@ export default async function Page() {
   })
 
   return (
-    <div className="bg-white">
+    <div className="bg-gray-900">
       <div className="mx-auto max-w-2xl px-4 py-4 lg:max-w-7xl lg:px-8">
         <div className="mt-6 grid gap-x-6 gap-y-10 xl:gap-x-8">
           {products?.docs?.map((product) => (

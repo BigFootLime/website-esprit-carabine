@@ -109,8 +109,8 @@ export default function ContactInfos() {
                   <EnvelopeIcon aria-hidden="true" className="h-7 w-6 text-primary" />
                 </dt>
                 <dd>
-                  <Link href="mailto:hello@example.com" className="hover:text-link-hover">
-                    hello@example.com
+                  <Link href="mailto:esprit.carabine@orange.fr" className="hover:text-link-hover">
+                    esprit.carabine@orange.fr
                   </Link>
                 </dd>
               </div>
@@ -234,7 +234,7 @@ export default function ContactInfos() {
             <div className="mt-8 flex justify-end">
               <button
                 type="submit"
-                className="rounded-md bg-accent-principle px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-accent-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-principle transition-colors"
+                className="rounded-md bg-accent-principle px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-blue-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-principle transition-colors"
               >
                 Envoyer un message
               </button>

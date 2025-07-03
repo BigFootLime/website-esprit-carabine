@@ -42,49 +42,18 @@ const UniversalConcept = async () => {
       icon: Rocket,
       points: [
         'Poignée rotative multi-axes',
-        'Busc ajustable en hauteur et en angle',
-        'Plaque de couche réglable',
-        'Équilibrage modulable par masses additionnelles',
-      ],
-    },
-  ]
-
-  const paragraphs = [
-    {
-      title: 'La méthode conventionnelle',
-      description: [
-        "Le boîtier est fixé de manière conventionnelle sur la crosse par des vis, le canon restant flottant. L'Universal Concept offre la possibilité de fixer de cette manière la plupart des boîtiers de culasse les plus fréquemment utilisés en compétition, soit directement, soit par l'intermédiaire d'un insert d'adaptation.",
-      ],
-    },
-    {
-      title: 'La fixation par le canon',
-      description: [
-        "Dans ce cas c'est le canon qui est directement fixé à la crosse, le boîtier de culasse n'étant pas en contact avec celle ci. Nous utilisons pour cela un dispositif de serrage par cônes que nous avons conçu.",
-        "Le canon étant rendu plus rigide par les deux blocs de fixation, ce procédé d'assemblage contribue à diminuer les mouvements de la bouche lors de la sortie de la balle. Ainsi fixé, le canon reste positionné très bas sur la crosse.",
-        "Testé, validé et utilisé par des tireurs du plus haut niveau, ce dispositif procure une remarquable précision et une réaction de la carabine plus douce que dans le cas d'une action canonnée fixée classiquement dans une crosse métallique. Ce système permet d'autre part de fixer sur la crosse un grand nombre d'actions dotées de canons de calibre 22LR de diamètres allant de 20mm à 26mm.",
-        "Ces deux procédés d'assemblage confèrent à notre crosse son caractère universel, laissant au tireur le libre choix de son boîtier et de son canon. De plus, il est ainsi possible d'utiliser la même crosse pour pratiquer le tir à 50 mètres ou à 300 mètres.",
-      ],
-    },
-    {
-      title: 'Ergonomie',
-      description: [
-        "L'ergonomie aboutie de l'Universal Concept convient aux tireurs de toutes morphologies grâce aux multiples réglages possibles et à leurs amplitudes.",
-        "La partie arrière de la crosse, très courte pour s'adapter même aux petits gabarits, est conçue « en fourche » et permet que la force constituée par le recul de l'arme s'exerce parfaitement dans l'axe de celle-ci, permettant ainsi une réaction au départ du coup extrêmement saine.",
-        "La poignée, montée sur rotule, est ajustable dans tous les plans et permet un positionnement parfait de la main et du poignet, contribuant ainsi à améliorer l'action de l'index sur la queue de détente.",
-        'Le busc, réglable en tous sens et sans outil, permet au tireur de trouver aisément un placement parfait de la tête quelle que soit la position de tir.',
-        "Afin de permettre au tireur de trouver l'équilibre idéal de sa carabine, notamment en position « debout », le busc de l'Universal Concept peut être équipé d'un contrepoids. Positionné exactement dans l'axe de la crosse, celui-ci ne déséquilibrera pas le tireur et n'engendrera aucune réaction latérale lors du départ du coup.",
-        "Entièrement fabriquée sur centre d'usinage informatisé dans des matériaux de haut de gamme, l'Universal Concept a fait l'objet d'études et de tests approfondis garantissant à son utilisateur un fonctionnement parfait.",
-        "Son universalité, les avancées technologiques qu'elle propose, sa robustesse et sa qualité de fabrication font de l'Universal Concept l'élément de liaison idéal qui permet au tireur de tirer le meilleur profit de son canon.",
-        "Et comme nous savons qu'un carabinier aime sa carabine et que nous aimons aussi les belles choses, nous vous proposons un choix de finitions qui permettra sans doute d'exhausser vos souhaits.",
+        'Busc entièrement ajustable, avec appui-joue à réglage micrométrique sans outil',
+        'Crémaillères dotées de butées réglables permettant un pré-réglage rapide et précis.',
+        'Contrepoids additionnel de busc, positionné parfaitement dans l’axe du canon.',
       ],
     },
   ]
 
   const informations = [
     {
-      title: 'Crosse - Fixation - Conventionnelle',
+      title: 'La Fixation conventionnelle',
       description: [
-        "L'intérieur du fût de l'Universal Concept est usiné de manière à pouvoir recevoir la plupart des actions de compétition, soit directement, soit par l'intermédiaire d'un insert d'adaptation.",
+        'Le boîtier de culasse est fixé de manière classique, par des vis, le canon étant flottant. L’Universal Concept offre la possibilité de fixer de cette manière la plupart des actions utilisées en compétition ISSF. Soit directement, soit grâce à un insert d’adaptation fourni avec la crosse.',
       ],
       annexes: [
         {
@@ -108,19 +77,36 @@ const UniversalConcept = async () => {
       ],
       images:
         universalConceptData?.docs
-          .find((doc) => doc.title === 'Crosse - Fixation - Conventionnelle')
+          .find((doc) => doc.title === 'La Fixation conventionnelle')
           ?.images?.map((image) => image.image) || [],
     },
     {
-      title: 'Crosse - Fixation - Par le canon par cônes de serrage',
+      title: 'La fixation par le canon',
       description: [
-        'Ce dispositif a été conçu par Esprit Carabine pour répondre à la demande de tireurs qui recherchaient les avantages de la fixation par le canon tout en ayant le canon placé le plus bas possible sur la crosse.',
-        'Le canon est maintenu par des cônes usinés dans un matériau qui assure la rigidité du montage et qui contribue également à limiter la transmission des vibrations et de la chaleur, permettant ainsi de réduire les problèmes liés à la dilatation lors de tirs effectués par hautes températures.',
-        "La partie 'libre' du canon étant réduite, l'amplitude des mouvements de la bouche induits par les vibrations est moindre lors de la sortie de la balle.",
+        'Dans ce cas, c’est le canon qui est directement fixé à la crosse, le boîtier de culasse n’ayant aucun contact avec celle-ci. Ce dispositif a été conçu par Esprit Carabine pour répondre à la demande de tireurs qui recherchaient les avantages de la fixation par le canon tout en ayant le canon placé très bas sur la crosse.',
+        'Nous utilisons pour cela un dispositif de serrage par cônes que nous avons conçu. Usinés dans un matériau qui assure la rigidité du montage et qui contribue également à limiter la transmission des vibrations et de la chaleur, ces cônes permettent également de réduire les problèmes liés à la dilatation. La partie « libre » du canon étant réduite, l’amplitude des mouvements de la bouche induits par les vibrations est moindre lors de la sortie de la balle.',
+        'Testé, validé et utilisé par des tireurs du plus haut niveau, ce dispositif procure une remarquable précision et une réaction de la carabine plus douce que dans le cas d’une action fixée classiquement sur une crosse métallique. Ce système permet d’autre part de fixer sur la crosse un grand nombre d’actions dotées de canons de calibre 22LR, de diamètres allant de 20mm à 26mm.',
       ],
       images:
         universalConceptData?.docs
-          .find((doc) => doc.title === 'Crosse - Fixation - Par le canon par cônes de serrage')
+          .find((doc) => doc.title === 'La fixation par le canon')
+          ?.images?.map((image) => image.image) || [],
+    },
+    {
+      title: 'Ergonomie',
+      description: [
+        "L'ergonomie aboutie de l'Universal Concept convient aux tireurs de toutes morphologies grâce aux multiples réglages possibles et à leurs amplitudes.",
+        "La partie arrière de la crosse, très courte pour s'adapter même aux petits gabarits, est conçue « en fourche » et permet que la force constituée par le recul de l'arme s'exerce parfaitement dans l'axe de celle-ci, permettant ainsi une réaction au départ du coup extrêmement saine.",
+        "La poignée, montée sur rotule, est ajustable dans tous les plans et permet un positionnement parfait de la main et du poignet, contribuant ainsi à améliorer l'action de l'index sur la queue de détente.",
+        'Le busc, réglable en tous sens et sans outil, permet au tireur de trouver aisément un placement parfait de la tête quelle que soit la position de tir.',
+        "Afin de permettre au tireur de trouver l'équilibre idéal de sa carabine, notamment en position « debout », le busc de l'Universal Concept peut être équipé d'un contrepoids. Positionné exactement dans l'axe de la crosse, celui-ci ne déséquilibrera pas le tireur et n'engendrera aucune réaction latérale lors du départ du coup.",
+        "Entièrement fabriquée sur centre d'usinage informatisé dans des matériaux de haut de gamme, l'Universal Concept a fait l'objet d'études et de tests approfondis garantissant à son utilisateur un fonctionnement parfait.",
+        "Son universalité, les avancées technologiques qu'elle propose, sa robustesse et sa qualité de fabrication font de l'Universal Concept l'élément de liaison idéal qui permet au tireur de tirer le meilleur profit de son canon.",
+        "Et comme nous savons qu'un carabinier aime sa carabine et que nous aimons aussi les belles choses, nous vous proposons un choix de finitions qui permettra sans doute d'exhausser vos souhaits.",
+      ],
+      images:
+        universalConceptData?.docs
+          .find((doc) => doc.title === 'Ergonomie')
           ?.images?.map((image) => image.image) || [],
     },
     {
@@ -182,13 +168,13 @@ const UniversalConcept = async () => {
           ?.images?.map((image) => image.image) || [],
     },
     {
-      title: 'Contrepoids',
+      title: 'Contrepoids de busc',
       description: [
         "Spécialement étudié pour le tir en position debout, ce contrepoids se fixe sur la crémaillère du busc. Il est positionné exactement dans l'axe de la crosse et ne peut pas occasionner de déséquilibre latéral.",
       ],
       images:
         universalConceptData?.docs
-          .find((doc) => doc.title === 'Contrepoids')
+          .find((doc) => doc.title === 'Contrepoids de busc')
           ?.images?.map((image) => image.image) || [],
     },
   ]
@@ -209,7 +195,7 @@ const UniversalConcept = async () => {
           <div className="flex justify-center space-x-4">
             <Link
               href="/shop"
-              className="inline-flex items-center px-6 py-3 bg-white text-link-primary font-semibold rounded-lg hover:bg-link-hover transition"
+              className="inline-flex items-center px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-800 transition"
             >
               Acheter une crosse <ArrowRight className="ml-2" />
             </Link>
@@ -225,16 +211,16 @@ const UniversalConcept = async () => {
             return (
               <div
                 key={index}
-                className="bg-white text-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl hover:scale-105 transition-all duration-300"
+                className="bg-gray-800 text-white rounded-xl shadow-lg p-6 hover:shadow-xl hover:scale-105 transition-all duration-300"
               >
                 <div className="flex items-center mb-4">
                   <FeatureIcon className="mr-4 text-accent-principle" />
-                  <h3 className="text-2xl font-bold text-primary">{feature.title}</h3>
+                  <h3 className="text-2xl font-bold text-white">{feature.title}</h3>
                 </div>
-                <p className="text-gray-600 mb-6">{feature.description}</p>
+                <p className="text-gray-300 mb-6">{feature.description}</p>
                 <ul className="space-y-3">
                   {feature.points.map((point, pointIndex) => (
-                    <li key={pointIndex} className="flex items-center text-primary">
+                    <li key={pointIndex} className="flex items-center text-white">
                       <span className="mr-3 w-2 h-2 bg-accent-principle rounded-full"></span>
                       {point}
                     </li>
@@ -245,73 +231,61 @@ const UniversalConcept = async () => {
           })}
         </div>
 
-        {/* Paragraphs Section */}
-        <div className="w-full mt-16 space-y-12">
-          {paragraphs.map((paragraph, index) => (
-            <div key={index} className="bg-gray-800 rounded-lg p-6 shadow-md">
-              <h3 className="text-2xl font-semibold text-white mb-4">{paragraph.title}</h3>
-              <div className="border-t-2 border-sky-600 w-20 mb-6"></div> {/* 👈 ligne ajoutée */}
-              <div className="space-y-4 text-gray-300 text-justify leading-relaxed">
-                {paragraph.description.map((desc, idx) => (
-                  <p key={idx}>{desc}</p>
+        <div className="container mx-auto px-4 py-16 space-y-16">
+          {informations.map((info, index) => (
+            <div key={index} className="bg-gray-800 rounded-lg p-8 shadow-lg">
+              <h2 className="text-3xl font-bold text-white mb-4">{info.title}</h2>
+              <div className="border-t-2 border-sky-600 w-20 mb-6"></div>
+
+              {info.images && info.images.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
+                  {info.images.map((image, imageIndex) => (
+                    <Image
+                      key={imageIndex}
+                      src={
+                        typeof image === 'object' && image !== null && 'url' in image && image.url
+                          ? image.url
+                          : '/default-image.jpg'
+                      }
+                      alt={info.title}
+                      className="rounded-lg shadow-md w-full object-cover"
+                      width={500}
+                      height={300}
+                      layout="responsive"
+                    />
+                  ))}
+                </div>
+              )}
+
+              <div className="space-y-4 text-gray-300 text-justify">
+                {info.description.map((desc, descIndex) => (
+                  <p key={descIndex}>{desc}</p>
                 ))}
               </div>
+
+              {info.annexes && (
+                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {info.annexes.map((annex, annexIndex) => (
+                    <div key={annexIndex}>
+                      <h3 className="text-xl font-semibold text-white mb-2">{annex.title}</h3>
+                      <div className="border-t border-sky-600 w-16 mb-2"></div>
+                      <ul className="list-disc list-inside text-gray-300 space-y-1">
+                        {annex.list.map((item, itemIndex) => (
+                          <li key={itemIndex}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
+
+        {/* Paragraphs Section */}
       </div>
 
       {/* Informations Section */}
-      <div className="container mx-auto px-4 py-16 space-y-16">
-        {informations.map((info, index) => (
-          <div key={index} className="bg-gray-800 rounded-lg p-8 shadow-lg">
-            <h2 className="text-3xl font-bold text-white mb-4">{info.title}</h2>
-            <div className="border-t-2 border-sky-600 w-20 mb-6"></div>
-
-            {info.images && info.images.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
-                {info.images.map((image, imageIndex) => (
-                  <Image
-                    key={imageIndex}
-                    src={
-                      typeof image === 'object' && image !== null && 'url' in image && image.url
-                        ? image.url
-                        : '/default-image.jpg'
-                    }
-                    alt={info.title}
-                    className="rounded-lg shadow-md w-full object-cover"
-                    width={500}
-                    height={300}
-                    layout="responsive"
-                  />
-                ))}
-              </div>
-            )}
-
-            <div className="space-y-4 text-gray-300 text-justify">
-              {info.description.map((desc, descIndex) => (
-                <p key={descIndex}>{desc}</p>
-              ))}
-            </div>
-
-            {info.annexes && (
-              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {info.annexes.map((annex, annexIndex) => (
-                  <div key={annexIndex}>
-                    <h3 className="text-xl font-semibold text-white mb-2">{annex.title}</h3>
-                    <div className="border-t border-sky-600 w-16 mb-2"></div>
-                    <ul className="list-disc list-inside text-gray-300 space-y-1">
-                      {annex.list.map((item, itemIndex) => (
-                        <li key={itemIndex}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
 
       {/* Call to Action */}
       <div className="bg-gradient-to-br from-accent-principle to-accent-secondary text-white py-16">

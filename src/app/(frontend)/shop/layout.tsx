@@ -97,7 +97,7 @@ export default function Layout({}: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="bg-white">
+    <div className="bg-gray-900">
       <div>
         {/* Mobile filter dialog */}
         <Dialog
@@ -113,10 +113,10 @@ export default function Layout({}: { children: React.ReactNode }) {
           <div className="fixed inset-0 z-40 flex">
             <DialogPanel
               transition
-              className="relative ml-auto flex size-full max-w-xs transform flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl transition duration-300 ease-in-out data-closed:translate-x-full"
+              className="relative ml-auto flex size-full max-w-xs transform flex-col overflow-y-auto bg-gray-900 py-4 pb-12 shadow-xl transition duration-300 ease-in-out data-closed:translate-x-full"
             >
               <div className="flex items-center justify-between px-4">
-                <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+                <h2 className="text-lg font-medium text-white">Filters</h2>
                 <button
                   type="button"
                   onClick={() => setMobileFiltersOpen(false)}
@@ -128,16 +128,16 @@ export default function Layout({}: { children: React.ReactNode }) {
               </div>
 
               {/* Filters */}
-              <form className="mt-4 border-t border-gray-200">
+              <form className="mt-4 border-t border-gray-900">
                 {filters.map((section) => (
                   <Disclosure
                     key={section.id}
                     as="div"
-                    className="border-t border-gray-200 px-4 py-6"
+                    className="border-t border-gray-900 px-4 py-6"
                   >
                     <h3 className="-mx-2 -my-3 flow-root">
-                      <DisclosureButton className="group flex w-full items-center justify-between bg-white px-2 py-3 text-primary hover:text-gray-500">
-                        <span className="font-medium text-primary">{section.name}</span>
+                      <DisclosureButton className="group flex w-full items-center justify-between bg-gray-900 px-2 py-3 text-white hover:text-gray-200">
+                        <span className="font-medium text-white">{section.name}</span>
                         <span className="ml-6 flex items-center">
                           <PlusIcon aria-hidden="true" className="size-5 group-data-open:hidden" />
                           <MinusIcon
@@ -157,7 +157,7 @@ export default function Layout({}: { children: React.ReactNode }) {
                                   id={`filter-mobile-${section.id}-${optionIdx}`}
                                   name={`${section.id}[]`}
                                   type="checkbox"
-                                  className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-primary checked:bg-primary indeterminate:border-primary indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
+                                  className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-900 bg-gray-900 checked:border-primary checked:bg-primary indeterminate:border-primary indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
                                   checked={filtersActive.includes(section.id + '-' + option.value)}
                                   onChange={(e) => {
                                     console.log(e.target.checked)
@@ -220,7 +220,7 @@ export default function Layout({}: { children: React.ReactNode }) {
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6">
-            <h1 className="text-4xl font-bold tracking-tight text-primary">Boutique</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-white">Boutique</h1>
 
             <div className="flex items-center">
               <button
@@ -245,8 +245,8 @@ export default function Layout({}: { children: React.ReactNode }) {
                 {filters.map((section) => (
                   <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6">
                     <h3 className="-my-3 flow-root">
-                      <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                        <span className="font-medium text-gray-900">{section.name}</span>
+                      <DisclosureButton className="group flex w-full items-center justify-between bg-gray-900 py-3 text-sm text-white hover:text-gray-200">
+                        <span className="font-medium text-white">{section.name}</span>
                         <span className="ml-6 flex items-center">
                           <PlusIcon aria-hidden="true" className="size-5 group-data-open:hidden" />
                           <MinusIcon
@@ -310,7 +310,7 @@ export default function Layout({}: { children: React.ReactNode }) {
                             </div>
                             <label
                               htmlFor={`filter-${section.id}-${optionIdx}`}
-                              className="text-sm text-primary"
+                              className="text-sm text-white"
                             >
                               {option.label}
                             </label>
@@ -324,7 +324,7 @@ export default function Layout({}: { children: React.ReactNode }) {
 
               {/* Product grid */}
               <div className="lg:col-span-3">
-                <div className="bg-white">
+                <div className="bg-gray-900">
                   <div className="mx-auto max-w-2xl px-4 py-4 lg:max-w-7xl lg:px-8">
                     {loading ? (
                       <div className="w-full flex justify-center">
@@ -366,21 +366,21 @@ export default function Layout({}: { children: React.ReactNode }) {
                           ?.map((product) => (
                             <div
                               key={product.id}
-                              className="relative flex flex-col items-center justify-between rounded-lg border border-gray-200 bg-white p-4 shadow-sm hover:shadow-md transition-shadow duration-300"
+                              className="relative flex flex-col items-center justify-between rounded-lg border border-gray-800 bg-gray-800 p-4 shadow-sm hover:shadow-md transition-shadow duration-300"
                             >
                               <Image
                                 width={300}
                                 height={300}
                                 src={product.image.url}
                                 alt={product.image.alt}
-                                className="w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
+                                className="w-full rounded-md bg-gray-900 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
                               />
                               <div className="mt-4 p-4 w-full h-full grid grid-rows-[max-content_1fr_max-content] gap-2">
                                 <div className="flex justify-between w-full">
                                   <div className="flex items-center gap-4 flex-row">
                                     <span>{product.title}</span>
                                     {product.anodizing && (
-                                      <span className="mr-3 text-gray-400">
+                                      <span className="mr-3 text-gray-200">
                                         {product.anodizing === 'black'
                                           ? 'Anodisation noire'
                                           : product.anodizing === 'red'
@@ -391,7 +391,7 @@ export default function Layout({}: { children: React.ReactNode }) {
                                       </span>
                                     )}
                                   </div>
-                                  <span className="font-bold">{product.price} €</span>
+                                  <span className="font-bold text-white">{product.price} €</span>
                                 </div>
                                 <p>{product.description}</p>
                                 <div className="flex justify-between">
@@ -413,7 +413,7 @@ export default function Layout({}: { children: React.ReactNode }) {
                                   </div>
                                   <Link
                                     href={`/contact?product=${product.id}`}
-                                    className="h-10 inline-flex items-center justify-center rounded-md border border-transparent bg-accent-principle px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-accent-secondary focus:outline-none focus:ring-2 focus:ring-accent-secondary focus:ring-offset-2"
+                                    className="h-10 inline-flex items-center justify-center rounded-md border border-transparent bg-accent-principle px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-accent-secondary focus:ring-offset-2"
                                   >
                                     <span aria-hidden="true" />
                                     Contacter
