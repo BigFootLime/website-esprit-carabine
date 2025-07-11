@@ -9,7 +9,7 @@
         "@payloadcms/db-postgres": "latest",
         "@payloadcms/next": "latest",
         "@payloadcms/payload-cloud": "latest",
-        "@payloadcms/plugin-cloud-storage": "^3.45.0",
+        "@payloadcms/plugin-cloud-storage": "^3.25.0",
         "@payloadcms/richtext-lexical": "latest",
         "@tailwindcss/postcss": "^4.0.9",
         "cross-env": "^7.0.3",
