@@ -70,6 +70,7 @@ export interface Config {
     media: Media;
     universalConcept: UniversalConcept;
     product: Product;
+    coaching: Coaching;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -80,6 +81,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     universalConcept: UniversalConceptSelect<false> | UniversalConceptSelect<true>;
     product: ProductSelect<false> | ProductSelect<true>;
+    coaching: CoachingSelect<false> | CoachingSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -186,6 +188,23 @@ export interface Product {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coaching".
+ */
+export interface Coaching {
+  id: number;
+  title: string;
+  images?:
+    | {
+        image: number | Media;
+        caption: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -206,6 +225,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'product';
         value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'coaching';
+        value: number | Coaching;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -309,6 +332,22 @@ export interface ProductSelect<T extends boolean = true> {
   anodizing?: T;
   type?: T;
   image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coaching_select".
+ */
+export interface CoachingSelect<T extends boolean = true> {
+  title?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

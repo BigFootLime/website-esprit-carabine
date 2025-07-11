@@ -9,6 +9,7 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { UniversalConcept } from './collections/UniversalConcept'
 import { Product } from './collections/Product'
+import { Coaching } from './collections/Coaching'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -20,7 +21,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, UniversalConcept, Product],
+  collections: [Users, Media, UniversalConcept, Product, Coaching],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

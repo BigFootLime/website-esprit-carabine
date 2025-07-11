@@ -87,9 +87,9 @@ export default function ContactInfos() {
                   <BuildingOffice2Icon aria-hidden="true" className="h-7 w-6 text-primary" />
                 </dt>
                 <dd>
-                  545 Mavis Island
+                  468 Route de Port Galland
                   <br />
-                  Chicago, IL 99191
+                  01800 SAINT JEAN DE NIOST
                 </dd>
               </div>
               <div className="flex gap-x-4">
@@ -98,8 +98,8 @@ export default function ContactInfos() {
                   <PhoneIcon aria-hidden="true" className="h-7 w-6 text-primary" />
                 </dt>
                 <dd>
-                  <Link href="tel:+1 (555) 234-5678" className="hover:text-primary">
-                    +1 (555) 234-5678
+                  <Link href="tel:+33614167886" className="hover:text-primary">
+                    +33 6 14 16 78 86
                   </Link>
                 </dd>
               </div>

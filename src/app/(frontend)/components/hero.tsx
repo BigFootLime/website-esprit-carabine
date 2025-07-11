@@ -10,7 +10,7 @@ import { motion } from 'framer-motion'
 
 const navigation = [
   { name: 'Accueil', href: '/' },
-  { name: 'Qui nous somme ?', href: '/about' },
+  { name: 'Qui sommes-nous ?', href: '/about' },
   { name: 'Universal Concept', href: '/universal-concept' },
   { name: 'Boutique', href: '/shop' },
   { name: 'Entraînement', href: '/training' },
