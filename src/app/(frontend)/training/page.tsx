@@ -42,7 +42,14 @@ const Training = async () => {
               {photo.images?.map((img, imgIndex) => (
                 <div key={imgIndex}>
                   <Image
-                    src={img?.image?.url || '/default-image.jpg'}
+                    src={
+                      typeof img?.image === 'object' &&
+                      img.image !== null &&
+                      'url' in img.image &&
+                      img.image.url
+                        ? img.image.url
+                        : '/default-image.jpg'
+                    }
                     alt={img?.caption || `Coaching image ${imgIndex + 1}`}
                     width={500}
                     height={300}
