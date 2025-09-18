@@ -15,7 +15,7 @@ export const Product: CollectionConfig = {
     {
       name: 'description',
       type: 'textarea',
-      required: true,
+      required: false,
       label: 'Description',
     },
     {

@@ -1,12 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Dialog, DialogPanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Logo from '../images/Logo.svg'
 import { motion } from 'framer-motion'
+
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel' // shadcn/ui
+import type { CarouselApi } from '@/components/ui/carousel' // exposé par le composant shadcn
 
 const navigation = [
   { name: 'Accueil', href: '/' },
@@ -18,16 +21,62 @@ const navigation = [
   { name: 'Contact', href: '/contact' },
 ]
 
-export default function HeroComponent({
-  title,
-  description,
-  image,
-}: {
+type HeroProps = {
   title: string
   description: string
-  image: string
-}) {
+  image?: string
+  images?: string[] // <-- nouveau
+}
+
+export default function HeroComponent({ title, description, image, images }: HeroProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  // --- Embla / shadcn carousel API & state pour les "dots"
+  const [api, setApi] = useState<CarouselApi | null>(null)
+  const [current, setCurrent] = useState(0)
+  const [count, setCount] = useState(0)
+  const [direction, setDirection] = useState<1 | -1>(1) // 1=vers la droite, -1=vers la gauche
+
+  // Synchronise les dots
+  useEffect(() => {
+    if (!api) return
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap())
+
+    const onSelect = () => setCurrent(api.selectedScrollSnap())
+    api.on('select', onSelect)
+
+    return () => {
+      api.off('select', onSelect)
+    }
+  }, [api])
+
+  // Autoplay "aller-retour" sans loop
+  useEffect(() => {
+    if (!api) return
+    const interval = setInterval(() => {
+      if (!api) return
+      if (direction === 1) {
+        if (api.canScrollNext()) {
+          api.scrollNext()
+        } else {
+          setDirection(-1)
+          if (api.canScrollPrev()) api.scrollPrev()
+        }
+      } else {
+        if (api.canScrollPrev()) {
+          api.scrollPrev()
+        } else {
+          setDirection(1)
+          if (api.canScrollNext()) api.scrollNext()
+        }
+      }
+    }, 3000) // délai entre slides
+
+    return () => clearInterval(interval)
+  }, [api, direction])
+
+  const handleDotClick = useCallback((index: number) => api?.scrollTo(index), [api])
 
   return (
     <div className="bg-gray-900">
@@ -70,6 +119,7 @@ export default function HeroComponent({
             </div>
           </nav>
         </motion.header>
+
         <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
           <div className="fixed inset-0 z-10" />
           <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
@@ -123,7 +173,7 @@ export default function HeroComponent({
         </div>
 
         <div className="py-24 sm:py-32 lg:pb-40">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-full px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
               <motion.div
                 initial={{ opacity: 0, y: -30 }}
@@ -139,21 +189,79 @@ export default function HeroComponent({
               </motion.div>
             </div>
 
-            {image && (
+            {/* --- CAROUSEL (si >= 2 images) --- */}
+            {Array.isArray(images) && images.length >= 2 ? (
               <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, ease: 'easeOut' }}
                 className="mt-16 sm:mt-24"
               >
-                <Image
-                  src={image}
-                  alt={title}
-                  width={1200}
-                  height={800}
-                  className="rounded-md w-full h-auto object-cover"
-                />
+                <Carousel
+                  setApi={setApi}
+                  opts={{
+                    loop: false, // pas de boucle, on veut aller-retour
+                    align: 'center',
+                    containScroll: 'trimSnaps',
+                    duration: 30, // transition un peu plus douce
+                  }}
+                  className="w-full"
+                >
+                  <CarouselContent>
+                    {images.map((src, i) => (
+                      <CarouselItem key={i} className="p-0">
+                        {/* wrapper flex centré */}
+                        <div className="relative w-screen h-[70vh] md:h-[80vh] lg:h-screen flex items-center justify-center">
+                          <Image
+                            src={src}
+                            alt={`${title} - slide ${i + 1}`}
+                            fill
+                            priority={i === 0}
+                            className="object-contain"
+                            sizes="100vw"
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+
+                  {/* Pas de flèches */}
+                </Carousel>
+
+                {/* Dots */}
+                <div className="mt-6 flex items-center justify-center gap-2">
+                  {Array.from({ length: count }).map((_, i) => (
+                    <button
+                      key={i}
+                      aria-label={`Aller au slide ${i + 1}`}
+                      onClick={() => handleDotClick(i)}
+                      className={[
+                        'h-2.5 w-2.5 rounded-full transition-all',
+                        'outline-none focus-visible:ring-0 focus-visible:outline-none',
+                        i === current ? 'bg-white scale-110' : 'bg-white/40 hover:bg-white/60',
+                      ].join(' ')}
+                    />
+                  ))}
+                </div>
               </motion.div>
+            ) : (
+              // --- Fallback image unique (si fourni)
+              image && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                  className="mt-16 sm:mt-24"
+                >
+                  <Image
+                    src={image}
+                    alt={title}
+                    width={1200}
+                    height={800}
+                    className="rounded-md w-full h-auto object-contain"
+                  />
+                </motion.div>
+              )
             )}
           </div>
         </div>

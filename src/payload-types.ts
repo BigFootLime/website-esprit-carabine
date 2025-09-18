@@ -177,7 +177,7 @@ export interface UniversalConcept {
 export interface Product {
   id: number;
   title: string;
-  description: string;
+  description?: string | null;
   price: number;
   handedness?: ('right' | 'left') | null;
   anodizing?: ('black' | 'red' | 'blue') | null;

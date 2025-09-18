@@ -6,6 +6,9 @@ export async function GET() {
     const payload = await getPayload({ config })
     const products = await payload.find({
       collection: 'product',
+      pagination: false, // 👈 returns all docs
+      depth: 1,
+      sort: '-createdAt',
     })
 
     return Response.json(products)

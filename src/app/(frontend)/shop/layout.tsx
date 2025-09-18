@@ -20,45 +20,36 @@ const filters = [
     id: 'type',
     name: 'Type de produit',
     options: [
-      { value: 'cross', label: 'Crosses complètes', checked: false },
-      { value: 'parts', label: 'Pièces détachées', checked: false },
+      { value: 'cross', label: 'Crosses complètes' },
+      { value: 'parts', label: 'Pièces détachées' },
     ],
   },
   {
     id: 'anodizing',
     name: 'Anodisation',
     options: [
-      { value: 'black', label: 'Noire', checked: false },
-      { value: 'red', label: 'Rouge', checked: false },
-      { value: 'blue', label: 'Bleu', checked: false },
+      { value: 'black', label: 'Noire' },
+      { value: 'red', label: 'Rouge' },
+      { value: 'blue', label: 'Bleu' },
     ],
   },
   {
     id: 'handedness',
     name: 'Droitier ou Gaucher',
     options: [
-      { value: 'right', label: 'Droitier', checked: false },
-      { value: 'left', label: 'Gaucher', checked: false },
+      { value: 'right', label: 'Droitier' },
+      { value: 'left', label: 'Gaucher' },
     ],
   },
 ]
 
-interface Image {
+interface Img {
   id: number
   alt: string
-  updatedAt: string
-  createdAt: string
   url: string
-  thumbnailURL: string | null
-  filename: string
-  mimeType: string
-  filesize: number
   width: number
   height: number
-  focalX: number
-  focalY: number
 }
-
 interface Product {
   id: number
   title: string
@@ -67,12 +58,10 @@ interface Product {
   handedness: 'left' | 'right'
   anodizing: string
   type: string | null
-  image: Image
-  updatedAt: string
-  createdAt: string
+  image: Img
 }
 
-export default function Layout({}: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
@@ -82,11 +71,9 @@ export default function Layout({}: { children: React.ReactNode }) {
     getProducts()
   }, [])
 
-  console.log(products)
-
   async function getProducts() {
     try {
-      const response = await fetch('/api/products')
+      const response = await fetch('/api/products?limit=1000&depth=1', { cache: 'no-store' })
       const data = await response.json()
       setProducts(data.docs || [])
     } catch (error) {
@@ -96,341 +83,272 @@ export default function Layout({}: { children: React.ReactNode }) {
     }
   }
 
+  const toggleFilter = (sectionId: string, value: string, checked: boolean) => {
+    const key = `${sectionId}-${value}`
+    setFilters((prev) => (checked ? [...prev, key] : prev.filter((v) => v !== key)))
+  }
+
+  const filtered = products.filter((product) => {
+    const anod = filtersActive.filter((f) => f.startsWith('anodizing-')).map((f) => f.split('-')[1])
+    const hand = filtersActive
+      .filter((f) => f.startsWith('handedness-'))
+      .map((f) => f.split('-')[1])
+    const type = filtersActive.filter((f) => f.startsWith('type-')).map((f) => f.split('-')[1])
+    const anodMatch = anod.length === 0 || anod.includes(product.anodizing)
+    const handMatch = hand.length === 0 || hand.includes(product.handedness)
+    const typeMatch = type.length === 0 || type.includes(product.type || '')
+    return anodMatch && handMatch && typeMatch
+  })
+
   return (
-    <div className="bg-gray-900">
-      <div>
-        {/* Mobile filter dialog */}
-        <Dialog
-          open={mobileFiltersOpen}
-          onClose={setMobileFiltersOpen}
-          className="relative z-40 lg:hidden"
-        >
-          <DialogBackdrop
+    <div className="min-h-screen bg-gray-950 bg-[radial-gradient(1200px_600px_at_-10%_-10%,#0b1a34_0%,transparent_60%),radial-gradient(1200px_600px_at_110%_-10%,#0a1330_0%,transparent_60%)]">
+      {/* MOBILE FILTERS */}
+      <Dialog
+        open={mobileFiltersOpen}
+        onClose={setMobileFiltersOpen}
+        className="relative z-40 lg:hidden"
+      >
+        <DialogBackdrop
+          transition
+          className="fixed inset-0 bg-black/70 transition-opacity data-closed:opacity-0"
+        />
+        <div className="fixed inset-0 z-40 flex">
+          <DialogPanel
             transition
-            className="fixed inset-0 bg-black/25 transition-opacity duration-300 ease-linear data-closed:opacity-0"
-          />
+            className="relative ml-auto flex size-full max-w-xs transform flex-col overflow-y-auto bg-gray-900 py-4 pb-12 shadow-xl transition data-closed:translate-x-full"
+          >
+            <div className="flex items-center justify-between px-4">
+              <h2 className="text-lg font-semibold text-white">Filtres</h2>
+              <button
+                type="button"
+                onClick={() => setMobileFiltersOpen(false)}
+                className="-mr-2 flex size-10 items-center justify-center rounded-md bg-white p-2 text-gray-900"
+              >
+                <span className="sr-only">Fermer</span>
+                <XMarkIcon aria-hidden="true" className="size-6" />
+              </button>
+            </div>
 
-          <div className="fixed inset-0 z-40 flex">
-            <DialogPanel
-              transition
-              className="relative ml-auto flex size-full max-w-xs transform flex-col overflow-y-auto bg-gray-900 py-4 pb-12 shadow-xl transition duration-300 ease-in-out data-closed:translate-x-full"
-            >
-              <div className="flex items-center justify-between px-4">
-                <h2 className="text-lg font-medium text-white">Filters</h2>
-                <button
-                  type="button"
-                  onClick={() => setMobileFiltersOpen(false)}
-                  className="-mr-2 flex size-10 items-center justify-center rounded-md bg-white p-2 text-link-primary"
+            <form className="mt-4 border-t border-white/10">
+              {filters.map((section) => (
+                <Disclosure
+                  key={section.id}
+                  as="div"
+                  className="border-t border-white/10 px-4 py-5"
                 >
-                  <span className="sr-only">Close menu</span>
-                  <XMarkIcon aria-hidden="true" className="size-6" />
-                </button>
-              </div>
+                  <DisclosureButton className="group flex w-full items-center justify-between py-1 text-white">
+                    <span className="font-medium">{section.name}</span>
+                    <span className="ml-6 flex items-center">
+                      <PlusIcon className="size-5 group-data-open:hidden" />
+                      <MinusIcon className="size-5 group-not-data-open:hidden" />
+                    </span>
+                  </DisclosureButton>
+                  <DisclosurePanel className="pt-3">
+                    <div className="space-y-3">
+                      {section.options.map((option, idx) => {
+                        const key = `${section.id}-${option.value}`
+                        const checked = filtersActive.includes(key)
+                        return (
+                          <label
+                            key={option.value}
+                            className="flex items-center gap-3 text-gray-200"
+                          >
+                            <input
+                              id={`m-${section.id}-${idx}`}
+                              type="checkbox"
+                              className="size-4 rounded border-white/20 bg-gray-900 accent-sky-500"
+                              checked={checked}
+                              onChange={(e) =>
+                                toggleFilter(section.id, option.value, e.target.checked)
+                              }
+                            />
+                            <span>{option.label}</span>
+                          </label>
+                        )
+                      })}
+                    </div>
+                  </DisclosurePanel>
+                </Disclosure>
+              ))}
+            </form>
+          </DialogPanel>
+        </div>
+      </Dialog>
 
-              {/* Filters */}
-              <form className="mt-4 border-t border-gray-900">
+      <main className="mx-auto max-w-[100rem] px-4 sm:px-6 lg:px-8">
+        {/* HEADER */}
+        <div className="flex items-baseline justify-between border-b border-white/10 pt-24 pb-6">
+          <h1 className="text-4xl font-extrabold tracking-tight text-white">Boutique</h1>
+          <button
+            type="button"
+            onClick={() => setMobileFiltersOpen(true)}
+            className="-m-2 ml-4 rounded-md p-2 text-sky-400 hover:text-sky-300 lg:hidden"
+          >
+            <span className="sr-only">Filtres</span>
+            <FunnelIcon aria-hidden="true" className="size-5" />
+          </button>
+        </div>
+
+        {/* CONTENT */}
+        <section aria-labelledby="products-heading" className="pt-8 pb-24">
+          <h2 id="products-heading" className="sr-only">
+            Produits
+          </h2>
+
+          <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
+            {/* FILTERS DESKTOP */}
+            <aside className="hidden lg:block">
+              <div className="sticky top-24 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
                 {filters.map((section) => (
                   <Disclosure
                     key={section.id}
                     as="div"
-                    className="border-t border-gray-900 px-4 py-6"
+                    className="border-b last:border-0 border-white/10 py-4"
                   >
-                    <h3 className="-mx-2 -my-3 flow-root">
-                      <DisclosureButton className="group flex w-full items-center justify-between bg-gray-900 px-2 py-3 text-white hover:text-gray-200">
-                        <span className="font-medium text-white">{section.name}</span>
-                        <span className="ml-6 flex items-center">
-                          <PlusIcon aria-hidden="true" className="size-5 group-data-open:hidden" />
-                          <MinusIcon
-                            aria-hidden="true"
-                            className="size-5 group-not-data-open:hidden"
-                          />
-                        </span>
-                      </DisclosureButton>
-                    </h3>
-                    <DisclosurePanel className="pt-6">
-                      <div className="space-y-6">
-                        {section.options.map((option, optionIdx) => (
-                          <div key={option.value} className="flex gap-3">
-                            <div className="flex h-5 shrink-0 items-center">
-                              <div className="group grid size-4 grid-cols-1">
-                                <input
-                                  id={`filter-mobile-${section.id}-${optionIdx}`}
-                                  name={`${section.id}[]`}
-                                  type="checkbox"
-                                  className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-900 bg-gray-900 checked:border-primary checked:bg-primary indeterminate:border-primary indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                                  checked={filtersActive.includes(section.id + '-' + option.value)}
-                                  onChange={(e) => {
-                                    console.log(e.target.checked)
-                                    const isChecked = e.target.checked
-                                    console.log(section)
-                                    console.log(option)
-                                    const value = section.id + '-' + option.value
-                                    setFilters((prev: string[]) => {
-                                      const newFilters = [...prev]
-                                      if (isChecked) {
-                                        newFilters.push(value)
-                                      } else {
-                                        const index = newFilters.indexOf(value)
-                                        if (index > -1) {
-                                          newFilters.splice(index, 1)
-                                        }
-                                      }
-                                      return newFilters
-                                    })
-                                  }}
-                                />
-                                <svg
-                                  fill="none"
-                                  viewBox="0 0 14 14"
-                                  className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
-                                >
-                                  <path
-                                    d="M3 8L6 11L11 3.5"
-                                    strokeWidth={2}
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="opacity-0 group-has-checked:opacity-100"
-                                  />
-                                  <path
-                                    d="M3 7H11"
-                                    strokeWidth={2}
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="opacity-0 group-has-indeterminate:opacity-100"
-                                  />
-                                </svg>
-                              </div>
-                            </div>
+                    <DisclosureButton className="group flex w-full items-center justify-between text-sm text-white">
+                      <span className="font-medium">{section.name}</span>
+                      <span className="ml-6 flex items-center">
+                        <PlusIcon className="size-5 group-data-open:hidden" />
+                        <MinusIcon className="size-5 group-not-data-open:hidden" />
+                      </span>
+                    </DisclosureButton>
+                    <DisclosurePanel className="pt-3">
+                      <div className="space-y-2">
+                        {section.options.map((option, idx) => {
+                          const key = `${section.id}-${option.value}`
+                          const checked = filtersActive.includes(key)
+                          return (
                             <label
-                              htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                              className="min-w-0 flex-1 text-gray-500"
+                              key={option.value}
+                              className="flex items-center gap-3 text-white"
                             >
-                              {option.label}
-                            </label>
-                          </div>
-                        ))}
-                      </div>
-                    </DisclosurePanel>
-                  </Disclosure>
-                ))}
-              </form>
-            </DialogPanel>
-          </div>
-        </Dialog>
-
-        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6">
-            <h1 className="text-4xl font-bold tracking-tight text-white">Boutique</h1>
-
-            <div className="flex items-center">
-              <button
-                type="button"
-                onClick={() => setMobileFiltersOpen(true)}
-                className="-m-2 ml-4 p-2 text-link-hover hover:text-link-hover sm:ml-6 lg:hidden"
-              >
-                <span className="sr-only">Filters</span>
-                <FunnelIcon aria-hidden="true" className="size-5" />
-              </button>
-            </div>
-          </div>
-
-          <section aria-labelledby="products-heading" className="pt-6 pb-24">
-            <h2 id="products-heading" className="sr-only">
-              Products
-            </h2>
-
-            <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-              {/* Filters */}
-              <form className="hidden lg:block">
-                {filters.map((section) => (
-                  <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6">
-                    <h3 className="-my-3 flow-root">
-                      <DisclosureButton className="group flex w-full items-center justify-between bg-gray-900 py-3 text-sm text-white hover:text-gray-200">
-                        <span className="font-medium text-white">{section.name}</span>
-                        <span className="ml-6 flex items-center">
-                          <PlusIcon aria-hidden="true" className="size-5 group-data-open:hidden" />
-                          <MinusIcon
-                            aria-hidden="true"
-                            className="size-5 group-not-data-open:hidden"
-                          />
-                        </span>
-                      </DisclosureButton>
-                    </h3>
-                    <DisclosurePanel className="pt-6">
-                      <div className="space-y-4">
-                        {section.options.map((option, optionIdx) => (
-                          <div key={option.value} className="flex gap-3">
-                            <div className="flex h-5 shrink-0 items-center">
-                              <div className="group grid size-4 grid-cols-1">
-                                <input
-                                  id={`filter-${section.id}-${optionIdx}`}
-                                  name={`${section.id}[]`}
-                                  type="checkbox"
-                                  className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-primary checked:bg-primary indeterminate:border-primary indeterminate:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                                  checked={filtersActive.includes(section.id + '-' + option.value)}
-                                  onChange={(e) => {
-                                    console.log(e.target.checked)
-                                    const isChecked = e.target.checked
-                                    const value = section.id + '-' + option.value
-                                    setFilters((prev: string[]) => {
-                                      const newFilters = [...prev]
-                                      if (isChecked) {
-                                        newFilters.push(value)
-                                      } else {
-                                        const index = newFilters.indexOf(value)
-                                        if (index > -1) {
-                                          newFilters.splice(index, 1)
-                                        }
-                                      }
-                                      return newFilters
-                                    })
-                                  }}
-                                />
-                                <svg
-                                  fill="none"
-                                  viewBox="0 0 14 14"
-                                  className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
-                                >
-                                  <path
-                                    d="M3 8L6 11L11 3.5"
-                                    strokeWidth={2}
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="opacity-0 group-has-checked:opacity-100"
-                                  />
-                                  <path
-                                    d="M3 7H11"
-                                    strokeWidth={2}
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="opacity-0 group-has-indeterminate:opacity-100"
-                                  />
-                                </svg>
-                              </div>
-                            </div>
-                            <label
-                              htmlFor={`filter-${section.id}-${optionIdx}`}
-                              className="text-sm text-white"
-                            >
-                              {option.label}
-                            </label>
-                          </div>
-                        ))}
-                      </div>
-                    </DisclosurePanel>
-                  </Disclosure>
-                ))}
-              </form>
-
-              {/* Product grid */}
-              <div className="lg:col-span-3">
-                <div className="bg-gray-900">
-                  <div className="mx-auto max-w-2xl px-4 py-4 lg:max-w-7xl lg:px-8">
-                    {loading ? (
-                      <div className="w-full flex justify-center">
-                        <Loader2 className="animate-spin" />
-                      </div>
-                    ) : (
-                      <div className="mt-6 grid gap-x-6 gap-y-10 xl:gap-x-8">
-                        {products
-                          ?.filter((product: Product) => {
-                            const anodisationFilters = filtersActive.filter((filter: string) =>
-                              filter.startsWith('anodizing-'),
-                            )
-                            const handednessFilters = filtersActive.filter((filter: string) =>
-                              filter.startsWith('handedness-'),
-                            )
-                            const typeFilters = filtersActive.filter((filter: string) =>
-                              filter.startsWith('type-'),
-                            )
-                            const anodisationMatch =
-                              anodisationFilters.length === 0 ||
-                              anodisationFilters
-                                .map((filter) => filter.split('-')[1])
-                                .includes(product.anodizing)
-
-                            const handednessMatch =
-                              handednessFilters.length === 0 ||
-                              handednessFilters
-                                .map((filter) => filter.split('-')[1])
-                                .includes(product.handedness)
-
-                            const typeMatch =
-                              typeFilters.length === 0 ||
-                              typeFilters
-                                .map((filter) => filter.split('-')[1])
-                                .includes(product.type || '')
-
-                            return anodisationMatch && handednessMatch && typeMatch
-                          })
-                          ?.map((product) => (
-                            <div
-                              key={product.id}
-                              className="relative flex flex-col items-center justify-between rounded-lg border border-gray-800 bg-gray-800 p-4 shadow-sm hover:shadow-md transition-shadow duration-300"
-                            >
-                              <Image
-                                width={300}
-                                height={300}
-                                src={product.image.url}
-                                alt={product.image.alt}
-                                className="w-full rounded-md bg-gray-900 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
+                              <input
+                                id={`d-${section.id}-${idx}`}
+                                type="checkbox"
+                                className="size-4 rounded border-white/20 bg-gray-900 accent-sky-500"
+                                checked={checked}
+                                onChange={(e) =>
+                                  toggleFilter(section.id, option.value, e.target.checked)
+                                }
                               />
-                              <div className="mt-4 p-4 w-full h-full grid grid-rows-[max-content_1fr_max-content] gap-2">
-                                <div className="flex justify-between w-full">
-                                  <div className="flex items-center gap-4 flex-row">
-                                    <span>{product.title}</span>
-                                    {product.anodizing && (
-                                      <span className="mr-3 text-gray-200">
-                                        {product.anodizing === 'black'
-                                          ? 'Anodisation noire'
-                                          : product.anodizing === 'red'
-                                            ? 'Anodisation rouge'
-                                            : product.anodizing === 'blue'
-                                              ? 'Anodisation bleue'
-                                              : ''}
-                                      </span>
-                                    )}
-                                  </div>
-                                  <span className="font-bold text-white">{product.price} €</span>
-                                </div>
-                                <p>{product.description}</p>
-                                <div className="flex justify-between">
-                                  <div className="flex gap-3">
-                                    <span>
-                                      {product.handedness
-                                        ? product.handedness === 'right'
-                                          ? 'Droitier'
-                                          : 'Gaucher'
-                                        : ''}
-                                    </span>
-                                    <span className="text-gray-400">
-                                      {product.type
-                                        ? product.type === 'cross'
-                                          ? 'Crosses complètes'
-                                          : 'Pièces détachées'
-                                        : ''}
-                                    </span>
-                                  </div>
-                                  <Link
-                                    href={`/contact?product=${product.id}`}
-                                    className="h-10 inline-flex items-center justify-center rounded-md border border-transparent bg-accent-principle px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-accent-secondary focus:ring-offset-2"
-                                  >
-                                    <span aria-hidden="true" />
-                                    Contacter
-                                  </Link>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
+                              <span className="text-sm">{option.label}</span>
+                            </label>
+                          )
+                        })}
                       </div>
-                    )}
-                  </div>
-                </div>
+                    </DisclosurePanel>
+                  </Disclosure>
+                ))}
+                {filtersActive.length > 0 && (
+                  <button
+                    onClick={() => setFilters([])}
+                    className="mt-4 w-full rounded-lg bg-white/10 px-3 py-2 text-sm text-white hover:bg-white/15"
+                  >
+                    Réinitialiser
+                  </button>
+                )}
               </div>
+            </aside>
+
+            {/* PRODUCT GRID */}
+            <div className="lg:col-span-3">
+              {loading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="h-[420px] rounded-2xl border border-white/10 bg-white/5 animate-pulse"
+                    />
+                  ))}
+                </div>
+              ) : filtered.length === 0 ? (
+                <div className="text-center text-gray-300 py-24 rounded-2xl border border-white/10 bg-white/5">
+                  <p className="text-lg">Aucun produit ne correspond aux filtres.</p>
+                  <button
+                    className="mt-4 inline-flex items-center rounded-xl bg-sky-600 px-4 py-2 font-medium text-white hover:bg-sky-500"
+                    onClick={() => setFilters([])}
+                  >
+                    Réinitialiser les filtres
+                  </button>
+                </div>
+              ) : (
+                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filtered.map((product) => (
+                    <li key={product.id}>
+                      <article className="group h-full overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/10 to-white/[0.03] shadow-2xl shadow-black/20 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-sky-500/40 hover:shadow-sky-900/30 flex flex-col">
+                        {/* MEDIA */}
+                        <div className="relative w-full aspect-[4/3] sm:aspect-square bg-gray-900">
+                          <Image
+                            src={product.image?.url}
+                            alt={product.image?.alt || product.title}
+                            fill
+                            priority={false}
+                            sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+                            className="object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]"
+                          />
+                          {/* price badge */}
+                          <div className="absolute right-3 top-3 rounded-full bg-white/90 px-3 py-1 text-sm font-semibold text-gray-900 shadow">
+                            {product.price} €
+                          </div>
+                        </div>
+
+                        {/* CONTENT */}
+                        <div className="flex flex-1 flex-col p-4 gap-3">
+                          <h3 className="text-white font-semibold leading-tight line-clamp-2">
+                            {product.title}
+                          </h3>
+                          <p className="text-sm text-gray-300 line-clamp-3">
+                            {product.description}
+                          </p>
+
+                          {/* chips */}
+                          <div className="mt-1 flex flex-wrap gap-2 text-xs">
+                            {product.type && (
+                              <span className="rounded-full bg-white/10 px-2.5 py-1 text-white/90">
+                                {product.type === 'cross'
+                                  ? 'Crosses complètes'
+                                  : 'Pièces détachées'}
+                              </span>
+                            )}
+                            {product.handedness && (
+                              <span className="rounded-full bg-white/10 px-2.5 py-1 text-white/90">
+                                {product.handedness === 'right' ? 'Droitier' : 'Gaucher'}
+                              </span>
+                            )}
+                            {product.anodizing && (
+                              <span className="rounded-full bg-white/10 px-2.5 py-1 text-white/90">
+                                {product.anodizing === 'black'
+                                  ? 'Anodisation noire'
+                                  : product.anodizing === 'red'
+                                    ? 'Anodisation rouge'
+                                    : product.anodizing === 'blue'
+                                      ? 'Anodisation bleue'
+                                      : product.anodizing}
+                              </span>
+                            )}
+                          </div>
+
+                          {/* CTA */}
+                          <div className="mt-auto pt-2">
+                            <Link
+                              href={`/contact?product=${product.id}`}
+                              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-sky-400/30 transition hover:bg-sky-500 hover:shadow-sky-900/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
+                            >
+                              Contacter pour acheter
+                            </Link>
+                          </div>
+                        </div>
+                      </article>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
-          </section>
-        </main>
-      </div>
+          </div>
+        </section>
+
+        {children}
+      </main>
     </div>
   )
 }

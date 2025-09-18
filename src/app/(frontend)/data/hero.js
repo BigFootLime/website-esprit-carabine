@@ -1,45 +1,46 @@
 import ImageHero from '../images/ImageHero.svg'
+import ImageHero2 from '../images/ImageHero2.svg'
 export const hero = [
   {
     title: '',
     href: '/',
     description: '',
-    image: ImageHero,
+    images: [ImageHero.src, ImageHero2.src],
   },
   {
     title: '',
     href: '/about',
     description: '',
-    image: ImageHero,
+    images: [ImageHero.src, ImageHero2.src],
   },
   {
     title: '',
     href: '/universal-concept',
     description: '',
-    image: ImageHero,
+    images: [ImageHero.src, ImageHero2.src],
   },
   {
     title: '',
     href: '/shop',
     description: '',
-    image: ImageHero,
+    images: [ImageHero.src, ImageHero2.src],
   },
   {
     title: '',
     href: '/training',
     description: '',
-    image: ImageHero,
+    images: [ImageHero.src, ImageHero2.src],
   },
   {
     title: '',
     href: '/testimonials',
     description: '',
-    image: ImageHero,
+    images: [ImageHero.src, ImageHero2.src],
   },
   {
     title: '',
     href: '/contact',
     description: '',
-    image: ImageHero,
+    images: [ImageHero.src, ImageHero2.src],
   },
 ]
