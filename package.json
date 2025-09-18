@@ -23,7 +23,6 @@
     "@payloadcms/plugin-cloud-storage": "^3.25.0",
     "@payloadcms/richtext-lexical": "latest",
     "@radix-ui/react-slot": "^1.2.3",
-    "@tailwindcss/postcss": "^4.0.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cross-env": "^7.0.3",
@@ -37,17 +36,19 @@
     "postcss": "^8.5.3",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "sharp": "0.32.6",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.0.9"
+    "@tailwindcss/oxide": "^4.1.13",
+    "sharp": "^0.34.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^22.5.4",
     "@types/react": "19.0.7",
     "@types/react-dom": "19.0.3",
     "eslint-config-next": "15.1.5",
     "prettier": "^3.4.2",
+    "tailwindcss": "^4",
     "tw-animate-css": "^1.3.8",
     "typescript": "5.7.3"
   },
