@@ -9,7 +9,7 @@ RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 # Pin npm to match your repo's packageManager (prevents npm ci lockfile mismatch)
-RUN npm i -g npm@10.0.0 && npm -v
+RUN npm i -g npm@10.9.4 && npm -v
 
 # Copy only manifests for clean, cacheable installs
 COPY package.json package-lock.json ./
