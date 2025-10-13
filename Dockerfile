@@ -50,6 +50,10 @@ COPY --from=builder /app/public ./public
 # 4) package.json so `npm run start` works
 COPY --from=builder /app/package.json ./package.json
 
+RUN mkdir -p /app/public/uploads \
+ && chown -R nextjs:nodejs /app/public \
+ && chown -R nextjs:nodejs /app/.next
+ 
 # Healthcheck deps
 RUN apk add --no-cache curl
 
