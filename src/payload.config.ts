@@ -15,6 +15,11 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL,
+  // si tu utilises CORS/CSRF, pense à ajouter ton domaine :
+  cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || 'https://www.esprit-carabine.fr'],
+  csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || 'https://www.esprit-carabine.fr'],
+  // ...
   admin: {
     user: Users.slug,
     importMap: {
