@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   Dialog,
   DialogBackdrop,
@@ -66,6 +66,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [filtersActive, setFilters] = useState<string[]>([])
+  const [selectedIds, setSelectedIds] = useState<string[]>([]) //
 
   useEffect(() => {
     getProducts()
@@ -75,7 +76,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     try {
       const response = await fetch('/api/products?limit=1000&depth=1', { cache: 'no-store' })
       const data = await response.json()
-      setProducts(data.docs || [])
+      // Force id en string pour homogénéité
+      const docs: Product[] = (data.docs || []).map((p: any) => ({ ...p, id: String(p.id) }))
+      setProducts(docs)
     } catch (error) {
       console.error('Erreur lors du chargement des produits:', error)
     } finally {
@@ -99,6 +102,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     const typeMatch = type.length === 0 || type.includes(product.type || '')
     return anodMatch && handMatch && typeMatch
   })
+
+  const isSelected = (id: string) => selectedIds.includes(id)
+  const toggleSelect = (id: string) =>
+    setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]))
+
+  const contactHref = useMemo(() => {
+    if (selectedIds.length === 0) return '/contact'
+    const usp = new URLSearchParams()
+    selectedIds.forEach((id) => usp.append('product', id)) // 👈 ?product=...&product=...
+    return `/contact?${usp.toString()}`
+  }, [selectedIds])
 
   return (
     <div className="min-h-screen bg-gray-950 bg-[radial-gradient(1200px_600px_at_-10%_-10%,#0b1a34_0%,transparent_60%),radial-gradient(1200px_600px_at_110%_-10%,#0a1330_0%,transparent_60%)]">
@@ -273,79 +287,124 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
               ) : (
                 <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filtered.map((product) => (
-                    <li key={product.id}>
-                      <article className="group h-full overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/10 to-white/[0.03] shadow-2xl shadow-black/20 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-sky-500/40 hover:shadow-sky-900/30 flex flex-col">
-                        {/* MEDIA */}
-                        <div className="relative w-full aspect-[4/3] sm:aspect-square bg-gray-900">
-                          <Image
-                            src={product.image?.url}
-                            alt={product.image?.alt || product.title}
-                            fill
-                            priority={false}
-                            sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
-                            className="object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]"
-                          />
-                          {/* price badge */}
-                          <div className="absolute right-3 top-3 rounded-full bg-white/90 px-3 py-1 text-sm font-semibold text-gray-900 shadow">
-                            {product.price} €
-                          </div>
-                        </div>
-
-                        {/* CONTENT */}
-                        <div className="flex flex-1 flex-col p-4 gap-3">
-                          <h3 className="text-white font-semibold leading-tight line-clamp-2">
-                            {product.title}
-                          </h3>
-                          <p className="text-sm text-gray-300 line-clamp-3">
-                            {product.description}
-                          </p>
-
-                          {/* chips */}
-                          <div className="mt-1 flex flex-wrap gap-2 text-xs">
-                            {product.type && (
-                              <span className="rounded-full bg-white/10 px-2.5 py-1 text-white/90">
-                                {product.type === 'cross'
-                                  ? 'Crosses complètes'
-                                  : 'Pièces détachées'}
-                              </span>
-                            )}
-                            {product.handedness && (
-                              <span className="rounded-full bg-white/10 px-2.5 py-1 text-white/90">
-                                {product.handedness === 'right' ? 'Droitier' : 'Gaucher'}
-                              </span>
-                            )}
-                            {product.anodizing && (
-                              <span className="rounded-full bg-white/10 px-2.5 py-1 text-white/90">
-                                {product.anodizing === 'black'
-                                  ? 'Anodisation noire'
-                                  : product.anodizing === 'red'
-                                    ? 'Anodisation rouge'
-                                    : product.anodizing === 'blue'
-                                      ? 'Anodisation bleue'
-                                      : product.anodizing}
-                              </span>
-                            )}
+                  {filtered.map((product) => {
+                    const selected = isSelected(String(product.id))
+                    return (
+                      <li key={product.id}>
+                        <article className="group h-full overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/10 to-white/[0.03] shadow-2xl shadow-black/20 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-sky-500/40 hover:shadow-sky-900/30 flex flex-col">
+                          <div className="relative w-full aspect-[4/3] sm:aspect-square bg-white/[0.3]">
+                            <Image
+                              src={product.image?.url}
+                              alt={product.image?.alt || product.title}
+                              fill
+                              sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+                              className="object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]"
+                            />
+                            <div className="absolute right-3 top-3 rounded-full bg-white/90 px-3 py-1 text-sm font-semibold text-gray-900 shadow">
+                              {product.price} €
+                            </div>
                           </div>
 
-                          {/* CTA */}
-                          <div className="mt-auto pt-2">
-                            <Link
-                              href={`/contact?product=${product.id}`}
-                              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-sky-400/30 transition hover:bg-sky-500 hover:shadow-sky-900/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
-                            >
-                              Contacter pour acheter
-                            </Link>
+                          <div className="flex flex-1 flex-col p-4 gap-3">
+                            <h3 className="text-white font-semibold leading-tight line-clamp-2">
+                              {product.title}
+                            </h3>
+                            <p className="text-sm text-gray-300 line-clamp-3">
+                              {product.description}
+                            </p>
+
+                            <div className="mt-1 flex flex-wrap gap-2 text-xs">
+                              {product.type && (
+                                <span className="rounded-full bg-white/10 px-2.5 py-1 text-white/90">
+                                  {product.type === 'cross'
+                                    ? 'Crosses complètes'
+                                    : 'Pièces détachées'}
+                                </span>
+                              )}
+                              {product.handedness && (
+                                <span className="rounded-full bg-white/10 px-2.5 py-1 text-white/90">
+                                  {product.handedness === 'right' ? 'Droitier' : 'Gaucher'}
+                                </span>
+                              )}
+                              {product.anodizing && (
+                                <span className="rounded-full bg-white/10 px-2.5 py-1 text-white/90">
+                                  {product.anodizing === 'black'
+                                    ? 'Anodisation noire'
+                                    : product.anodizing === 'red'
+                                      ? 'Anodisation rouge'
+                                      : product.anodizing === 'blue'
+                                        ? 'Anodisation bleue'
+                                        : product.anodizing}
+                                </span>
+                              )}
+                            </div>
+
+                            <div className="mt-auto pt-2 grid grid-cols-2 gap-2">
+                              <button
+                                type="button"
+                                onClick={() => toggleSelect(String(product.id))}
+                                className={`inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold ring-1 ring-inset transition focus:outline-none
+                                ${
+                                  selected
+                                    ? 'bg-emerald-600 text-white ring-emerald-400/40 hover:bg-emerald-500'
+                                    : 'bg-white/10 text-white ring-white/20 hover:bg-white/15'
+                                }`}
+                              >
+                                {selected ? 'Retirer' : 'Ajouter'}
+                              </button>
+
+                              <Link
+                                href={`/contact?product=${product.id}`}
+                                className="inline-flex items-center justify-center rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-inset ring-sky-400/30 transition hover:bg-sky-500"
+                              >
+                                Contacter
+                              </Link>
+                            </div>
                           </div>
-                        </div>
-                      </article>
-                    </li>
-                  ))}
+                        </article>
+                      </li>
+                    )
+                  })}
                 </ul>
               )}
             </div>
           </div>
         </section>
+        <div className="fixed inset-x-0 bottom-4 z-30 px-4 sm:px-6 lg:px-8 pointer-events-none">
+          <div className="mx-auto max-w-[100rem]">
+            <div className="pointer-events-auto flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-gray-900/80 px-4 py-3 backdrop-blur">
+              <div className="text-sm text-white">
+                {selectedIds.length === 0 ? (
+                  'Aucun produit sélectionné'
+                ) : (
+                  <>
+                    {selectedIds.length} produit{selectedIds.length > 1 ? 's' : ''} sélectionné
+                    {selectedIds.length > 0 && ' · '}
+                    <button
+                      className="underline decoration-dotted hover:opacity-80"
+                      onClick={() => setSelectedIds([])}
+                    >
+                      Tout effacer
+                    </button>
+                  </>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <Link
+                  href={contactHref}
+                  className={`rounded-xl px-4 py-2 text-sm font-semibold ring-1 ring-inset transition
+                    ${
+                      selectedIds.length === 0
+                        ? 'pointer-events-none opacity-50 bg-white/10 text-white ring-white/20'
+                        : 'bg-sky-600 text-white ring-sky-400/30 hover:bg-sky-500'
+                    }`}
+                >
+                  Contacter pour acheter{selectedIds.length ? ` (${selectedIds.length})` : ''}
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {children}
       </main>

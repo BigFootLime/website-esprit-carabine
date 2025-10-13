@@ -3,8 +3,8 @@
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import Image from 'next/image'
 import Link from 'next/link'
-import image1 from '../(frontend)/images/ImageUniversalConcept.png'
-import image2 from '../(frontend)/images/ImageTraining.jpg'
+import image1 from '../(frontend)/images/UniversalConcept.jpg'
+import image2 from '../(frontend)/images/entrainement.jpg'
 import image3 from '../(frontend)/images/NosValeurs.jpg'
 import { motion } from 'framer-motion'
 

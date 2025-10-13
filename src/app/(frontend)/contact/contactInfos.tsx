@@ -1,29 +1,28 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-
+import React, { useEffect, useMemo, useState } from 'react'
 import { BuildingOffice2Icon, EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { Loader2 } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 
-type Product = {
+type ProductItem = {
   id: string
   title: string
   description: string
   price: number
-  image: {
-    url: string
-    alt: string
-  }
-  anodizing: string
-  handedness: string
-}[]
+  image?: { url: string; alt: string }
+  anodizing?: string
+  handedness?: string
+}
+type ProductsResponse = { docs: ProductItem[] }
 
 export default function ContactInfos() {
   const searchParams = useSearchParams()
   const [loading, setLoading] = useState(true)
-  const [productList, setProductList] = useState<Product>([])
-  const productId = searchParams.get('product')
+  const [submitting, setSubmitting] = useState(false)
+  const [sent, setSent] = useState<null | 'ok' | 'error'>(null)
+  const [productList, setProductList] = useState<ProductItem[]>([])
+  const productIdsFromURL = searchParams.getAll('product').map(String)
 
   useEffect(() => {
     getProducts()
@@ -31,15 +30,54 @@ export default function ContactInfos() {
 
   async function getProducts() {
     try {
-      const response = await fetch('/api/products')
-      const data = await response.json()
-      setProductList(data.docs || [])
+      const response = await fetch('/api/products', { cache: 'no-store' })
+      const data: ProductsResponse = await response.json()
+      const docs = (data.docs || []).map((p) => ({ ...p, id: String(p.id) }))
+      setProductList(docs)
     } catch (error) {
       console.error('Erreur lors du chargement des produits:', error)
     } finally {
       setLoading(false)
     }
   }
+
+  const selectedProducts = useMemo(
+    () => productList.filter((p) => productIdsFromURL.includes(p.id)),
+    [productList, productIdsFromURL],
+  )
+
+  const total = useMemo(
+    () => selectedProducts.reduce((sum, p) => sum + (Number(p.price) || 0), 0),
+    [selectedProducts],
+  )
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setSubmitting(true)
+    setSent(null)
+
+    try {
+      const form = e.currentTarget
+      const fd = new FormData(form)
+
+      // Garantit que les IDs de l’URL sont envoyés même si rien n’a été touché
+      productIdsFromURL.forEach((id) => fd.append('productIds[]', id))
+
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        body: fd,
+      })
+      if (!res.ok) throw new Error('Request failed')
+      setSent('ok')
+      form.reset()
+    } catch (err) {
+      console.error(err)
+      setSent('error')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <div className="relative isolate bg-white">
       <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
@@ -127,36 +165,49 @@ export default function ContactInfos() {
             </dl>
           </div>
         </div>
-        <form action="#" method="POST" className="px-6 pt-20 pb-24 sm:pb-32 lg:px-8 lg:py-48">
+
+        <form onSubmit={onSubmit} className="px-6 pt-20 pb-24 sm:pb-32 lg:px-8 lg:py-48">
           <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
-            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-1">
-              <div className="sm:col-span-2">
-                <label htmlFor="first-name" className="block text-sm/6 font-semibold text-gray-900">
-                  Produit
-                </label>
-                <div className="mt-2.5">
-                  {loading ? (
-                    <span>
-                      <Loader2 className="animate-spin" />
+            {/* Bloc récap produits */}
+            <div className="mb-8 rounded-2xl border border-gray-200 bg-white p-4">
+              <h3 className="text-lg font-semibold text-gray-900">Votre sélection</h3>
+              {loading ? (
+                <p className="mt-2 text-sm text-gray-600 inline-flex items-center gap-2">
+                  <Loader2 className="size-4 animate-spin" /> Chargement des produits…
+                </p>
+              ) : selectedProducts.length === 0 ? (
+                <p className="mt-2 text-sm text-gray-600">
+                  Aucun produit sélectionné. Retournez à la boutique pour en ajouter.
+                </p>
+              ) : (
+                <>
+                  <ul className="mt-3 divide-y divide-gray-100">
+                    {selectedProducts.map((p) => (
+                      <li key={p.id} className="py-2 flex items-center justify-between">
+                        <span className="text-sm text-gray-800 line-clamp-1">{p.title}</span>
+                        <span className="text-sm font-medium text-gray-900">{p.price} €</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-3 flex items-center justify-between border-t pt-3">
+                    <span className="text-base font-semibold text-gray-900">Total</span>
+                    <span className="text-base font-semibold text-gray-900">
+                      {total.toFixed(2)} €
                     </span>
-                  ) : (
-                    <select
-                      id="product"
-                      name="product"
-                      className="w-full p-3 rounded-lg border border-gray-300 bg-white"
-                      defaultValue={productId || ''}
-                      required
-                    >
-                      <option value="">Sélectionnez un produit</option>
-                      {productList?.map((product) => (
-                        <option key={product.id} value={product.id}>
-                          {product.title}
-                        </option>
-                      ))}
-                    </select>
-                  )}
-                </div>
-              </div>
+                  </div>
+                </>
+              )}
+
+              {/* IDs cachés (toujours envoyés) */}
+              {productIdsFromURL.map((id) => (
+                <input key={id} type="hidden" name="productIds[]" value={id} />
+              ))}
+              {/* Total caché (verrouillé côté serveur aussi) */}
+              <input type="hidden" name="clientTotal" value={total.toFixed(2)} />
+            </div>
+
+            {/* Champs contact */}
+            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-1">
               <div>
                 <label htmlFor="first-name" className="block text-sm/6 font-semibold text-gray-900">
                   Prénom
@@ -164,13 +215,15 @@ export default function ContactInfos() {
                 <div className="mt-2.5">
                   <input
                     id="first-name"
-                    name="first-name"
+                    name="firstName"
                     type="text"
+                    required
                     autoComplete="given-name"
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-accent-principle"
                   />
                 </div>
               </div>
+
               <div>
                 <label htmlFor="last-name" className="block text-sm/6 font-semibold text-gray-900">
                   Nom
@@ -178,13 +231,15 @@ export default function ContactInfos() {
                 <div className="mt-2.5">
                   <input
                     id="last-name"
-                    name="last-name"
+                    name="lastName"
                     type="text"
+                    required
                     autoComplete="family-name"
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-accent-principle"
                   />
                 </div>
               </div>
+
               <div className="sm:col-span-2">
                 <label htmlFor="email" className="block text-sm/6 font-semibold text-gray-900">
                   Email
@@ -194,28 +249,28 @@ export default function ContactInfos() {
                     id="email"
                     name="email"
                     type="email"
+                    required
                     autoComplete="email"
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-accent-principle"
                   />
                 </div>
               </div>
+
               <div className="sm:col-span-2">
-                <label
-                  htmlFor="phone-number"
-                  className="block text-sm/6 font-semibold text-gray-900"
-                >
+                <label htmlFor="phone" className="block text-sm/6 font-semibold text-gray-900">
                   Numéro de téléphone
                 </label>
                 <div className="mt-2.5">
                   <input
-                    id="phone-number"
-                    name="phone-number"
+                    id="phone"
+                    name="phone"
                     type="tel"
                     autoComplete="tel"
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-accent-principle"
                   />
                 </div>
               </div>
+
               <div className="sm:col-span-2">
                 <label htmlFor="message" className="block text-sm/6 font-semibold text-gray-900">
                   Message
@@ -226,17 +281,38 @@ export default function ContactInfos() {
                     name="message"
                     rows={4}
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-accent-principle"
-                    defaultValue={''}
+                    placeholder="Ajoutez des précisions utiles (quantités, couleurs, délais, etc.)"
                   />
                 </div>
               </div>
+
+              {/* anti-spam honeypot */}
+              <input
+                type="text"
+                name="company"
+                className="hidden"
+                tabIndex={-1}
+                autoComplete="off"
+              />
             </div>
-            <div className="mt-8 flex justify-end">
+
+            <div className="mt-8 flex items-center justify-between">
+              {sent === 'ok' && (
+                <p className="text-sm text-emerald-700">
+                  Merci ! Votre demande a bien été envoyée.
+                </p>
+              )}
+              {sent === 'error' && (
+                <p className="text-sm text-red-700">
+                  Oups, une erreur est survenue. Réessayez ou contactez-nous par téléphone.
+                </p>
+              )}
               <button
                 type="submit"
-                className="rounded-md bg-accent-principle px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-blue-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-principle transition-colors"
+                disabled={submitting}
+                className="rounded-md bg-accent-principle px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-blue-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-principle transition-colors disabled:opacity-60"
               >
-                Envoyer un message
+                {submitting ? 'Envoi…' : 'Envoyer un message'}
               </button>
             </div>
           </div>
