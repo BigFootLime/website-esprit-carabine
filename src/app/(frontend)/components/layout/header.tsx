@@ -7,20 +7,14 @@ import Link from 'next/link'
 
 const navigation = [
   { name: 'Accueil', href: '/' },
-  { name: 'Qui nous somme ?', href: '/about' },
   { name: 'Universal Concept', href: '/universal-concept' },
   { name: 'Boutique', href: '/shop' },
+  { name: 'Qui nous sommes', href: '/about' },
   { name: 'Entraînement', href: '/training' },
   { name: 'Témoignages', href: '/testimonials' },
   { name: 'Contact', href: '/contact' },
 ]
 
 export default function Headers() {
-  
-
-  return (
-    <header >
-     
-    </header>
-  )
+  return <header></header>
 }

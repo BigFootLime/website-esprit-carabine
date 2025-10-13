@@ -90,7 +90,7 @@ export default function HeroComponent({ title, description, image, images }: Her
         >
           <nav
             aria-label="Global"
-            className="mx-auto flex  items-center justify-center p-6 lg:px-8"
+            className="mx-auto flex  items-center justify-between p-6 lg:px-8"
           >
             {/* LOGO — BIG + GLOW */}
             <Link href="/" className="group/logo relative flex items-center">
@@ -126,13 +126,13 @@ export default function HeroComponent({ title, description, image, images }: Her
             </div>
 
             {/* Desktop nav — understated so the logo stands out */}
-            <div className="hidden lg:flex lg:items-center lg:gap-x-4">
+            <div className="hidden lg:flex lg:items-center lg:gap-x-6">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
                   className="
-              relative text-sm md:text-base font-medium
+              relative text-sm md:text-base font-medium whitespace-nowrap
               text-white/80 hover:text-white transition-colors
               px-3 py-2 rounded-xl hover:bg-white/5
               group
