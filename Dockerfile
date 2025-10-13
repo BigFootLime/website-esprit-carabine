@@ -29,39 +29,33 @@ RUN mkdir -p public
 RUN npm run build
 
 # ---------- run ----------
-FROM base AS runner
+FROM node:22.12.0-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 
-# Non-root user
+# Users
 RUN addgroup --system --gid 1001 nodejs \
  && adduser  --system --uid 1001 nextjs
 
 # Copy runtime files
-# 1) Next build output
 COPY --from=builder /app/.next ./.next
-# 2) node_modules from deps
 COPY --from=deps /app/node_modules ./node_modules
-# 3) public (may be empty)
 RUN mkdir -p public
 COPY --from=builder /app/public ./public
-# 4) package.json so `npm run start` works
 COPY --from=builder /app/package.json ./package.json
 
-RUN mkdir -p /app/public/uploads \
- && chown -R nextjs:nodejs /app/public \
- && chown -R nextjs:nodejs /app/.next
- 
-# Healthcheck deps
-RUN apk add --no-cache curl
+# Tools we need at runtime
+RUN apk add --no-cache curl su-exec
 
-USER nextjs
+# Run entrypoint as root so it can chown the mounted dir, then drop to nextjs
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
 EXPOSE 3000
-
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s \
   CMD curl -fsS http://127.0.0.1:3000/ >/dev/null || exit 1
 
-# Use Next's server
 CMD ["npm", "run", "start"]
