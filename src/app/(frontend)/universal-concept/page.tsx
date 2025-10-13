@@ -7,6 +7,9 @@ import config from '@payload-config'
 
 const payload = await getPayload({ config })
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 const UniversalConcept = async () => {
   const universalConceptData = await payload.find({
     collection: 'universalConcept',
