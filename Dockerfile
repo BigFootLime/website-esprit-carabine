@@ -1,4 +1,4 @@
-# To use this Dockerfile, set `output: 'standalone'` in next.config.mjs
+# To use this Dockerfile, you do NOT need output: 'standalone' in next.config.mjs
 
 FROM node:22.12.0-alpine AS base
 
@@ -7,13 +7,13 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
-# (Optional but recommended) match your local npm 10.9.4
+# Match your local npm
 RUN npm i -g npm@10.9.4 && npm -v
 
-# 1) Copy manifests BEFORE installing
-COPY package.json package-lock.json ./
+# Copy manifests BEFORE installing
+COPY package*.json ./
 
-# 2) Clean, reproducible install
+# Clean, reproducible install
 RUN npm ci --audit=false --fund=false
 
 # ---------- build ----------
@@ -23,6 +23,9 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
+# Ensure public exists (even if empty) so later COPY doesn't fail
+RUN mkdir -p public
+
 RUN npm run build
 
 # ---------- run ----------
@@ -36,13 +39,16 @@ ENV PORT=3000
 RUN addgroup --system --gid 1001 nodejs \
  && adduser  --system --uid 1001 nextjs
 
-# Public assets
+# Copy runtime files
+# 1) Next build output
+COPY --from=builder /app/.next ./.next
+# 2) node_modules from deps
+COPY --from=deps /app/node_modules ./node_modules
+# 3) public (may be empty)
+RUN mkdir -p public
 COPY --from=builder /app/public ./public
-
-# Next standalone output
-RUN mkdir -p .next && chown -R nextjs:nodejs .next public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# 4) package.json so `npm run start` works
+COPY --from=builder /app/package.json ./package.json
 
 # Healthcheck deps
 RUN apk add --no-cache curl
@@ -53,4 +59,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s \
   CMD curl -fsS http://127.0.0.1:3000/ >/dev/null || exit 1
 
-CMD ["node", "server.js"]
+# Use Next's server
+CMD ["npm", "run", "start"]
