@@ -1,40 +1,24 @@
+// src/app/layout.tsx
 import React from 'react'
 import './(frontend)/styles.css'
-
 import { Geist, Geist_Mono } from 'next/font/google'
-import Headers from './(frontend)/components/layout/header'
-import MainLayout from './(frontend)/components/main-layout'
-import Footer from './(frontend)/components/layout/footer'
+
+// fonts at the root is fine
+const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
+const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
 
 export const metadata = {
-  description: 'Vendeur de carabines',
   title: 'Esprit-Carabine',
-  icons: {
-    icon: '/favicon.ico',
-  },
+  description: 'Vendeur de carabines',
+  icons: { icon: '/favicon.ico' },
 }
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
-
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
+    <html lang="fr" dir="ltr" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Headers />
-        <main>
-          <MainLayout>{children}</MainLayout>
-        </main>
-        <Footer />
+        {/* DO NOT put Header/Footer here, so /admin won't get them */}
+        {children}
       </body>
     </html>
   )
