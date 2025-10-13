@@ -2,7 +2,7 @@
   "name": "carabine",
   "version": "1.0.0",
   "type": "module",
-  "packageManager": "npm@10.0.0",
+  "packageManager": "npm@10.9.4",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
@@ -47,6 +47,7 @@
     "@types/react": "19.0.7",
     "@types/react-dom": "19.0.3",
     "eslint-config-next": "15.5.4",
+    "picomatch": "^4.0.3",
     "prettier": "^3.4.2",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.8",
