@@ -8,9 +8,14 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
-# Install deps with your package manager
+# Pin npm to match your repo's packageManager (prevents npm ci lockfile mismatch)
+RUN npm i -g npm@10.0.0 && npm -v
+
+# Copy only manifests for clean, cacheable installs
 COPY package.json package-lock.json ./
-RUN npm ci --audit=false
+
+# Clean install exactly what's in the lockfile
+RUN npm ci --audit=false --fund=false
 
 # ---------- build ----------
 FROM base AS builder
@@ -18,14 +23,11 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# (Optional) disable telemetry at build
+# Disable telemetry at build
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN \
-  if [ -f yarn.lock ]; then yarn build; \
-  elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+
+# Build with npm (we have a package-lock.json)
+RUN npm run build
 
 # ---------- run ----------
 FROM base AS runner
@@ -39,13 +41,16 @@ ENV PORT=3000
 RUN addgroup --system --gid 1001 nodejs \
  && adduser  --system --uid 1001 nextjs
 
-# public assets (incl. uploads mount path)
+# Public assets
 COPY --from=builder /app/public ./public
 
-# standalone server
+# Next standalone server files
 RUN mkdir -p .next && chown -R nextjs:nodejs .next public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Healthcheck deps
+RUN apk add --no-cache curl
 
 USER nextjs
 
@@ -53,7 +58,7 @@ EXPOSE 3000
 
 # Healthcheck (Coolify-friendly)
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s \
-  CMD wget -qO- http://127.0.0.1:3000/ > /dev/null || exit 1
+  CMD curl -fsS http://127.0.0.1:3000/ >/dev/null || exit 1
 
-# Next standalone server
-CMD HOSTNAME="0.0.0.0" node server.js
+# Next standalone server (JSON form avoids signal issues)
+CMD ["node", "server.js"]
