@@ -71,7 +71,7 @@ export default function HeroComponent({ title, description, image, images }: Her
           if (api.canScrollNext()) api.scrollNext()
         }
       }
-    }, 10000) // délai entre slides
+    }, 20000) // délai entre slides
 
     return () => clearInterval(interval)
   }, [api, direction])
