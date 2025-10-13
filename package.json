@@ -1,9 +1,8 @@
 {
   "name": "carabine",
   "version": "1.0.0",
-  "description": "A blank template to get started with Payload 3.0",
-  "license": "MIT",
   "type": "module",
+  "packageManager": "npm@10.0.0",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
@@ -17,11 +16,18 @@
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
-    "@payloadcms/db-postgres": "latest",
-    "@payloadcms/next": "latest",
-    "@payloadcms/payload-cloud": "latest",
-    "@payloadcms/plugin-cloud-storage": "^3.25.0",
-    "@payloadcms/richtext-lexical": "latest",
+    "@payloadcms/db-postgres": "3.58.0",
+    "@payloadcms/next": "3.58.0",
+    "@payloadcms/payload-cloud": "3.58.0",
+    "@payloadcms/plugin-cloud-storage": "3.58.0",
+    "@payloadcms/richtext-lexical": "3.58.0",
+    "graphql": "^16.8.1",
+    "lucide-react": "^0.544.0",
+    "next": "15.1.5",
+    "payload": "3.58.0",
+    "postcss": "^8.5.3",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -29,16 +35,9 @@
     "embla-carousel-react": "^8.6.0",
     "eslint": "^9.23.0",
     "framer-motion": "^12.6.3",
-    "graphql": "^16.8.1",
-    "lucide-react": "^0.544.0",
-    "next": "15.1.5",
-    "payload": "latest",
-    "postcss": "^8.5.3",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "sharp": "^0.34.4",
     "tailwind-merge": "^3.3.1",
-    "@tailwindcss/oxide": "^4.1.13",
-    "sharp": "^0.34.4"
+    "@tailwindcss/oxide": "^4.1.13"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -52,13 +51,11 @@
     "tw-animate-css": "^1.3.8",
     "typescript": "5.7.3"
   },
-  "engines": {
-    "node": "^18.20.2 || >=20.9.0",
-    "pnpm": "^9"
+  "overrides": {
+    "@payloadcms/*": "3.58.0",
+    "payload": "3.58.0"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp"
-    ]
+  "engines": {
+    "node": "^18.20.2 || >=20.9.0"
   }
 }

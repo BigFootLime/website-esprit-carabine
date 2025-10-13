@@ -71,7 +71,7 @@ export default function HeroComponent({ title, description, image, images }: Her
           if (api.canScrollNext()) api.scrollNext()
         }
       }
-    }, 3000) // délai entre slides
+    }, 10000) // délai entre slides
 
     return () => clearInterval(interval)
   }, [api, direction])
@@ -81,7 +81,7 @@ export default function HeroComponent({ title, description, image, images }: Her
   return (
     <div className="bg-gray-900">
       {/* HEADER INTÉGRÉ */}
-      <header className=" absolute inset-x-0 top-0 z-50">
+      <header className="absolute inset-x-0 top-0 z-50">
         <motion.header
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -90,11 +90,30 @@ export default function HeroComponent({ title, description, image, images }: Her
         >
           <nav
             aria-label="Global"
-            className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+            className="mx-auto flex  items-center justify-center p-6 lg:px-8"
           >
-            <Link href="/" className="flex items-center gap-2 text-white font-semibold">
-              <Image src={Logo} alt="Logo Esprit Carabine" className="w-80 h-auto" />
+            {/* LOGO — BIG + GLOW */}
+            <Link href="/" className="group/logo relative flex items-center">
+              {/* soft glow backdrop */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -inset-x-10 -inset-y-6 -z-10 rounded-[999px] bg-sky-400/20 blur-3xl group-hover/logo:bg-sky-400/30 transition"
+              />
+              <Image
+                src={Logo}
+                alt="Logo Esprit Carabine"
+                priority
+                sizes="(max-width: 1024px) 70vw, 40vw"
+                className="
+            h-auto
+            w-[16rem] sm:w-[20rem] md:w-[24rem] lg:w-[30rem] xl:w-[36rem]
+            drop-shadow-[0_8px_30px_rgba(56,189,248,0.55)]
+            transition-transform duration-300 group-hover/logo:scale-[1.02]
+          "
+              />
             </Link>
+
+            {/* Mobile menu button */}
             <div className="flex lg:hidden">
               <button
                 type="button"
@@ -105,28 +124,43 @@ export default function HeroComponent({ title, description, image, images }: Her
                 <Bars3Icon aria-hidden="true" className="size-6" />
               </button>
             </div>
-            <div className="hidden lg:flex lg:items-center lg:gap-x-12">
+
+            {/* Desktop nav — understated so the logo stands out */}
+            <div className="hidden lg:flex lg:items-center lg:gap-x-4">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="relative text-sm font-normal text-white group"
+                  className="
+              relative text-sm md:text-base font-medium
+              text-white/80 hover:text-white transition-colors
+              px-3 py-2 rounded-xl hover:bg-white/5
+              group
+            "
                 >
                   {item.name}
-                  <span className=" absolute left-1/2 bottom-0 h-[2px] w-0 bg-sky-500 transition-all duration-400 group-hover:left-0 group-hover:w-full"></span>
+                  <span
+                    className="
+                absolute left-1/2 bottom-1 h-[2px] w-0
+                bg-sky-400/70 transition-all duration-300
+                group-hover:left-3 group-hover:w-[calc(100%-1.5rem)]
+                rounded-full
+              "
+                  />
                 </Link>
               ))}
             </div>
           </nav>
         </motion.header>
 
+        {/* Mobile menu */}
         <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
           <div className="fixed inset-0 z-10" />
           <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
-              <Link href="/" className="-m-1.5 p-1.5 text-link-primary font-semibold">
-                <span className="sr-only">Esprit Carabine</span>
-                Esprit Carabine
+              <Link href="/" className="-m-1.5 p-1.5">
+                {/* small logo in drawer for brand consistency */}
+                <Image src={Logo} alt="Esprit Carabine" className="h-10 w-auto" priority />
               </Link>
               <button
                 type="button"
