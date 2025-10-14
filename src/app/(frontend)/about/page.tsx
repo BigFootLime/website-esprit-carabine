@@ -183,35 +183,35 @@ const UniversalConcept = async () => {
     <div className="bg-gray-900 text-white min-h-screen">
       {/* Hero Section */}
       <div className="bg-gray-900 text-white">
-        <div className="container mx-auto px-4 py-20 text-center">
+        <div className="max-w-7xl mx-auto px-4 py-20">
           <h1 className="text-5xl font-bold mb-6 tracking-tight">Qui sommes nous ?</h1>
-          <p className="text-xl max-w-2xl mx-auto text-white/90 mb-10">
+          <p className="text-xl max-w-3xl text-white/90 mb-10">
             La société Esprit Carabine a vu le jour au début de l’année 2014. Créée par Cécile et
             Pascal Bessy, anciens membres des équipes de France à la carabine 10m, 50m et 300m,
             Esprit Carabine conçoit et commercialise des crosses de carabine et des accessoires
             destinés à la compétition dans les disciplines ISSF tirées à 50m et 300m.
           </p>
-          <p className="text-xl max-w-2xl mx-auto text-white/90 mb-10">
+          <p className="text-xl max-w-3xl text-white/90 mb-10">
             Passionnés par la compétition et l’innovation, nous mettons notre vécu d’athlètes et
             notre expérience au service de tous les tireurs.
           </p>
-          <p className="text-xl max-w-2xl mx-auto text-white/90 mb-10">
+          <p className="text-xl max-w-3xl text-white/90 mb-10">
             Nos partenaires, qui oeuvrent avec nous pour vous satisfaire, sont tous implantés en
             région Auvergne – Rhône – Alpes, contribuant à faire connaître le savoir faire de notre
-            région et apportant à nos produits le gage de la qualité « Made in France
+            région et apportant à nos produits le gage de la qualité « Made in France ».
           </p>
-          <p className="text-xl max-w-2xl mx-auto text-white/90 mb-10">
+          <p className="text-xl max-w-3xl text-white/90 mb-10">
             Compétiteurs dans l’âme, nous saurons de plus vous accompagner dans votre projet
             sportif, en vous conseillant et en vous guidant dans le cadre de votre entraînement ou
             en compétition.
           </p>
-          <p className="text-xl max-w-2xl mx-auto text-white/90 mb-10">
+          <p className="text-xl max-w-3xl text-white/90 mb-10">
             Choisir Esprit Carabine, c’est aussi partager une passion.
           </p>
-          <div className="flex justify-center space-x-4">
+          <div className="flex justify-start space-x-4">
             <Link
               href="/shop"
-              className="inline-flex items-center px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-800 hover transition"
+              className="inline-flex items-center px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-800 transition"
             >
               Acheter une crosse <ArrowRight className="ml-2" />
             </Link>
@@ -220,14 +220,16 @@ const UniversalConcept = async () => {
       </div>
 
       {/* Features Section */}
+      {/* (à implémenter si nécessaire) */}
 
       {/* Informations Section */}
+      {/* (à implémenter si nécessaire) */}
 
       {/* Call to Action */}
       <div className="bg-gradient-to-br from-accent-principle to-accent-secondary text-white py-16">
-        <div className="container mx-auto px-4 text-center">
+        <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-4xl font-bold mb-6">Prêt à améliorer vos performances ?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
+          <p className="text-xl mb-8 max-w-3xl opacity-90">
             Contactez-nous pour découvrir l&apos;Universal Concept et trouver la configuration
             parfaite pour vous.
           </p>

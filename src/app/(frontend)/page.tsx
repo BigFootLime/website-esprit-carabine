@@ -33,7 +33,7 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
             >
-              <h2 className="text-5xl font-semibold tracking-tight text-white sm:text-7xl">
+              <h2 className="text-5xl font-semibold tracking-tight text-white sm:text-5xl">
                 Excellence française en tir sportif
               </h2>
               <p className="text-xl text-gray-300 mt-8 max-w-3xl mx-auto">
@@ -52,7 +52,7 @@ export default function HomePage() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                {/* <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div> */}
               </div>
               <div className="p-8">
                 <h3 className="text-2xl font-bold mb-3 text-white">Universal Concept</h3>
@@ -78,7 +78,7 @@ export default function HomePage() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                {/* <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div> */}
               </div>
               <div className="p-8">
                 <h3 className="text-2xl font-bold mb-3 text-white">Entraînement & Coaching</h3>
@@ -100,7 +100,7 @@ export default function HomePage() {
             <div className="bg-gray-800 rounded-3xl overflow-hidden shadow-xl transition-all duration-300 hover:shadow-2xl hover:translate-y-[-8px] group">
               <div className="relative h-72 w-full overflow-hidden">
                 <Image
-                  src={image3}
+                  src={''}
                   alt="Nos valeurs"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"

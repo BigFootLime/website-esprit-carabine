@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react'
 import { ArrowRight, Target, Grip, Rocket, Send } from 'lucide-react'
 import Link from 'next/link'
@@ -5,16 +6,100 @@ import Image from 'next/image'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
-const payload = await getPayload({ config })
-
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+/** Image encadrée avec fond clair + légère augmentation de taille */
+function FramedImage({
+  src,
+  alt,
+  className = '',
+  priority = false,
+  heightClass = 'h-80', // taille augmentée
+}: {
+  src: string
+  alt: string
+  className?: string
+  priority?: boolean
+  heightClass?: string
+}) {
+  return (
+    <div className={`rounded-2xl bg-white/10 ring-1 ring-white/15 p-2 ${className}`}>
+      <div className={`relative w-full ${heightClass} overflow-hidden rounded-xl`}>
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          priority={priority}
+          className="object-cover"
+        />
+      </div>
+    </div>
+  )
+}
+
+/** Carte générique avec titre + séparateur + description */
+function InfoCard({
+  title,
+  description,
+  children,
+  className = '',
+}: {
+  title: string
+  description?: string[] | null
+  children?: React.ReactNode
+  className?: string
+}) {
+  return (
+    <div className={`bg-gray-800/95 rounded-2xl p-8 shadow-lg ring-1 ring-white/10 ${className}`}>
+      <h2 className="text-3xl font-bold text-white mb-4">{title}</h2>
+      <div className="border-t-2 border-sky-600 w-20 mb-6" />
+      {description && description.length > 0 && (
+        <div className="space-y-4 text-gray-200/90 text-justify mb-6">
+          {description.map((d, i) => (
+            <p key={i}>{d}</p>
+          ))}
+        </div>
+      )}
+      {children}
+    </div>
+  )
+}
+
+/** Utilitaires robustes pour récupérer les URLs d'images */
+const toImageArray = (raw: any) => {
+  // accepte [{image: {url}}, {url}, '...'] et renvoie [{url}]
+  if (!raw) return []
+  return raw
+    .map((x: any) => {
+      if (!x) return null
+      if (typeof x === 'string') return { url: x }
+      if (typeof x === 'object') {
+        if ('url' in x && x.url) return { url: x.url }
+        if ('image' in x && x.image) {
+          if (typeof x.image === 'string') return { url: x.image }
+          if (typeof x.image === 'object' && 'url' in x.image) return { url: x.image.url }
+        }
+      }
+      return null
+    })
+    .filter(Boolean)
+}
+const urls = (arr: any[]) =>
+  toImageArray(arr)
+    .map((i: any) => i.url)
+    .filter(Boolean)
+
+/** composant serveur (async autorisé) */
 const UniversalConcept = async () => {
+  const payload = await getPayload({ config })
+
   const universalConceptData = await payload.find({
     collection: 'universalConcept',
   })
 
+  /** === Ton contenu (texte) gardé tel quel === */
   const features = [
     {
       title: 'Fixation conventionnelle',
@@ -80,8 +165,8 @@ const UniversalConcept = async () => {
       ],
       images:
         universalConceptData?.docs
-          .find((doc) => doc.title === 'La Fixation conventionnelle')
-          ?.images?.map((image) => image.image) || [],
+          .find((doc: any) => doc.title === 'La Fixation conventionnelle')
+          ?.images?.map((image: any) => image.image) || [],
     },
     {
       title: 'La fixation par le canon',
@@ -92,8 +177,8 @@ const UniversalConcept = async () => {
       ],
       images:
         universalConceptData?.docs
-          .find((doc) => doc.title === 'La fixation par le canon')
-          ?.images?.map((image) => image.image) || [],
+          .find((doc: any) => doc.title === 'La fixation par le canon')
+          ?.images?.map((image: any) => image.image) || [],
     },
     {
       title: 'Ergonomie',
@@ -109,8 +194,8 @@ const UniversalConcept = async () => {
       ],
       images:
         universalConceptData?.docs
-          .find((doc) => doc.title === 'Ergonomie')
-          ?.images?.map((image) => image.image) || [],
+          .find((doc: any) => doc.title === 'Ergonomie')
+          ?.images?.map((image: any) => image.image) || [],
     },
     {
       title: 'Crosse - Finition - Anodisation dure (noir mat)',
@@ -132,8 +217,8 @@ const UniversalConcept = async () => {
       ],
       images:
         universalConceptData?.docs
-          .find((doc) => doc.title === 'Crosse - Finition - Anodisation dure (noir mat)')
-          ?.images?.map((image) => image.image) || [],
+          .find((doc: any) => doc.title === 'Crosse - Finition - Anodisation dure (noir mat)')
+          ?.images?.map((image: any) => image.image) || [],
     },
     {
       title: 'Crosse - Finition - Anodisation en couleur',
@@ -156,8 +241,8 @@ const UniversalConcept = async () => {
       ],
       images:
         universalConceptData?.docs
-          .find((doc) => doc.title === 'Crosse - Finition - Anodisation en couleur')
-          ?.images?.map((image) => image.image) || [],
+          .find((doc: any) => doc.title === 'Crosse - Finition - Anodisation en couleur')
+          ?.images?.map((image: any) => image.image) || [],
     },
     {
       title: 'Pommeau',
@@ -167,8 +252,8 @@ const UniversalConcept = async () => {
       ],
       images:
         universalConceptData?.docs
-          .find((doc) => doc.title === 'Pommeau')
-          ?.images?.map((image) => image.image) || [],
+          .find((doc: any) => doc.title === 'Pommeau')
+          ?.images?.map((image: any) => image.image) || [],
     },
     {
       title: 'Contrepoids de busc',
@@ -177,25 +262,46 @@ const UniversalConcept = async () => {
       ],
       images:
         universalConceptData?.docs
-          .find((doc) => doc.title === 'Contrepoids de busc')
-          ?.images?.map((image) => image.image) || [],
+          .find((doc: any) => doc.title === 'Contrepoids de busc')
+          ?.images?.map((image: any) => image.image) || [],
     },
   ]
 
+  /** Raccourcis par titre */
+  const byTitle = (t: string) => informations.find((i) => i.title === t)!
+  const fixConv = byTitle('La Fixation conventionnelle')
+  const fixCanon = byTitle('La fixation par le canon')
+  const ergonomie = byTitle('Ergonomie')
+  const finDure = byTitle('Crosse - Finition - Anodisation dure (noir mat)')
+  const finCouleur = byTitle('Crosse - Finition - Anodisation en couleur')
+  const pommeau = byTitle('Pommeau')
+  const contrepoids = byTitle('Contrepoids de busc')
+
+  const imgFixConv = urls(fixConv.images as any[])
+  const imgFixCanon = urls(fixCanon.images as any[])
+  const imgErgo = urls(ergonomie.images as any[])
+  const imgFinDure = urls(finDure.images as any[])
+  const imgFinCouleur = urls(finCouleur.images as any[])
+  const imgPommeau = urls(pommeau.images as any[])
+  const imgContrepoids = urls(contrepoids.images as any[])
+
+  const ANN1 = "Actions se fixant sans insert d'adaptation:"
+  const ANN2 = "Actions nécessitant l'utilisation d'un insert d'adaptation :"
+
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      {/* Hero Section */}
-      <div className="bg-gray-900 text-white">
+      {/* Hero */}
+      <div className="bg-gray-900">
         <div className="container mx-auto px-4 py-20 text-center">
           <h1 className="text-5xl font-bold mb-6 tracking-tight">Principe</h1>
-          <p className="text-xl max-w-2xl mx-auto text-white/90 mb-10">
-            « La crosse Universal Concept a été développée pour offrir au tireur la plus grande
+          <p className="text-xl text-left max-w-3xl mx-auto text-white/90 mb-10">
+            La crosse Universal Concept a été développée pour offrir au tireur la plus grande
             polyvalence. Adaptable sur la plupart des actions utilisées en compétition, en tir à 50m
             ou à 300m, elle permet également de choisir le mode d&apos;assemblage de l&apos;action
             canonnée sur la crosse. Fixation conventionnelle par le boîtier de culasse ou fixation
-            par le canon. »
+            par le canon.
           </p>
-          <div className="flex justify-center space-x-4">
+          <div className="flex justify-center">
             <Link
               href="/shop"
               className="inline-flex items-center px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-800 transition"
@@ -206,25 +312,25 @@ const UniversalConcept = async () => {
         </div>
       </div>
 
-      {/* Features Section */}
+      {/* Features */}
       <div id="features" className="container mx-auto px-4 py-16 flex flex-col items-center gap-8">
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 w-full">
           {features.map((feature, index) => {
             const FeatureIcon = feature.icon
             return (
               <div
                 key={index}
-                className="bg-gray-800 text-white rounded-xl shadow-lg p-6 hover:shadow-xl hover:scale-105 transition-all duration-300"
+                className="bg-gray-800/95 rounded-2xl shadow-lg p-6 ring-1 ring-white/10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="flex items-center mb-4">
                   <FeatureIcon className="mr-4 text-accent-principle" />
-                  <h3 className="text-2xl font-bold text-white">{feature.title}</h3>
+                  <h3 className="text-2xl font-bold">{feature.title}</h3>
                 </div>
                 <p className="text-gray-300 mb-6">{feature.description}</p>
                 <ul className="space-y-3">
-                  {feature.points.map((point, pointIndex) => (
-                    <li key={pointIndex} className="flex items-center text-white">
-                      <span className="mr-3 w-2 h-2 bg-accent-principle rounded-full"></span>
+                  {feature.points.map((point, i) => (
+                    <li key={i} className="flex items-center">
+                      <span className="mr-3 w-2 h-2 bg-accent-principle rounded-full" />
                       {point}
                     </li>
                   ))}
@@ -234,63 +340,148 @@ const UniversalConcept = async () => {
           })}
         </div>
 
-        <div className="container mx-auto px-4 py-16 space-y-16">
-          {informations.map((info, index) => (
-            <div key={index} className="bg-gray-800 rounded-lg p-8 shadow-lg">
-              <h2 className="text-3xl font-bold text-white mb-4">{info.title}</h2>
-              <div className="border-t-2 border-sky-600 w-20 mb-6"></div>
-
-              {info.images && info.images.length > 0 && (
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
-                  {info.images.map((image, imageIndex) => (
-                    <Image
-                      key={imageIndex}
-                      src={
-                        typeof image === 'object' && image !== null && 'url' in image && image.url
-                          ? image.url
-                          : '/default-image.jpg'
-                      }
-                      alt={info.title}
-                      className="rounded-lg shadow-md w-full object-cover"
-                      width={500}
-                      height={300}
-                      layout="responsive"
-                    />
-                  ))}
-                </div>
+        {/* Fixation conventionnelle : image 1 ↔ sans insert | image 2 ↔ avec insert */}
+        <InfoCard title={fixConv.title} description={fixConv.description}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            {/* Col 1 : Sans insert */}
+            <div>
+              {imgFixConv[0] && (
+                <FramedImage src={imgFixConv[0]} alt={`${fixConv.title} - sans insert`} />
               )}
-
-              <div className="space-y-4 text-gray-300 text-justify">
-                {info.description.map((desc, descIndex) => (
-                  <p key={descIndex}>{desc}</p>
-                ))}
-              </div>
-
-              {info.annexes && (
-                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {info.annexes.map((annex, annexIndex) => (
-                    <div key={annexIndex}>
-                      <h3 className="text-xl font-semibold text-white mb-2">{annex.title}</h3>
-                      <div className="border-t border-sky-600 w-16 mb-2"></div>
+              {Array.isArray(fixConv.annexes) &&
+                fixConv.annexes
+                  .filter((a: any) => a.title?.trim() === ANN1)
+                  .map((ann: any, idx: number) => (
+                    <div key={idx} className="mt-6">
+                      <h3 className="text-xl font-semibold mb-2">{(ann as any).title}</h3>
+                      <div className="border-t border-sky-600 w-16 mb-2" />
                       <ul className="list-disc list-inside text-gray-300 space-y-1">
-                        {annex.list.map((item, itemIndex) => (
-                          <li key={itemIndex}>{item}</li>
+                        {(ann as any).list?.map((item: string, i: number) => (
+                          <li key={i}>{item}</li>
                         ))}
                       </ul>
                     </div>
                   ))}
-                </div>
-              )}
             </div>
-          ))}
+
+            {/* Col 2 : Avec insert */}
+            <div>
+              {imgFixConv[1] && (
+                <FramedImage src={imgFixConv[1]} alt={`${fixConv.title} - avec insert`} />
+              )}
+              {Array.isArray(fixConv.annexes) &&
+                fixConv.annexes
+                  .filter((a: any) => a.title?.trim() === ANN2)
+                  .map((ann: any, idx: number) => (
+                    <div key={idx} className="mt-6">
+                      <h3 className="text-xl font-semibold mb-2">{(ann as any).title}</h3>
+                      <div className="border-t border-sky-600 w-16 mb-2" />
+                      <ul className="list-disc list-inside text-gray-300 space-y-1">
+                        {(ann as any).list?.map((item: string, i: number) => (
+                          <li key={i}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+            </div>
+          </div>
+        </InfoCard>
+
+        {/* Fixation par le canon : 1 image -> hero */}
+        <InfoCard title={fixCanon.title} description={fixCanon.description}>
+          {imgFixCanon[0] && (
+            <FramedImage
+              src={imgFixCanon[0]}
+              alt={fixCanon.title}
+              priority
+              className="mt-2"
+              heightClass="h-96"
+            />
+          )}
+        </InfoCard>
+
+        {/* Ergonomie : grille élégante */}
+        <InfoCard title={ergonomie.title} description={ergonomie.description}>
+          {imgErgo.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-2">
+              {imgErgo.map((src: string, i: number) => (
+                <FramedImage key={i} src={src} alt={`${ergonomie.title} ${i + 1}`} />
+              ))}
+            </div>
+          )}
+        </InfoCard>
+
+        {/* Finitions combinées côte à côte en bureau */}
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <InfoCard title={finDure.title} description={finDure.description}>
+            {imgFinDure.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {imgFinDure.map((src: string, i: number) => (
+                  <FramedImage key={i} src={src} alt={`${finDure.title} ${i + 1}`} />
+                ))}
+              </div>
+            )}
+            {Array.isArray(finDure.annexes) &&
+              finDure.annexes.map((ann: any, idx: number) => (
+                <div key={idx} className="mt-6">
+                  <h3 className="text-xl font-semibold">{(ann as any).title}</h3>
+                  <div className="border-t border-sky-600 w-16 mb-2" />
+                  <ul className="list-disc list-inside text-gray-300 space-y-1">
+                    {(ann as any).list?.map((item: string, i: number) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+          </InfoCard>
+
+          <InfoCard title={finCouleur.title} description={finCouleur.description}>
+            {imgFinCouleur.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {imgFinCouleur.map((src: string, i: number) => (
+                  <FramedImage key={i} src={src} alt={`${finCouleur.title} ${i + 1}`} />
+                ))}
+              </div>
+            )}
+            {Array.isArray(finCouleur.annexes) &&
+              finCouleur.annexes.map((ann: any, idx: number) => (
+                <div key={idx} className="mt-6">
+                  <h3 className="text-xl font-semibold">{(ann as any).title}</h3>
+                  <div className="border-t border-sky-600 w-16 mb-2" />
+                  <ul className="list-disc list-inside text-gray-300 space-y-1">
+                    {(ann as any).list?.map((item: string, i: number) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+          </InfoCard>
         </div>
 
-        {/* Paragraphs Section */}
+        {/* Pommeau */}
+        <InfoCard title={pommeau.title} description={pommeau.description}>
+          {imgPommeau.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {imgPommeau.map((src: string, i: number) => (
+                <FramedImage key={i} src={src} alt={`${pommeau.title} ${i + 1}`} />
+              ))}
+            </div>
+          )}
+        </InfoCard>
+
+        {/* Contrepoids de busc */}
+        <InfoCard title={contrepoids.title} description={contrepoids.description}>
+          {imgContrepoids.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {imgContrepoids.map((src: string, i: number) => (
+                <FramedImage key={i} src={src} alt={`${contrepoids.title} ${i + 1}`} />
+              ))}
+            </div>
+          )}
+        </InfoCard>
       </div>
 
-      {/* Informations Section */}
-
-      {/* Call to Action */}
+      {/* CTA */}
       <div className="bg-gradient-to-br from-accent-principle to-accent-secondary text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-6">Prêt à améliorer vos performances ?</h2>

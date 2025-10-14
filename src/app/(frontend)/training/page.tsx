@@ -14,8 +14,10 @@ const Training = async () => {
     <div className="bg-gray-900 text-white min-h-screen">
       {/* Header */}
       <div className="bg-gray-900 text-white">
-        <div className="container mx-auto px-4 py-20 text-center">
-          <h1 className="text-5xl font-bold mb-6 tracking-tight">Entraînement et coaching</h1>
+        <div className="container mx-auto px-4 py-20 text-left">
+          <h1 className="text-5xl max-w-3xl mx-auto font-bold mb-6 tracking-tight">
+            Entraînement et coaching
+          </h1>
           <p className="text-xl max-w-3xl mx-auto text-white/90 mb-10">
             Vous êtes passionné par le tir sportif à la carabine ?
           </p>
@@ -90,12 +92,6 @@ const Training = async () => {
             Par mail :{' '}
             <a href="mailto:contact@espritcarabine.fr" className="text-blue-400 underline">
               contact@espritcarabine.fr
-            </a>
-          </li>
-          <li>
-            Par téléphone :{' '}
-            <a href="tel:+33000000000" className="text-blue-400 underline">
-              +33 0 00 00 00 00
             </a>
           </li>
         </ul>
