@@ -402,7 +402,7 @@ const UniversalConcept = async () => {
               src={imgFixCanon[0]}
               alt={fixCanon.title}
               priority
-              className="mt-2 bg-white/[0.9]"
+              className="mt-2 max-w-3xl bg-white/[0.9]"
               heightClass="h-96"
             />
           )}
