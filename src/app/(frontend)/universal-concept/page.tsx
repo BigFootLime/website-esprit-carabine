@@ -346,7 +346,11 @@ const UniversalConcept = async () => {
             {/* Col 1 : Sans insert */}
             <div>
               {imgFixConv[0] && (
-                <FramedImage src={imgFixConv[0]} alt={`${fixConv.title} - sans insert`} />
+                <FramedImage
+                  className="bg-white/[0.9]"
+                  src={imgFixConv[0]}
+                  alt={`${fixConv.title} - sans insert`}
+                />
               )}
               {Array.isArray(fixConv.annexes) &&
                 fixConv.annexes
@@ -367,7 +371,11 @@ const UniversalConcept = async () => {
             {/* Col 2 : Avec insert */}
             <div>
               {imgFixConv[1] && (
-                <FramedImage src={imgFixConv[1]} alt={`${fixConv.title} - avec insert`} />
+                <FramedImage
+                  className="bg-white/[0.9]"
+                  src={imgFixConv[1]}
+                  alt={`${fixConv.title} - avec insert`}
+                />
               )}
               {Array.isArray(fixConv.annexes) &&
                 fixConv.annexes
@@ -394,7 +402,7 @@ const UniversalConcept = async () => {
               src={imgFixCanon[0]}
               alt={fixCanon.title}
               priority
-              className="mt-2"
+              className="mt-2 bg-white/[0.9]"
               heightClass="h-96"
             />
           )}
@@ -405,7 +413,12 @@ const UniversalConcept = async () => {
           {imgErgo.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-2">
               {imgErgo.map((src: string, i: number) => (
-                <FramedImage key={i} src={src} alt={`${ergonomie.title} ${i + 1}`} />
+                <FramedImage
+                  className="bg-white/[0.9]"
+                  key={i}
+                  src={src}
+                  alt={`${ergonomie.title} ${i + 1}`}
+                />
               ))}
             </div>
           )}
@@ -417,7 +430,12 @@ const UniversalConcept = async () => {
             {imgFinDure.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {imgFinDure.map((src: string, i: number) => (
-                  <FramedImage key={i} src={src} alt={`${finDure.title} ${i + 1}`} />
+                  <FramedImage
+                    className="bg-white/[0.9]"
+                    key={i}
+                    src={src}
+                    alt={`${finDure.title} ${i + 1}`}
+                  />
                 ))}
               </div>
             )}
@@ -439,7 +457,12 @@ const UniversalConcept = async () => {
             {imgFinCouleur.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {imgFinCouleur.map((src: string, i: number) => (
-                  <FramedImage key={i} src={src} alt={`${finCouleur.title} ${i + 1}`} />
+                  <FramedImage
+                    className="bg-white/[0.9]"
+                    key={i}
+                    src={src}
+                    alt={`${finCouleur.title} ${i + 1}`}
+                  />
                 ))}
               </div>
             )}
@@ -463,7 +486,12 @@ const UniversalConcept = async () => {
           {imgPommeau.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {imgPommeau.map((src: string, i: number) => (
-                <FramedImage key={i} src={src} alt={`${pommeau.title} ${i + 1}`} />
+                <FramedImage
+                  className="bg-white/[0.9]"
+                  key={i}
+                  src={src}
+                  alt={`${pommeau.title} ${i + 1}`}
+                />
               ))}
             </div>
           )}
@@ -474,7 +502,12 @@ const UniversalConcept = async () => {
           {imgContrepoids.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {imgContrepoids.map((src: string, i: number) => (
-                <FramedImage key={i} src={src} alt={`${contrepoids.title} ${i + 1}`} />
+                <FramedImage
+                  className="bg-white/[0.9]"
+                  key={i}
+                  src={src}
+                  alt={`${contrepoids.title} ${i + 1}`}
+                />
               ))}
             </div>
           )}
