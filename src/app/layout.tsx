@@ -16,6 +16,12 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" dir="ltr" suppressHydrationWarning>
+      <head>
+        <meta
+          name="google-site-verification"
+          content="oZK17Mq0oMkCjpkb81l-7HBMPY2KE0MBM6QlvGp0TtM"
+        />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* DO NOT put Header/Footer here, so /admin won't get them */}
         {children}
