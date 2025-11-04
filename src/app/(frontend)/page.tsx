@@ -4,8 +4,8 @@ import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import Image from 'next/image'
 import Link from 'next/link'
 import image1 from '../(frontend)/images/UniversalConcept.jpg'
-import image2 from '../(frontend)/images/entrainement.jpg'
-import image3 from '../(frontend)/images/NosValeurs.jpg'
+import image2 from '../(frontend)/images/entrainement.jpeg'
+import image3 from '../(frontend)/images/Who.jpeg'
 import { motion } from 'framer-motion'
 
 export default function HomePage() {
@@ -50,6 +50,7 @@ export default function HomePage() {
                   src={image1}
                   alt="Universal Concept"
                   fill
+                  unoptimized
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 {/* <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div> */}
@@ -76,6 +77,7 @@ export default function HomePage() {
                   src={image2}
                   alt="Entraînement & Coaching"
                   fill
+                  unoptimized
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 {/* <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div> */}
@@ -100,9 +102,10 @@ export default function HomePage() {
             <div className="bg-gray-800 rounded-3xl overflow-hidden shadow-xl transition-all duration-300 hover:shadow-2xl hover:translate-y-[-8px] group">
               <div className="relative h-72 w-full overflow-hidden">
                 <Image
-                  src={''}
+                  src={image3}
                   alt="Nos valeurs"
                   fill
+                  unoptimized
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
