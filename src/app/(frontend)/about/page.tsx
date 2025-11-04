@@ -179,53 +179,115 @@ const UniversalConcept = async () => {
     },
   ]
 
+  const aboutData = await payload.find({ collection: 'about', depth: 1 })
+
+  const firstDoc = aboutData?.docs?.[0]
+  const heroImg =
+    firstDoc?.images?.[0]?.image &&
+    typeof firstDoc.images[0].image === 'object' &&
+    'url' in firstDoc.images[0].image
+      ? (firstDoc.images[0].image as { url?: string }).url
+      : undefined
+
   return (
     <div className="bg-gray-900 text-white min-h-screen">
       {/* Hero Section */}
-      <div className="bg-gray-900 text-white">
+      <div className="bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 py-20">
-          <h1 className="text-5xl font-bold mb-6 tracking-tight">Qui sommes nous ?</h1>
-          <p className="text-xl max-w-3xl text-white/90 mb-10">
-            La société Esprit Carabine a vu le jour au début de l’année 2014. Créée par Cécile et
-            Pascal Bessy, anciens membres des équipes de France à la carabine 10m, 50m et 300m,
-            Esprit Carabine conçoit et commercialise des crosses de carabine et des accessoires
-            destinés à la compétition dans les disciplines ISSF tirées à 50m et 300m.
-          </p>
-          <p className="text-xl max-w-3xl text-white/90 mb-10">
-            Passionnés par la compétition et l’innovation, nous mettons notre vécu d’athlètes et
-            notre expérience au service de tous les tireurs.
-          </p>
-          <p className="text-xl max-w-3xl text-white/90 mb-10">
-            Nos partenaires, qui oeuvrent avec nous pour vous satisfaire, sont tous implantés en
-            région Auvergne – Rhône – Alpes, contribuant à faire connaître le savoir faire de notre
-            région et apportant à nos produits le gage de la qualité « Made in France ».
-          </p>
-          <p className="text-xl max-w-3xl text-white/90 mb-10">
-            Compétiteurs dans l’âme, nous saurons de plus vous accompagner dans votre projet
-            sportif, en vous conseillant et en vous guidant dans le cadre de votre entraînement ou
-            en compétition.
-          </p>
-          <p className="text-xl max-w-3xl text-white/90 mb-10">
-            Choisir Esprit Carabine, c’est aussi partager une passion.
-          </p>
-          <div className="flex justify-start space-x-4">
-            <Link
-              href="/shop"
-              className="inline-flex items-center px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-800 transition"
-            >
-              Acheter une crosse <ArrowRight className="ml-2" />
-            </Link>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            {/* Left: text */}
+            <div>
+              <h1 className="text-5xl font-bold mb-6 tracking-tight">Qui sommes nous ?</h1>
+
+              <p className="text-xl max-w-3xl text-white/90 mb-6">
+                La société Esprit Carabine a vu le jour au début de l’année 2014. Créée par Cécile
+                et Pascal Bessy, anciens membres des équipes de France à la carabine 10m, 50m et
+                300m, Esprit Carabine conçoit et commercialise des crosses de carabine et des
+                accessoires destinés à la compétition dans les disciplines ISSF tirées à 50m et
+                300m.
+              </p>
+              <p className="text-xl max-w-3xl text-white/90 mb-6">
+                Passionnés par la compétition et l’innovation, nous mettons notre vécu d’athlètes et
+                notre expérience au service de tous les tireurs.
+              </p>
+              <p className="text-xl max-w-3xl text-white/90 mb-6">
+                Nos partenaires, implantés en région Auvergne–Rhône–Alpes, contribuent à faire
+                connaître le savoir-faire de notre région et apportent à nos produits le gage de la
+                qualité « Made in France ».
+              </p>
+              <p className="text-xl max-w-3xl text-white/90 mb-10">
+                Compétiteurs dans l’âme, nous vous accompagnons dans votre projet sportif, en vous
+                conseillant et en vous guidant à l’entraînement comme en compétition.
+              </p>
+
+              <div className="flex justify-start">
+                <Link
+                  href="/shop"
+                  className="inline-flex items-center px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-800 transition"
+                >
+                  Acheter une crosse <ArrowRight className="ml-2" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Right: hero image from Payload */}
+            <div className="w-full">
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/10 bg-gray-800">
+                <Image
+                  src={heroImg || '/default-image.jpg'}
+                  alt="Esprit Carabine – Qui sommes-nous"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
+                />
+              </div>
+              {/* Optional caption (if present) */}
+              {firstDoc?.images?.[0]?.caption ? (
+                <p className="mt-3 text-sm text-gray-300">{firstDoc.images[0].caption}</p>
+              ) : null}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Features Section */}
-      {/* (à implémenter si nécessaire) */}
+      {/* Optional: gallery from remaining images */}
+      {(firstDoc?.images?.length ?? 0) > 1 && (
+        <div className="max-w-7xl mx-auto px-4 pb-16">
+          <h2 className="text-3xl font-bold mb-4">Galerie</h2>
+          <div className="border-t-2 border-sky-600 w-20 mb-6"></div>
 
-      {/* Informations Section */}
-      {/* (à implémenter si nécessaire) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {(firstDoc?.images?.slice(1) || []).map((img, idx) => {
+              const url =
+                img?.image && typeof img.image === 'object' && 'url' in img.image
+                  ? (img.image as { url?: string }).url
+                  : undefined
+              return (
+                <div
+                  key={idx}
+                  className="rounded-lg overflow-hidden bg-gray-800 border border-white/10"
+                >
+                  <div className="relative aspect-[4/3] w-full">
+                    <Image
+                      src={url || '/default-image.jpg'}
+                      alt={img?.caption || `About image ${idx + 2}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 33vw"
+                    />
+                  </div>
+                  {img?.caption ? (
+                    <div className="p-3 text-sm text-gray-200">{img.caption}</div>
+                  ) : null}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
-      {/* Call to Action */}
+      {/* Call to Action (unchanged) */}
       <div className="bg-gradient-to-br from-accent-principle to-accent-secondary text-white py-16">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-4xl font-bold mb-6">Prêt à améliorer vos performances ?</h2>

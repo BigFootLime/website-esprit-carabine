@@ -6,7 +6,7 @@ import LogoEspritCarabine from '../../images/Logo.svg'
 const navigation = {
   solutions: [
     { name: 'Accueil', href: '/' },
-    { name: 'Qui nous somme ?', href: '/about' },
+    { name: 'Qui sommes nous ?', href: '/about' },
     { name: 'Universal Concept', href: '/universal-concept' },
     { name: 'Boutique', href: '/shop' },
   ],
@@ -67,12 +67,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 pt-16 pb-8 sm:pt-24 lg:px-8 lg:pt-32">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div>
-            <Image
-              src={LogoEspritCarabine}
-              alt="Logo Esprit Carabine"
-              width={150}
-              height={40}
-            />
+            <Image src={LogoEspritCarabine} alt="Logo Esprit Carabine" width={150} height={40} />
           </div>
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
             <div className="md:grid md:grid-cols-2 md:gap-8">

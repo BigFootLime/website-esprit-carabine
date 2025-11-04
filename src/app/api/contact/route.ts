@@ -130,7 +130,7 @@ export async function POST(req: NextRequest) {
       </div>
     `
     const text = [
-      `Nouvelle demande de contact`,
+      `Commande`,
       `Nom: ${firstName} ${lastName}`,
       `Email: ${email}`,
       `Téléphone: ${phone}`,

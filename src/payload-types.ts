@@ -72,6 +72,7 @@ export interface Config {
     universalConcept: UniversalConcept;
     product: Product;
     coaching: Coaching;
+    about: About;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -83,6 +84,7 @@ export interface Config {
     universalConcept: UniversalConceptSelect<false> | UniversalConceptSelect<true>;
     product: ProductSelect<false> | ProductSelect<true>;
     coaching: CoachingSelect<false> | CoachingSelect<true>;
+    about: AboutSelect<false> | AboutSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -213,6 +215,23 @@ export interface Coaching {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about".
+ */
+export interface About {
+  id: number;
+  title?: string | null;
+  images?:
+    | {
+        image: number | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -237,6 +256,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'coaching';
         value: number | Coaching;
+      } | null)
+    | ({
+        relationTo: 'about';
+        value: number | About;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -355,6 +378,22 @@ export interface ProductSelect<T extends boolean = true> {
  * via the `definition` "coaching_select".
  */
 export interface CoachingSelect<T extends boolean = true> {
+  title?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about_select".
+ */
+export interface AboutSelect<T extends boolean = true> {
   title?: T;
   images?:
     | T

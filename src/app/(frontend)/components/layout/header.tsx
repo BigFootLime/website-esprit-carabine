@@ -9,7 +9,7 @@ const navigation = [
   { name: 'Accueil', href: '/' },
   { name: 'Universal Concept', href: '/universal-concept' },
   { name: 'Boutique', href: '/shop' },
-  { name: 'Qui nous sommes', href: '/about' },
+  { name: 'Qui sommes nous', href: '/about' },
   { name: 'Entraînement', href: '/training' },
   { name: 'Témoignages', href: '/testimonials' },
   { name: 'Contact', href: '/contact' },

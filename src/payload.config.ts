@@ -10,6 +10,7 @@ import { Media } from './collections/Media'
 import { UniversalConcept } from './collections/UniversalConcept'
 import { Product } from './collections/Product'
 import { Coaching } from './collections/Coaching'
+import { About } from './collections/About'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -26,7 +27,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, UniversalConcept, Product, Coaching],
+  collections: [Users, Media, UniversalConcept, Product, Coaching, About],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

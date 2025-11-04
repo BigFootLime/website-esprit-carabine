@@ -108,7 +108,7 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               </div>
               <div className="p-8">
-                <h3 className="text-2xl font-bold mb-3 text-white">Nos valeurs</h3>
+                <h3 className="text-2xl font-bold mb-3 text-white">Qui sommes nous</h3>
                 <p className="text-gray-300 mb-6">
                   Excellence française, innovation constante et passion du tir sportif. Découvrez
                   l&apos;histoire et les valeurs qui font Esprit Carabine.

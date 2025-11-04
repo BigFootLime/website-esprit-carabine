@@ -17,7 +17,7 @@ type HeroProps = {
 
 const navigation = [
   { name: 'Accueil', href: '/' },
-  { name: 'Qui nous sommes ?', href: '/about' },
+  { name: 'Qui sommes nous ?', href: '/about' },
   { name: 'Universal Concept', href: '/universal-concept' },
   { name: 'Boutique', href: '/shop' },
   { name: 'Entraînement', href: '/training' },
@@ -42,7 +42,7 @@ export default function HeroComponent({ title, description, image, images }: Her
           className="w-full"
         >
           {/* Ligne 1 : Logo plein largeur, centré, avec glow */}
-          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-6 flex items-center justify-between lg:justify-center relative">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8 flex items-center justify-between lg:justify-center relative">
             <Link href="/" className="group/logo relative inline-flex items-center">
               {/* glow conservé */}
               <span
@@ -54,7 +54,7 @@ export default function HeroComponent({ title, description, image, images }: Her
                 alt="Logo Esprit Carabine"
                 priority
                 sizes="(max-width: 1024px) 80vw, 60vw"
-                className="h-auto w-[18rem] sm:w-[24rem] md:w-[30rem] lg:w-[38rem] xl:w-[44rem]
+                className="h-[auto] w-[18rem] sm:w-[24rem] md:w-[30rem] lg:w-[38rem] xl:w-[44rem]
                            drop-shadow-[0_8px_30px_rgba(56,189,248,0.55)]
                            transition-transform duration-300 group-hover/logo:scale-[1.02]"
               />
@@ -74,7 +74,7 @@ export default function HeroComponent({ title, description, image, images }: Her
           {/* Ligne 2 : Navigation centrée sous le logo (desktop) */}
           <nav aria-label="Global" className="hidden lg:block border-t border-white/10">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 py-4">
+              <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 py-2">
                 {navigation.map((item) => (
                   <li key={item.name}>
                     <Link
