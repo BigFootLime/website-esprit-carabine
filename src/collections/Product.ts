@@ -12,18 +12,22 @@ export const Product: CollectionConfig = {
     {
       name: 'position',
       type: 'number',
-      label: 'Position',
       required: true,
-      index: true,
-      unique: false, // set to true if you want every number to be unique
       defaultValue: 1,
-      admin: { width: '25%' },
-      validate: (val) => {
-        if (typeof val !== 'number') return 'Must be a number'
-        if (val < 1 || val > 100) return 'Enter a value between 1 and 100'
+      min: 1,
+      max: 100,
+      admin: { step: 1 },
+      validate: (value: unknown) => {
+        // allow required/min/max to do most work; add integer check:
+        if (value == null) return true // 'required' handles empties
+        if (Array.isArray(value)) return 'Must be a single number'
+        const n = Number(value)
+        if (Number.isNaN(n)) return 'Must be a number'
+        if (!Number.isInteger(n)) return 'Must be an integer'
         return true
       },
     },
+
     {
       name: 'title',
       type: 'text',
