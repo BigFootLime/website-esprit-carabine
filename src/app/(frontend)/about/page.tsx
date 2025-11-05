@@ -1,238 +1,84 @@
-import React from 'react'
-import { ArrowRight, Target, Grip, Rocket, Send } from 'lucide-react'
-import Link from 'next/link'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { getPayload } from 'payload'
-import config from '@payload-config'
+import Link from 'next/link'
+import { Send, ArrowRight } from 'lucide-react'
 
-const payload = await getPayload({ config })
+type MediaRef = { url?: string }
+type AboutImage = { image?: MediaRef | string; caption?: string }
+type AboutDoc = { images?: AboutImage[] }
+type AboutRes = { docs?: AboutDoc[] }
 
-const UniversalConcept = async () => {
-  const universalConceptData = await payload.find({
-    collection: 'universalConcept',
-  })
+export default function AboutPage() {
+  const [loading, setLoading] = useState(true)
+  const [doc, setDoc] = useState<AboutDoc | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
-  const features = [
-    {
-      title: 'Fixation conventionnelle',
-      description:
-        'Notre crosse permet l’utilisation de ce mode d’assemblage soit directement, soit par l’intermédiaire d’inserts d’adaptation.',
-      icon: Target,
-      points: [
-        'Compatibilité avec la majorité des actions utilisées en compétition.',
-        'Installation simple et rapide',
-        'Légèreté de la carabine',
-      ],
-    },
-    {
-      title: 'Fixation par le canon',
-      description:
-        'Innovation exclusive d’Esprit Carabine, notre système de fixation par le canon révolutionne la conception d’une carabine de compétition en offrant une modularité et une précision exceptionnelles.',
-      icon: Grip,
-      points: [
-        'Serrage du canon par cônes pour une rigidité maximale',
-        'Réduction significative des vibrations',
-        'Plus grande facilité dans le choix des lots de munition',
-      ],
-    },
-    {
-      title: 'Ergonomie et modularité',
-      description:
-        'Chaque tireur est unique. C’est pourquoi nous avons développé un système de crosse entièrement modulable pour des réglages faciles, rapides et fiables.',
-      icon: Rocket,
-      points: [
-        'Poignée rotative multi-axes',
-        'Busc entièrement ajustable, avec appui-joue à réglage micrométrique sans outil',
-        'Crémaillères dotées de butées réglables permettant un pré-réglage rapide et précis.',
-        'Contrepoids additionnel de busc, positionné parfaitement dans l’axe du canon.',
-      ],
-    },
-  ]
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const res = await fetch('/api/about', { cache: 'no-store' })
+        if (!res.ok) throw new Error('Failed to load /api/about')
+        const data: AboutRes = await res.json()
+        setDoc(data?.docs?.[0] ?? null)
+      } catch (e: any) {
+        setError(e?.message || 'Unknown error')
+      } finally {
+        setLoading(false)
+      }
+    })()
+  }, [])
 
-  const informations = [
-    {
-      title: 'La Fixation conventionnelle',
-      description: [
-        'Le boîtier de culasse est fixé de manière classique, par des vis, le canon étant flottant. L’Universal Concept offre la possibilité de fixer de cette manière la plupart des actions utilisées en compétition ISSF. Soit directement, soit grâce à un insert d’adaptation fourni avec la crosse.',
-      ],
-      annexes: [
-        {
-          title: "Actions se fixant sans insert d'adaptation:",
-          list: [
-            'Anschütz série 2000',
-            'Bleiker Challenger',
-            'Grünig R2 / R3',
-            'Rieder & Lenz « Z »',
-          ],
-        },
-        {
-          title: "Actions nécessitant l'utilisation d'un insert d'adaptation :",
-          list: [
-            'Anschütz séries Match 54 / 1800 / 1900 / 54.30',
-            'Walther KK 200 / 300 / 500',
-            'Bleiker pour le tir à 300 mètres',
-            'Grünig ST200 / FT300',
-          ],
-        },
-      ],
-      images:
-        universalConceptData?.docs
-          .find((doc) => doc.title === 'La Fixation conventionnelle')
-          ?.images?.map((image) => image.image) || [],
-    },
-    {
-      title: 'La fixation par le canon',
-      description: [
-        'Dans ce cas, c’est le canon qui est directement fixé à la crosse, le boîtier de culasse n’ayant aucun contact avec celle-ci. Ce dispositif a été conçu par Esprit Carabine pour répondre à la demande de tireurs qui recherchaient les avantages de la fixation par le canon tout en ayant le canon placé très bas sur la crosse.',
-        'Nous utilisons pour cela un dispositif de serrage par cônes que nous avons conçu. Usinés dans un matériau qui assure la rigidité du montage et qui contribue également à limiter la transmission des vibrations et de la chaleur, ces cônes permettent également de réduire les problèmes liés à la dilatation. La partie « libre » du canon étant réduite, l’amplitude des mouvements de la bouche induits par les vibrations est moindre lors de la sortie de la balle.',
-        'Testé, validé et utilisé par des tireurs du plus haut niveau, ce dispositif procure une remarquable précision et une réaction de la carabine plus douce que dans le cas d’une action fixée classiquement sur une crosse métallique. Ce système permet d’autre part de fixer sur la crosse un grand nombre d’actions dotées de canons de calibre 22LR, de diamètres allant de 20mm à 26mm.',
-      ],
-      images:
-        universalConceptData?.docs
-          .find((doc) => doc.title === 'La fixation par le canon')
-          ?.images?.map((image) => image.image) || [],
-    },
-    {
-      title: 'Ergonomie',
-      description: [
-        "L'ergonomie aboutie de l'Universal Concept convient aux tireurs de toutes morphologies grâce aux multiples réglages possibles et à leurs amplitudes.",
-        "La partie arrière de la crosse, très courte pour s'adapter même aux petits gabarits, est conçue « en fourche » et permet que la force constituée par le recul de l'arme s'exerce parfaitement dans l'axe de celle-ci, permettant ainsi une réaction au départ du coup extrêmement saine.",
-        "La poignée, montée sur rotule, est ajustable dans tous les plans et permet un positionnement parfait de la main et du poignet, contribuant ainsi à améliorer l'action de l'index sur la queue de détente.",
-        'Le busc, réglable en tous sens et sans outil, permet au tireur de trouver aisément un placement parfait de la tête quelle que soit la position de tir.',
-        "Afin de permettre au tireur de trouver l'équilibre idéal de sa carabine, notamment en position « debout », le busc de l'Universal Concept peut être équipé d'un contrepoids. Positionné exactement dans l'axe de la crosse, celui-ci ne déséquilibrera pas le tireur et n'engendrera aucune réaction latérale lors du départ du coup.",
-        "Entièrement fabriquée sur centre d'usinage informatisé dans des matériaux de haut de gamme, l'Universal Concept a fait l'objet d'études et de tests approfondis garantissant à son utilisateur un fonctionnement parfait.",
-        "Son universalité, les avancées technologiques qu'elle propose, sa robustesse et sa qualité de fabrication font de l'Universal Concept l'élément de liaison idéal qui permet au tireur de tirer le meilleur profit de son canon.",
-        "Et comme nous savons qu'un carabinier aime sa carabine et que nous aimons aussi les belles choses, nous vous proposons un choix de finitions qui permettra sans doute d'exhausser vos souhaits.",
-      ],
-      images:
-        universalConceptData?.docs
-          .find((doc) => doc.title === 'Ergonomie')
-          ?.images?.map((image) => image.image) || [],
-    },
-    {
-      title: 'Crosse - Finition - Anodisation dure (noir mat)',
-      description: [
-        "Une finition alliant l'élégance avec la robustesse. Réalisée après microbillage, l'aspect de la crosse est donc satiné.",
-      ],
-      annexes: [
-        {
-          title: 'Traitements des pièces annexes : Nickelage satiné',
-          list: [
-            'plaque de recouvrement arrière',
-            'pontet',
-            'pièces du busc',
-            'support de plaque de couche',
-            'adaptateur universel de plaque de couche',
-            'blocs de fixation du canon',
-          ],
-        },
-      ],
-      images:
-        universalConceptData?.docs
-          .find((doc) => doc.title === 'Crosse - Finition - Anodisation dure (noir mat)')
-          ?.images?.map((image) => image.image) || [],
-    },
-    {
-      title: 'Crosse - Finition - Anodisation en couleur',
-      description: [
-        "Pour les tireurs qui aiment la couleur nous proposons également l'anodisation classique, en rouge ou en bleu.",
-        "Elle est aussi réalisée après microbillage et l'aspect de la crosse est donc toujours satiné.",
-      ],
-      annexes: [
-        {
-          title: 'Traitements des pièces annexes : Nickelage satiné',
-          list: [
-            'plaque de recouvrement arrière',
-            'pontet',
-            'pièces du busc',
-            'support de plaque de couche',
-            'adaptateur universel de plaque de couche',
-            'blocs de fixation du canon',
-          ],
-        },
-      ],
-      images:
-        universalConceptData?.docs
-          .find((doc) => doc.title === 'Crosse - Finition - Anodisation en couleur')
-          ?.images?.map((image) => image.image) || [],
-    },
-    {
-      title: 'Pommeau',
-      description: [
-        "Désormais reconnu comme l'un des meilleurs actuellement commercialisés, le pommeau d'Esprit Carabine permet un réglage dans tous les plans pour un poids maximal de seulement 371 grammes.",
-        'La plaquette au contact de la main est finement quadrillée pour une adhérence optimale, avec ou sans gant de tir. Elle est disponible en deux largeurs, 50 ou 60 millimètres.',
-      ],
-      images:
-        universalConceptData?.docs
-          .find((doc) => doc.title === 'Pommeau')
-          ?.images?.map((image) => image.image) || [],
-    },
-    {
-      title: 'Contrepoids de busc',
-      description: [
-        "Spécialement étudié pour le tir en position debout, ce contrepoids se fixe sur la crémaillère du busc. Il est positionné exactement dans l'axe de la crosse et ne peut pas occasionner de déséquilibre latéral.",
-      ],
-      images:
-        universalConceptData?.docs
-          .find((doc) => doc.title === 'Contrepoids de busc')
-          ?.images?.map((image) => image.image) || [],
-    },
-  ]
-
-  const aboutData = await payload.find({ collection: 'about', depth: 1 })
-
-  const firstDoc = aboutData?.docs?.[0]
   const heroImg =
-    firstDoc?.images?.[0]?.image &&
-    typeof firstDoc.images[0].image === 'object' &&
-    'url' in firstDoc.images[0].image
-      ? (firstDoc.images[0].image as { url?: string }).url
+    doc?.images?.[0]?.image && typeof doc.images[0].image === 'object'
+      ? (doc.images[0].image as MediaRef).url
       : undefined
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      {/* Hero Section */}
-      <div className="bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            {/* Left: text */}
-            <div>
-              <h1 className="text-5xl font-bold mb-6 tracking-tight">Qui sommes nous ?</h1>
+      <div className="max-w-7xl mx-auto px-4 py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+          {/* Left: text (static copy) */}
+          <div>
+            <h1 className="text-5xl font-bold mb-6 tracking-tight">Qui sommes nous ?</h1>
 
-              <p className="text-xl max-w-3xl text-white/90 mb-6">
-                La société Esprit Carabine a vu le jour au début de l’année 2014. Créée par Cécile
-                et Pascal Bessy, anciens membres des équipes de France à la carabine 10m, 50m et
-                300m, Esprit Carabine conçoit et commercialise des crosses de carabine et des
-                accessoires destinés à la compétition dans les disciplines ISSF tirées à 50m et
-                300m.
-              </p>
-              <p className="text-xl max-w-3xl text-white/90 mb-6">
-                Passionnés par la compétition et l’innovation, nous mettons notre vécu d’athlètes et
-                notre expérience au service de tous les tireurs.
-              </p>
-              <p className="text-xl max-w-3xl text-white/90 mb-6">
-                Nos partenaires, implantés en région Auvergne–Rhône–Alpes, contribuent à faire
-                connaître le savoir-faire de notre région et apportent à nos produits le gage de la
-                qualité « Made in France ».
-              </p>
-              <p className="text-xl max-w-3xl text-white/90 mb-10">
-                Compétiteurs dans l’âme, nous vous accompagnons dans votre projet sportif, en vous
-                conseillant et en vous guidant à l’entraînement comme en compétition.
-              </p>
+            <p className="text-xl max-w-3xl text-white/90 mb-6">
+              La société Esprit Carabine a vu le jour au début de l’année 2014. Créée par Cécile et
+              Pascal Bessy, anciens membres des équipes de France à la carabine 10m, 50m et 300m,
+              Esprit Carabine conçoit et commercialise des crosses de carabine et des accessoires
+              destinés à la compétition dans les disciplines ISSF tirées à 50m et 300m.
+            </p>
+            <p className="text-xl max-w-3xl text-white/90 mb-6">
+              Passionnés par la compétition et l’innovation, nous mettons notre vécu d’athlètes et
+              notre expérience au service de tous les tireurs.
+            </p>
+            <p className="text-xl max-w-3xl text-white/90 mb-6">
+              Nos partenaires, implantés en région Auvergne–Rhône–Alpes, contribuent à faire
+              connaître le savoir-faire de notre région et apportent à nos produits le gage de la
+              qualité « Made in France ».
+            </p>
+            <p className="text-xl max-w-3xl text-white/90 mb-10">
+              Compétiteurs dans l’âme, nous vous accompagnons dans votre projet sportif, en vous
+              conseillant et en vous guidant à l’entraînement comme en compétition.
+            </p>
 
-              <div className="flex justify-start">
-                <Link
-                  href="/shop"
-                  className="inline-flex items-center px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-800 transition"
-                >
-                  Acheter une crosse <ArrowRight className="ml-2" />
-                </Link>
-              </div>
+            <div className="flex justify-start">
+              <Link
+                href="/shop"
+                className="inline-flex items-center px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-800 transition"
+              >
+                Acheter une crosse <ArrowRight className="ml-2" />
+              </Link>
             </div>
+          </div>
 
-            {/* Right: hero image from Payload */}
-            <div className="w-full">
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/10 bg-gray-800">
+          {/* Right: hero image from Payload */}
+          <div className="w-full">
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/10 bg-gray-800">
+              {loading ? (
+                <div className="absolute inset-0 animate-pulse bg-white/5" />
+              ) : (
                 <Image
                   src={heroImg || '/default-image.jpg'}
                   alt="Esprit Carabine – Qui sommes-nous"
@@ -241,27 +87,27 @@ const UniversalConcept = async () => {
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   priority
                 />
-              </div>
-              {/* Optional caption (if present) */}
-              {firstDoc?.images?.[0]?.caption ? (
-                <p className="mt-3 text-sm text-gray-300">{firstDoc.images[0].caption}</p>
-              ) : null}
+              )}
             </div>
+            {doc?.images?.[0]?.caption ? (
+              <p className="mt-3 text-sm text-gray-300">{doc.images[0].caption}</p>
+            ) : null}
+            {error ? <p className="mt-3 text-sm text-red-400">Erreur : {error}</p> : null}
           </div>
         </div>
       </div>
 
-      {/* Optional: gallery from remaining images */}
-      {(firstDoc?.images?.length ?? 0) > 1 && (
+      {/* Gallery */}
+      {!loading && (doc?.images?.length ?? 0) > 1 && (
         <div className="max-w-7xl mx-auto px-4 pb-16">
           <h2 className="text-3xl font-bold mb-4">Galerie</h2>
           <div className="border-t-2 border-sky-600 w-20 mb-6"></div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(firstDoc?.images?.slice(1) || []).map((img, idx) => {
+            {(doc?.images?.slice(1) || []).map((img, idx) => {
               const url =
                 img?.image && typeof img.image === 'object' && 'url' in img.image
-                  ? (img.image as { url?: string }).url
+                  ? (img.image as MediaRef).url
                   : undefined
               return (
                 <div
@@ -287,7 +133,7 @@ const UniversalConcept = async () => {
         </div>
       )}
 
-      {/* Call to Action (unchanged) */}
+      {/* CTA */}
       <div className="bg-gradient-to-br from-accent-principle to-accent-secondary text-white py-16">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-4xl font-bold mb-6">Prêt à améliorer vos performances ?</h2>
@@ -306,5 +152,3 @@ const UniversalConcept = async () => {
     </div>
   )
 }
-
-export default UniversalConcept
