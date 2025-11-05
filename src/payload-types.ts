@@ -184,12 +184,13 @@ export interface UniversalConcept {
  */
 export interface Product {
   id: number;
+  position: number;
   title: string;
   description?: string | null;
   price: number;
   handedness?: ('right' | 'left') | null;
   anodizing?: ('black' | 'red' | 'blue') | null;
-  type?: ('cross' | 'parts') | null;
+  type: 'cross' | 'parts';
   image: number | Media;
   updatedAt: string;
   createdAt: string;
@@ -340,6 +341,7 @@ export interface UniversalConceptSelect<T extends boolean = true> {
  * via the `definition` "product_select".
  */
 export interface ProductSelect<T extends boolean = true> {
+  position?: T;
   title?: T;
   description?: T;
   price?: T;
