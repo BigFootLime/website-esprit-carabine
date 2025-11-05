@@ -16,12 +16,16 @@ import { About } from './collections/About'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const ORIGINS = [
-  process.env.PAYLOAD_PUBLIC_SERVER_URL, // ex: http://localhost:3000 en dev, https://www.esprit-carabine.fr en prod
+const rawOrigins = [
+  process.env.PAYLOAD_PUBLIC_SERVER_URL, // string | undefined
   'http://localhost:3000',
   'http://127.0.0.1:3000',
   'https://www.esprit-carabine.fr',
-].filter(Boolean)
+]
+
+const ORIGINS: string[] = rawOrigins.filter(
+  (v): v is string => typeof v === 'string' && v.length > 0,
+)
 
 export default buildConfig({
   // ⚠️ Très important : mets cette variable EXACTEMENT à l’origine où tu ouvres l’Admin
