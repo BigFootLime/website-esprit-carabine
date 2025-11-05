@@ -5,6 +5,10 @@ import { Send } from 'lucide-react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+export const fetchCache = 'force-no-store'
+
 const Training = async () => {
   const payload = await getPayload({ config })
 
