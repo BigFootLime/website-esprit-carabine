@@ -1,3 +1,4 @@
+// payload.config.ts
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { buildConfig } from 'payload'
@@ -15,30 +16,36 @@ import { About } from './collections/About'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const ORIGINS = [
+  process.env.PAYLOAD_PUBLIC_SERVER_URL, // ex: http://localhost:3000 en dev, https://www.esprit-carabine.fr en prod
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'https://www.esprit-carabine.fr',
+].filter(Boolean)
+
 export default buildConfig({
+  // ⚠️ Très important : mets cette variable EXACTEMENT à l’origine où tu ouvres l’Admin
+  // ex dev: http://localhost:3000  |  ex prod: https://www.esprit-carabine.fr
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL,
-  // si tu utilises CORS/CSRF, pense à ajouter ton domaine :
-  cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || 'https://www.esprit-carabine.fr'],
-  csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || 'https://www.esprit-carabine.fr'],
-  // ...
+
+  cors: ORIGINS,
+  csrf: ORIGINS,
+
   admin: {
-    user: Users.slug,
-    importMap: {
-      baseDir: path.resolve(dirname),
-    },
+    user: Users.slug, // aucun access() ici → tout utilisateur connecté peut accéder à l’Admin
+    importMap: { baseDir: path.resolve(dirname) },
   },
+
   collections: [Users, Media, UniversalConcept, Product, Coaching, About],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
-  typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts'),
-  },
+  typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
+
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  plugins: [
-    payloadCloudPlugin(), // tu peux l'enlever si non utilisé
-  ],
+
+  plugins: [payloadCloudPlugin()],
 })

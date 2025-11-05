@@ -2,10 +2,28 @@ import type { CollectionConfig } from 'payload'
 
 export const Product: CollectionConfig = {
   slug: 'product',
-  admin: {
-    useAsTitle: 'title',
+  access: {
+    read: () => true,
+    create: () => true,
+    update: () => true,
+    delete: () => true,
   },
   fields: [
+    {
+      name: 'position',
+      type: 'number',
+      label: 'Position',
+      required: true,
+      index: true,
+      unique: false, // set to true if you want every number to be unique
+      defaultValue: 1,
+      admin: { width: '25%' },
+      validate: (val) => {
+        if (typeof val !== 'number') return 'Must be a number'
+        if (val < 1 || val > 100) return 'Enter a value between 1 and 100'
+        return true
+      },
+    },
     {
       name: 'title',
       type: 'text',
@@ -52,6 +70,7 @@ export const Product: CollectionConfig = {
         { label: 'Crosses complètes', value: 'cross' },
         { label: 'Pièces détachées', value: 'parts' },
       ],
+      label: 'Type',
     },
     {
       name: 'image',

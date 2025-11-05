@@ -51,7 +51,7 @@ interface Img {
   height: number
 }
 interface Product {
-  id: number
+  id: string
   title: string
   description: string
   price: number
@@ -59,6 +59,7 @@ interface Product {
   anodizing: string
   type: string | null
   image: Img
+  position: number
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -74,13 +75,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   async function getProducts() {
     try {
-      const response = await fetch('/api/products?limit=1000&depth=1', { cache: 'no-store' })
-      const data = await response.json()
-      // Force id en string pour homogénéité
+      // (If your REST is Payload v3, the list endpoint is usually /api/product, not /api/products)
+      const res = await fetch('/api/product?limit=1000&depth=1', { cache: 'no-store' })
+      const data = await res.json()
       const docs: Product[] = (data.docs || []).map((p: any) => ({ ...p, id: String(p.id) }))
+
+      // sort ascending by position; missing position go to the end
+      docs.sort((a, b) => (a.position ?? 1e9) - (b.position ?? 1e9))
+
       setProducts(docs)
-    } catch (error) {
-      console.error('Erreur lors du chargement des produits:', error)
+    } catch (e) {
+      console.error('Erreur lors du chargement des produits:', e)
     } finally {
       setLoading(false)
     }
