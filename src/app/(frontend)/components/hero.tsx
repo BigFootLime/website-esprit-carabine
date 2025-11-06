@@ -8,25 +8,29 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { motion } from 'framer-motion'
 import Logo from '../images/Logo.svg'
 
+import { useLang, type TextPair } from '@/components/i18n/lang-context'
+import LangToggle from '@/components/i18n/lang-toggle'
+
 type HeroProps = {
-  title: string
-  description: string
+  title: TextPair
+  description: TextPair
   image?: string
   images?: string[] // on utilisera uniquement images[1] si disponible
 }
 
-const navigation = [
-  { name: 'Accueil', href: '/' },
-  { name: 'Qui sommes nous ?', href: '/about' },
-  { name: 'Universal Concept', href: '/universal-concept' },
-  { name: 'Boutique', href: '/shop' },
-  { name: 'Entraînement', href: '/training' },
-  { name: 'Témoignages', href: '/testimonials' },
-  { name: 'Contact', href: '/contact' },
+const navigation: { name: TextPair; href: string }[] = [
+  { name: { fr: 'Accueil', en: 'Home' }, href: '/' },
+  { name: { fr: 'Qui sommes nous ?', en: 'About us' }, href: '/about' },
+  { name: { fr: 'Universal Concept', en: 'Universal Concept' }, href: '/universal-concept' },
+  { name: { fr: 'Boutique', en: 'Shop' }, href: '/shop' },
+  { name: { fr: 'Entraînement', en: 'Training' }, href: '/training' },
+  { name: { fr: 'Témoignages', en: 'Testimonials' }, href: '/testimonials' },
+  { name: { fr: 'Contact', en: 'Contact' }, href: '/contact' },
 ]
 
 export default function HeroComponent({ title, description, image, images }: HeroProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { t } = useLang()
 
   // on choisit la 2e image si elle existe
   const heroSrc = Array.isArray(images) && images[1] ? images[1] : image
@@ -60,15 +64,18 @@ export default function HeroComponent({ title, description, image, images }: Her
               />
             </Link>
 
-            {/* Burger (mobile) */}
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
-              aria-label="Ouvrir le menu"
-            >
-              <Bars3Icon aria-hidden="true" className="size-6" />
-            </button>
+            {/* Right cluster: Lang toggle + Burger */}
+            <div className="flex items-center gap-2">
+              <LangToggle />
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(true)}
+                className="lg:hidden -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
+                aria-label={t({ fr: 'Ouvrir le menu', en: 'Open menu' })}
+              >
+                <Bars3Icon aria-hidden="true" className="size-6" />
+              </button>
+            </div>
           </div>
 
           {/* Ligne 2 : Navigation centrée sous le logo (desktop) */}
@@ -76,7 +83,7 @@ export default function HeroComponent({ title, description, image, images }: Her
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
               <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 py-2">
                 {navigation.map((item) => (
-                  <li key={item.name}>
+                  <li key={item.href}>
                     <Link
                       href={item.href}
                       className="
@@ -85,7 +92,7 @@ export default function HeroComponent({ title, description, image, images }: Her
                         px-3 py-2 rounded-xl hover:bg-white/5 group
                       "
                     >
-                      {item.name}
+                      {t(item.name)}
                       <span
                         className="
                           absolute left-1/2 bottom-1 h-[2px] w-0
@@ -106,28 +113,35 @@ export default function HeroComponent({ title, description, image, images }: Her
             <div className="fixed inset-0 z-10" />
             <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
               <div className="flex items-center justify-between">
-                <Link href="/" className="-m-1.5 p-1.5">
-                  <Image src={Logo} alt="Esprit Carabine" className="h-10 w-auto" priority />
+                <Link href="/" className="-m-1.5 p-1.5 text-gray-900 font-semibold">
+                  Esprit Carabine
                 </Link>
                 <button
                   type="button"
                   onClick={() => setMobileMenuOpen(false)}
                   className="-m-2.5 rounded-md p-2.5 text-gray-700 hover:text-indigo-600 transition-colors"
-                  aria-label="Fermer le menu"
+                  aria-label={t({ fr: 'Fermer le menu', en: 'Close menu' })}
                 >
                   <XMarkIcon aria-hidden="true" className="size-6" />
                 </button>
               </div>
-              <div className="mt-6 flow-root">
+
+              {/* toggle in drawer */}
+              <div className="mt-4 mb-6">
+                <LangToggle className="w-full justify-center" />
+              </div>
+
+              <div className="mt-2 flow-root">
                 <div className="-my-6 divide-y divide-gray-500/10">
                   <div className="space-y-2 py-6">
                     {navigation.map((item) => (
                       <Link
-                        key={item.name}
+                        key={item.href}
                         href={item.href}
                         className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-100 transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
                       >
-                        {item.name}
+                        {t(item.name)}
                       </Link>
                     ))}
                   </div>
@@ -163,9 +177,11 @@ export default function HeroComponent({ title, description, image, images }: Her
                 transition={{ duration: 0.6, ease: 'easeOut' }}
               >
                 <h1 className="text-5xl sm:text-7xl font-semibold tracking-tight text-white">
-                  {title}
+                  {t(title)}
                 </h1>
-                <p className="mt-8 text-lg font-medium text-gray-400 sm:text-xl">{description}</p>
+                <p className="mt-8 text-lg font-medium text-gray-400 sm:text-xl">
+                  {t(description)}
+                </p>
               </motion.div>
             </div>
 
@@ -180,7 +196,7 @@ export default function HeroComponent({ title, description, image, images }: Her
                 <div className="relative w-full h-[60vh] md:h-[70vh] lg:h-[80vh]">
                   <Image
                     src={heroSrc}
-                    alt={title}
+                    alt={t(title)}
                     fill
                     priority
                     sizes="100vw"

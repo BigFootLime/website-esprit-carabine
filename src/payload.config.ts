@@ -40,6 +40,11 @@ export default buildConfig({
     importMap: { baseDir: path.resolve(dirname) },
   },
 
+  localization: {
+    locales: ['fr', 'en'],
+    defaultLocale: 'fr', // your current data is FR
+    fallback: true, // fine globally; you control fallback per request
+  },
   collections: [Users, Media, UniversalConcept, Product, Coaching, About],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

@@ -100,7 +100,6 @@ const urls = (arr: any[]) =>
 const UniversalConcept = async () => {
   const payload = await getPayload({ config })
   const universalConceptData = await payload.find({ collection: 'universalConcept' })
-  const isTextPair = (v: any): v is TextPair => v && typeof v === 'object' && 'fr' in v && 'en' in v
 
   /** === Contenu bilingue === */
   type Feature = {
@@ -413,6 +412,10 @@ const UniversalConcept = async () => {
   const ctaBtn: TextPair = { fr: 'Nous contacter', en: 'Contact us' }
   const buyBtn: TextPair = { fr: 'Acheter une crosse', en: 'Buy a stock' }
 
+  function RenderMaybePair({ value }: { value: string | TextPair }) {
+    return typeof value === 'string' ? <>{value}</> : <T pair={value} />
+  }
+
   return (
     <div className="bg-gray-900 text-white min-h-screen">
       {/* Hero */}
@@ -568,8 +571,10 @@ const UniversalConcept = async () => {
                   <T as="h3" pair={ann.title as TextPair} className="text-xl font-semibold" />
                   <div className="border-t border-sky-600 w-16 mb-2" />
                   <ul className="list-disc list-inside text-gray-300 space-y-1">
-                    {(ann as any).list?.map((item: any, i: number) => (
-                      <li key={i}>{isTextPair(item) ? <T pair={item} /> : item}</li>
+                    {(ann as any).list?.map((item: string | TextPair, i: number) => (
+                      <li key={i}>
+                        <RenderMaybePair value={item} />
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -595,8 +600,10 @@ const UniversalConcept = async () => {
                   <T as="h3" pair={ann.title as TextPair} className="text-xl font-semibold" />
                   <div className="border-t border-sky-600 w-16 mb-2" />
                   <ul className="list-disc list-inside text-gray-300 space-y-1">
-                    {(ann as any).list?.map((item: any, i: number) => (
-                      <li key={i}>{isTextPair(item) ? <T pair={item} /> : item}</li>
+                    {(ann as any).list?.map((item: string | TextPair, i: number) => (
+                      <li key={i}>
+                        <RenderMaybePair value={item} />
+                      </li>
                     ))}
                   </ul>
                 </div>

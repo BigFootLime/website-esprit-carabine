@@ -33,11 +33,13 @@ export const Product: CollectionConfig = {
       type: 'text',
       required: true,
       label: 'Title',
+      localized: true,
     },
     {
       name: 'description',
       type: 'textarea',
       required: false,
+      localized: true,
       label: 'Description',
     },
     {

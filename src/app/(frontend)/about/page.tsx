@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Send, ArrowRight } from 'lucide-react'
+import heroFallback from '../images/who1.jpg'
+import heroFallback2 from '../images/who2.jpg'
 
 type MediaRef = { url?: string }
 type AboutImage = { image?: MediaRef | string; caption?: string }
@@ -19,27 +21,33 @@ export default function AboutPage() {
     ;(async () => {
       try {
         const res = await fetch('/api/about', { cache: 'no-store' })
-        if (!res.ok) throw new Error('Failed to load /api/about')
+        if (!res.ok) throw new Error('')
         const data: AboutRes = await res.json()
         setDoc(data?.docs?.[0] ?? null)
       } catch (e: any) {
-        setError(e?.message || 'Unknown error')
+        // setError(e?.message || 'Erreur inconnue')
       } finally {
         setLoading(false)
       }
     })()
   }, [])
 
-  const heroImg =
-    doc?.images?.[0]?.image && typeof doc.images[0].image === 'object'
-      ? (doc.images[0].image as MediaRef).url
-      : undefined
+  // Helpers to safely extract URLs from Payload (or fallbacks)
+  const getUrl = (item?: AboutImage) => {
+    if (!item?.image) return undefined
+    if (typeof item.image === 'string') return item.image
+    if ('url' in item.image!) return (item.image as MediaRef).url
+    return undefined
+  }
+
+  const heroUrl = getUrl(doc?.images?.[0]) // first image
+  const secondUrl = getUrl(doc?.images?.[1]) // second image
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          {/* Left: text (static copy) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left: text */}
           <div>
             <h1 className="text-5xl font-bold mb-6 tracking-tight">Qui sommes nous ?</h1>
 
@@ -73,65 +81,55 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Right: hero image from Payload */}
+          {/* Right: two-image stack */}
           <div className="w-full">
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/10 bg-gray-800">
-              {loading ? (
-                <div className="absolute inset-0 animate-pulse bg-white/5" />
-              ) : (
-                <Image
-                  src={heroImg || '/default-image.jpg'}
-                  alt="Esprit Carabine – Qui sommes-nous"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  priority
-                />
-              )}
+            <div className="grid grid-rows-2 gap-6">
+              {/* Top (Hero) */}
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/10 bg-gray-800">
+                {loading ? (
+                  <div className="absolute inset-0 animate-pulse bg-white/5" />
+                ) : (
+                  <Image
+                    src={heroFallback}
+                    alt="Esprit Carabine – Qui sommes-nous (image 1)"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    priority
+                  />
+                )}
+              </div>
+
+              {/* Bottom (Second image) */}
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/10 bg-gray-800">
+                {loading ? (
+                  <div className="absolute inset-0 animate-pulse bg-white/5" />
+                ) : (
+                  <Image
+                    src={heroFallback2}
+                    alt="Esprit Carabine – Qui sommes-nous (image 2)"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                )}
+                {/* subtle top divider to separate visually when stacked */}
+                <div className="pointer-events-none absolute -top-3 left-8 right-8 h-0.5 bg-white/10 rounded-full" />
+              </div>
             </div>
-            {doc?.images?.[0]?.caption ? (
-              <p className="mt-3 text-sm text-gray-300">{doc.images[0].caption}</p>
+
+            {/* Optional captions if present */}
+            {!loading && (doc?.images?.[0]?.caption || doc?.images?.[1]?.caption) ? (
+              <div className="mt-4 space-y-1 text-sm text-gray-300">
+                {doc?.images?.[0]?.caption && <p>• {doc.images[0].caption}</p>}
+                {doc?.images?.[1]?.caption && <p>• {doc.images[1].caption}</p>}
+              </div>
             ) : null}
+
             {error ? <p className="mt-3 text-sm text-red-400">Erreur : {error}</p> : null}
           </div>
         </div>
       </div>
-
-      {/* Gallery */}
-      {!loading && (doc?.images?.length ?? 0) > 1 && (
-        <div className="max-w-7xl mx-auto px-4 pb-16">
-          <h2 className="text-3xl font-bold mb-4">Galerie</h2>
-          <div className="border-t-2 border-sky-600 w-20 mb-6"></div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(doc?.images?.slice(1) || []).map((img, idx) => {
-              const url =
-                img?.image && typeof img.image === 'object' && 'url' in img.image
-                  ? (img.image as MediaRef).url
-                  : undefined
-              return (
-                <div
-                  key={idx}
-                  className="rounded-lg overflow-hidden bg-gray-800 border border-white/10"
-                >
-                  <div className="relative aspect-[4/3] w-full">
-                    <Image
-                      src={url || '/default-image.jpg'}
-                      alt={img?.caption || `About image ${idx + 2}`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 100vw, 33vw"
-                    />
-                  </div>
-                  {img?.caption ? (
-                    <div className="p-3 text-sm text-gray-200">{img.caption}</div>
-                  ) : null}
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      )}
 
       {/* CTA */}
       <div className="bg-gradient-to-br from-accent-principle to-accent-secondary text-white py-16">

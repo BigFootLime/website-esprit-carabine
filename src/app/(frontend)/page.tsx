@@ -5,10 +5,74 @@ import Image from 'next/image'
 import Link from 'next/link'
 import image1 from '../(frontend)/images/UniversalConcept.jpg'
 import image2 from '../(frontend)/images/entrainement.jpeg'
-import image3 from '../(frontend)/images/Who.jpeg'
+import image3 from '../(frontend)/images/NosValeurs.jpg'
 import { motion } from 'framer-motion'
+import { useLang, type TextPair } from '@/components/i18n/lang-context'
 
 export default function HomePage() {
+  const { t } = useLang()
+
+  const pageTitle: TextPair = {
+    fr: 'Excellence française en tir sportif',
+    en: 'French excellence in sport shooting',
+  }
+  const pageSubtitle: TextPair = {
+    fr: 'Découvrez notre expertise, au service des tireurs de tous niveaux',
+    en: 'Discover our expertise, serving shooters of all levels',
+  }
+
+  const cards = [
+    {
+      img: image1,
+      title: { fr: 'Universal Concept', en: 'Universal Concept' } as TextPair,
+      text: {
+        fr: 'Une innovation unique alliant modularité, ergonomie et précision maximale',
+        en: 'A unique innovation combining modularity, ergonomics, and maximum precision',
+      } as TextPair,
+      cta: { fr: 'Découvrir', en: 'Discover' } as TextPair,
+      alt: { fr: 'Universal Concept', en: 'Universal Concept' } as TextPair,
+      href: '/universal-concept',
+    },
+    {
+      img: image2,
+      title: { fr: 'Entraînement & Coaching', en: 'Training & Coaching' } as TextPair,
+      text: {
+        fr: 'Perfectionnez votre technique avec Pascal Bessy. Des stages personnalisés pour tous les niveaux.',
+        en: 'Improve your technique with Pascal Bessy. Personalized training for all levels.',
+      } as TextPair,
+      cta: { fr: 'Se perfectionner', en: 'Improve' } as TextPair,
+      alt: { fr: 'Entraînement & Coaching', en: 'Training & Coaching' } as TextPair,
+      href: '/training',
+    },
+    {
+      img: image3,
+      title: { fr: 'Qui sommes nous', en: 'About us' } as TextPair,
+      text: {
+        fr: "Excellence française, innovation constante et passion du tir sportif. Découvrez l'histoire et les valeurs d'Esprit Carabine.",
+        en: 'French excellence, constant innovation and passion for sport shooting. Discover our story and values.',
+      } as TextPair,
+      cta: { fr: 'En savoir plus', en: 'Learn more' } as TextPair,
+      alt: { fr: 'Nos valeurs', en: 'Our values' } as TextPair,
+      href: '/about',
+    },
+  ]
+
+  const cta = {
+    title: {
+      fr: 'Prêt à améliorer vos performances ?',
+      en: 'Ready to improve your performance?',
+    } as TextPair,
+    text: {
+      fr: "Découvrez l'Universal Concept ou réservez un stage d'entraînement personnalisé avec Pascal Bessy",
+      en: 'Discover the Universal Concept or book a personalized training session with Pascal Bessy',
+    } as TextPair,
+    primary: {
+      fr: "Explorer l'Universal Concept",
+      en: 'Explore the Universal Concept',
+    } as TextPair,
+    secondary: { fr: 'Nous contacter', en: 'Contact us' } as TextPair,
+  }
+
   return (
     <main className="relative isolate bg-gray-900 overflow-hidden ">
       {/* Featured Sections */}
@@ -34,97 +98,40 @@ export default function HomePage() {
               transition={{ duration: 0.8, ease: 'easeOut' }}
             >
               <h2 className="text-5xl font-semibold tracking-tight text-white sm:text-5xl">
-                Excellence française en tir sportif
+                {t(pageTitle)}
               </h2>
-              <p className="text-xl text-gray-300 mt-8 max-w-3xl mx-auto">
-                Découvrez notre expertise, au service des tireurs de tous niveaux
-              </p>
+              <p className="text-xl text-gray-300 mt-8 max-w-3xl mx-auto">{t(pageSubtitle)}</p>
             </motion.div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Card 1 */}
-            <div className="bg-gray-800 rounded-3xl overflow-hidden shadow-xl transition-all duration-300 hover:shadow-2xl hover:translate-y-[-8px] group">
-              <div className="relative h-72 w-full overflow-hidden">
-                <Image
-                  src={image1}
-                  alt="Universal Concept"
-                  fill
-                  unoptimized
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                {/* <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div> */}
+            {cards.map((c) => (
+              <div
+                key={c.href}
+                className="bg-gray-800 rounded-3xl overflow-hidden shadow-xl transition-all duration-300 hover:shadow-2xl hover:translate-y-[-8px] group"
+              >
+                <div className="relative h-72 w-full overflow-hidden">
+                  <Image
+                    src={c.img}
+                    alt={t(c.alt)}
+                    fill
+                    unoptimized
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                </div>
+                <div className="p-8">
+                  <h3 className="text-2xl font-bold mb-3 text-white">{t(c.title)}</h3>
+                  <p className="text-gray-300 mb-6">{t(c.text)}</p>
+                  <Link
+                    href={c.href}
+                    className="inline-flex items-center px-4 py-2 text-link-primary font-medium hover:text-link-hover transition-colors"
+                  >
+                    {t(c.cta)}
+                    <ChevronRightIcon className="ml-1 h-5 w-5" />
+                  </Link>
+                </div>
               </div>
-              <div className="p-8">
-                <h3 className="text-2xl font-bold mb-3 text-white">Universal Concept</h3>
-                <p className="text-gray-300 mb-6">
-                  Une innovation unique alliant modularité, ergonomie et précision maximale
-                </p>
-                <Link
-                  href="/universal-concept"
-                  className="inline-flex items-center px-4 py-2 text-link-primary font-medium hover:text-link-hover transition-colors"
-                >
-                  Découvrir
-                  <ChevronRightIcon className="ml-1 h-5 w-5" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Card 2 */}
-            <div className="bg-gray-800 rounded-3xl overflow-hidden shadow-xl transition-all duration-300 hover:shadow-2xl hover:translate-y-[-8px] group">
-              <div className="relative h-72 w-full overflow-hidden">
-                <Image
-                  src={image2}
-                  alt="Entraînement & Coaching"
-                  fill
-                  unoptimized
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                {/* <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div> */}
-              </div>
-              <div className="p-8">
-                <h3 className="text-2xl font-bold mb-3 text-white">Entraînement & Coaching</h3>
-                <p className="text-gray-300 mb-6">
-                  Perfectionnez votre technique avec Pascal Bessy. Des stages personnalisés pour
-                  tous les niveaux, du débutant au tireur de haut niveau.
-                </p>
-                <Link
-                  href="/training"
-                  className="inline-flex items-center px-4 py-2 text-link-primary font-medium hover:text-link-hover transition-colors"
-                >
-                  Se perfectionner
-                  <ChevronRightIcon className="ml-1 h-5 w-5" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Card 3 */}
-            <div className="bg-gray-800 rounded-3xl overflow-hidden shadow-xl transition-all duration-300 hover:shadow-2xl hover:translate-y-[-8px] group">
-              <div className="relative h-72 w-full overflow-hidden">
-                <Image
-                  src={image3}
-                  alt="Nos valeurs"
-                  fill
-                  unoptimized
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-              </div>
-              <div className="p-8">
-                <h3 className="text-2xl font-bold mb-3 text-white">Qui sommes nous</h3>
-                <p className="text-gray-300 mb-6">
-                  Excellence française, innovation constante et passion du tir sportif. Découvrez
-                  l&apos;histoire et les valeurs qui font Esprit Carabine.
-                </p>
-                <Link
-                  href="/about"
-                  className="inline-flex items-center px-4 py-2 text-link-primary font-medium hover:text-link-hover transition-colors"
-                >
-                  En savoir plus
-                  <ChevronRightIcon className="ml-1 h-5 w-5" />
-                </Link>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -132,26 +139,21 @@ export default function HomePage() {
       {/* Call to Action */}
       <section className="py-20 bg-sky-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Prêt à améliorer vos performances ?
-          </h2>
-          <p className="text-xl text-blue-100 mb-10 max-w-3xl mx-auto">
-            Découvrez l&apos;Universal Concept ou réservez un stage d&apos;entraînement personnalisé
-            avec Pascal Bessy
-          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{t(cta.title)}</h2>
+          <p className="text-xl text-blue-100 mb-10 max-w-3xl mx-auto">{t(cta.text)}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/universal-concept"
               className="group inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-sky-700 bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:shadow-2xl"
             >
-              Explorer l&apos;Universal Concept
+              {t(cta.primary)}
               <ChevronRightIcon className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
             <Link
               href="/contact"
               className="group inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white border-2 border-white bg-transparent rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:bg-white/10 hover:shadow-2xl"
             >
-              Nous contacter
+              {t(cta.secondary)}
               <ChevronRightIcon className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
