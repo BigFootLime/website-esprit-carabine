@@ -21,6 +21,7 @@ const rawOrigins = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
   'https://www.esprit-carabine.fr',
+  'https://esprit-carabine.fr',
 ]
 
 const ORIGINS: string[] = rawOrigins.filter(
