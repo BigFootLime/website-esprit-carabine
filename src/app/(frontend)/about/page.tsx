@@ -13,24 +13,8 @@ type AboutDoc = { images?: AboutImage[] }
 type AboutRes = { docs?: AboutDoc[] }
 
 export default function AboutPage() {
-  const [loading, setLoading] = useState(true)
   const [doc, setDoc] = useState<AboutDoc | null>(null)
   const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const res = await fetch('/api/about', { cache: 'no-store' })
-        if (!res.ok) throw new Error('')
-        const data: AboutRes = await res.json()
-        setDoc(data?.docs?.[0] ?? null)
-      } catch (e: any) {
-        // setError(e?.message || 'Erreur inconnue')
-      } finally {
-        setLoading(false)
-      }
-    })()
-  }, [])
 
   // Helpers to safely extract URLs from Payload (or fallbacks)
   const getUrl = (item?: AboutImage) => {
@@ -86,45 +70,30 @@ export default function AboutPage() {
             <div className="grid grid-rows-2 gap-6">
               {/* Top (Hero) */}
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/10 bg-gray-800">
-                {loading ? (
-                  <div className="absolute inset-0 animate-pulse bg-white/5" />
-                ) : (
-                  <Image
-                    src={heroFallback}
-                    alt="Esprit Carabine – Qui sommes-nous (image 1)"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority
-                  />
-                )}
+                <Image
+                  src={heroFallback}
+                  alt="Esprit Carabine – Qui sommes-nous (image 1)"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
+                />
               </div>
 
               {/* Bottom (Second image) */}
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-white/10 bg-gray-800">
-                {loading ? (
-                  <div className="absolute inset-0 animate-pulse bg-white/5" />
-                ) : (
-                  <Image
-                    src={heroFallback2}
-                    alt="Esprit Carabine – Qui sommes-nous (image 2)"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                  />
-                )}
+                <Image
+                  src={heroFallback2}
+                  alt="Esprit Carabine – Qui sommes-nous (image 2)"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+
                 {/* subtle top divider to separate visually when stacked */}
                 <div className="pointer-events-none absolute -top-3 left-8 right-8 h-0.5 bg-white/10 rounded-full" />
               </div>
             </div>
-
-            {/* Optional captions if present */}
-            {!loading && (doc?.images?.[0]?.caption || doc?.images?.[1]?.caption) ? (
-              <div className="mt-4 space-y-1 text-sm text-gray-300">
-                {doc?.images?.[0]?.caption && <p>• {doc.images[0].caption}</p>}
-                {doc?.images?.[1]?.caption && <p>• {doc.images[1].caption}</p>}
-              </div>
-            ) : null}
 
             {error ? <p className="mt-3 text-sm text-red-400">Erreur : {error}</p> : null}
           </div>
