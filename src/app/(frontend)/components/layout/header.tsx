@@ -11,6 +11,7 @@ const navigation = [
   { name: 'Boutique', href: '/shop' },
   { name: 'Qui sommes nous', href: '/about' },
   { name: 'Entraînement', href: '/training' },
+  { name: 'Partenaires', href: '/partners' },
   { name: 'Témoignages', href: '/testimonials' },
   { name: 'Contact', href: '/contact' },
 ]

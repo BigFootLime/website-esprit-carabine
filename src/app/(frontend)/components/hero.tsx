@@ -24,6 +24,7 @@ const navigation: { name: TextPair; href: string }[] = [
   { name: { fr: 'Universal Concept', en: 'Universal Concept' }, href: '/universal-concept' },
   { name: { fr: 'Boutique', en: 'Shop' }, href: '/shop' },
   { name: { fr: 'Entraînement', en: 'Training' }, href: '/training' },
+  { name: { fr: 'Partenaires', en: 'Partners' }, href: '/partners' },
   { name: { fr: 'Témoignages', en: 'Testimonials' }, href: '/testimonials' },
   { name: { fr: 'Contact', en: 'Contact' }, href: '/contact' },
 ]
