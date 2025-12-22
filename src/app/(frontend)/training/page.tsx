@@ -44,11 +44,60 @@ const TEXT = {
     en: `A member of the French national teams for 27 years, World and European Champion, former World Record holder, and national coach for match crossbow then rifle for 10 years, Pascal Bessy offers his experience across all ISSF rifle events at 10, 50 and 300 meters.`,
   } as TextPair,
 
-  offersTitle: { fr: 'Nos formules', en: 'Our offers' } as TextPair,
-  offersLead: {
-    fr: 'Pour le moment les inscriptions se font uniquement par mail et sur appel téléphonique.',
-    en: 'For now, registrations are by email and phone call only.',
+  // ✅ NEW (replaces old "Formules et Tarifs" content)
+  offersTitle: { fr: 'Stages – Programme & Tarifs', en: 'Camps – Program & Pricing' } as TextPair,
+
+  stagesIntro: {
+    fr: `Esprit Carabine vous propose désormais un programme de stages sur le site d’entraînement de votre choix !`,
+    en: `Esprit Carabine now offers a training camp program at the training site of your choice!`,
   } as TextPair,
+
+  stagesBody: {
+    fr: `Ces stages sont encadrés par Pascal Bessy et ont pour principal objectif de vous apporter un enrichissement sur le plan technique, mais aussi de vous conseiller et de vous guider dans le cadre de la préparation de vos saisons sportives et de vos compétitions à venir.
+
+Le programme concerne les disciplines carabine (10, 50 et 300 mètres) et s’adresse à un public de tireurs disposant du matériel nécessaire à la pratique de la compétition.
+
+Les stages peuvent être soit individuels soit destinés à des groupes, d’un maximum de huit tireurs.
+
+Les thèmes abordés sont les suivants :
+- acquisition et perfectionnement des positions de tir
+- entrée en cible et coordination visée / lâcher
+- adaptation de la technique aux différents facteurs météorologiques : apprentissage et perfectionnement du tir rapide, de la contre-visée et maîtrise du réglage
+- définition d'objectifs
+- préparation à la compétition
+
+En fonction des demandes, d’autres thèmes peuvent bien entendu être envisagés.
+
+Dans le cadre d’un stage individuel, le programme sera défini au préalable et répondra à la demande du tireur.
+
+Les stages sont organisés sur une ou deux journées, en week-end ou en semaine selon les disponibilités et les contraintes du ou des participants.`,
+    en: ``,
+  } as TextPair,
+
+  pricingTitle: { fr: 'Tarifs', en: 'Pricing' } as TextPair,
+  pricingIndivTitle: { fr: 'Stage individuel', en: 'Individual camp' } as TextPair,
+  pricingGroupTitle: { fr: 'Stage pour un groupe', en: 'Group camp' } as TextPair,
+  pricingFeesTitle: { fr: 'Défraiement du cadre', en: 'Coach expenses' } as TextPair,
+
+  pricingIndiv: {
+    fr: `Une journée : 240,00 € TTC
+Deux journées : 456,00 € TTC`,
+    en: ``,
+  } as TextPair,
+
+  pricingGroup: {
+    fr: `Une journée : 300,00 € TTC
+Deux journées : 540,00 € TTC`,
+    en: ``,
+  } as TextPair,
+
+  pricingFees: {
+    fr: `Déplacement : 0,43 € / km
+Hôtel : forfait de 70,00 € / nuit
+Repas : forfait de 30,00 € / repas`,
+    en: ``,
+  } as TextPair,
+
   offersHow: {
     fr: 'Pour toute demande, merci de nous contacter :',
     en: 'For any request, please contact us:',
@@ -151,26 +200,69 @@ const Training = async () => {
         </p>
       </div>
 
-      {/* Coaching Offers */}
+      {/* ✅ NEW: Stages – Programme & Tarifs */}
       <div className="container mx-auto px-4 py-16">
         <h2 className="text-3xl font-bold text-white mb-4">
           <T pair={TEXT.offersTitle} />
         </h2>
         <div className="border-t-2 border-sky-600 w-20 mb-6" />
-        <p className="text-gray-300 mb-6">
-          <T pair={TEXT.offersLead} />
-        </p>
-        <p className="text-gray-300">
-          <T pair={TEXT.offersHow} />
-        </p>
-        <ul className="list-disc list-inside text-gray-300 mt-2">
-          <li>
-            <T pair={TEXT.emailLabel} />{' '}
-            <a href="mailto:contact@esprit-carabine.fr" className="text-blue-400 underline">
-              contact@esprit-carabine.fr
-            </a>
-          </li>
-        </ul>
+
+        <div className="max-w-4xl">
+          {/* Intro */}
+          <p className="text-gray-200 text-lg font-semibold mb-4">
+            <T pair={TEXT.stagesIntro} />
+          </p>
+
+          {/* Body */}
+          <div className="text-gray-300 whitespace-pre-line leading-relaxed mb-10">
+            <T pair={TEXT.stagesBody} />
+          </div>
+
+          {/* Pricing cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="rounded-xl bg-gray-800 border border-white/10 p-6 shadow-lg">
+              <h3 className="text-lg font-bold text-white mb-3">
+                <T pair={TEXT.pricingIndivTitle} />
+              </h3>
+              <div className="text-gray-300 whitespace-pre-line">
+                <T pair={TEXT.pricingIndiv} />
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-gray-800 border border-white/10 p-6 shadow-lg">
+              <h3 className="text-lg font-bold text-white mb-3">
+                <T pair={TEXT.pricingGroupTitle} />
+              </h3>
+              <div className="text-gray-300 whitespace-pre-line">
+                <T pair={TEXT.pricingGroup} />
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-gray-800 border border-white/10 p-6 shadow-lg">
+              <h3 className="text-lg font-bold text-white mb-3">
+                <T pair={TEXT.pricingFeesTitle} />
+              </h3>
+              <div className="text-gray-300 whitespace-pre-line">
+                <T pair={TEXT.pricingFees} />
+              </div>
+            </div>
+          </div>
+
+          {/* Contact */}
+          <div className="mt-10 rounded-xl bg-gray-800/40 border border-white/10 p-6">
+            <p className="text-gray-300">
+              <T pair={TEXT.offersHow} />
+            </p>
+            <ul className="list-disc list-inside text-gray-300 mt-2">
+              <li>
+                <T pair={TEXT.emailLabel} />{' '}
+                <a href="mailto:contact@esprit-carabine.fr" className="text-blue-400 underline">
+                  contact@esprit-carabine.fr
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
 
       {/* CTA */}
